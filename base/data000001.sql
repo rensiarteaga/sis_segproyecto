@@ -34,19 +34,3 @@ select pxp.f_insert_testructura_gui ('ACTI', 'SP');
 
 /********************************************F-DAT-YAC-SP-0-20/02/2017********************************************/
 
-/********************************************I-DAT-YAC-SP-0-21/02/2017********************************************/
-
---------------- SQL ---------------
-
-CREATE TABLE sp.tdef_proyecto (
-  id_def_proyecto SERIAL NOT NULL,
-  id_proyecto INTEGER,
-  fecha_inicio_teorico DATE,
-  fecha_fin_teorico DATE,
-  descripcion TEXT,
-  PRIMARY KEY(id_def_proyecto)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
-
-/********************************************F-DAT-YAC-SP-0-21/02/2017********************************************/

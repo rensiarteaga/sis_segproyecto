@@ -47,6 +47,48 @@ class ACTActividad extends ACTbase{
 		$this->res=$this->objFunc->eliminarActividad($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+function listarActividadArb() {
+        $node = $this->objParam->getParametro('node');
+		//$clasificacion = $this->objParam->getParametro('clasificacion');								
+        $id_actividad = $this->objParam->getParametro('id_actividad');
+
+        if ($node == 'id') {
+            $this->objParam->addParametro('id_padre', '%');
+        } else {
+            $this->objParam->addParametro('id_padre', $id_actividad);
+        }
+		//$this->objParam->addParametro('clasificacion', $clasificacion);
+								
+        $this->objFunc = $this->create('MODActividad');
+        $this->res = $this->objFunc->listarActividadArb();
+						
+        $this->res->setTipoRespuestaArbol();
+								
+        $arreglo = array();
+		$arreglo_valores=array();
+		
+		//para cambiar un valor por otro en una variable
+		array_push($arreglo_valores,array('variable'=>'checked','val_ant'=>'true','val_nue'=>true));
+		array_push($arreglo_valores,array('variable'=>'checked','val_ant'=>'false','val_nue'=>false));
+		$this->res->setValores($arreglo_valores);
+
+
+        array_push($arreglo, array('nombre' => 'id', 'valor' => 'id_actividad'));
+        array_push($arreglo, array('nombre' => 'id_p', 'valor' => 'id_actividad_padre'));
+        array_push($arreglo, array('nombre' => 'text', 'valores' => '[#id_actividad#]-#actividad#'));
+        array_push($arreglo, array('nombre' => 'cls', 'valor' => 'descripcion'));
+        array_push($arreglo, array('nombre' => 'qtip', 'valores' => '<b>#id_actividad#</b><br/>#actividad#'));
+		
+        /*Estas funciones definen reglas para los nodos en funcion a los tipo de nodos que contenga cada uno*/
+        $this->res->addNivelArbol('tipo_nodo', 'raiz', array('leaf' => false, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'cls' => 'folder', 'tipo_nodo' => 'raiz', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);
+        $this->res->addNivelArbol('tipo_nodo', 'hijo', array('leaf' => true, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'tipo_nodo' => 'hijo', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);
+      
+    
+        //Se imprime el arbol en formato JSON
+        //var_dump($this->res->generarJson());exit;
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
 			
 }
 

@@ -96,6 +96,37 @@ class MODActividad extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	function listarActividadArb() {
+        $this->procedimiento = 'sp.ft_actividad_sel';
+        $this->setCount(false);
+        $this->transaccion = 'SP_ACT_ARB_SEL';
+        $this->tipo_procedimiento = 'SEL';
+
+        $id_padre = $this->objParam->getParametro('id_padre');
+        $this->setParametro('id_padre', 'id_padre', 'varchar');
+
+       //Definicion de la lista del resultado del query
+		$this->captura('id_actividad','int4');
+		$this->captura('id_actividad_padre','int4');
+		$this->captura('actividad','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('usuario_ai','varchar');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('id_usuario_ai','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('tipo_nodo','varchar');
+		$this->captura('checked','varchar');
+		
+
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        return $this->respuesta;
+    }
 			
 }
 ?>
