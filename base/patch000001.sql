@@ -41,7 +41,7 @@ CREATE TABLE sp.tdef_proyecto_actividad (
   id_def_proyecto_actividad SERIAL NOT NULL,
   id_def_proyecto INTEGER,
   id_actividad INTEGER,
-  descripcion VARCHAR(250);
+  descripcion VARCHAR(250),
   PRIMARY KEY(id_def_proyecto_actividad)
 ) INHERITS (pxp.tbase)
 
