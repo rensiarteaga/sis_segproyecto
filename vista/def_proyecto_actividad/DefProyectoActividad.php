@@ -26,7 +26,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
         onReloadPage: function (m) {
             this.maestro = m;
-            this.store.baseParams = {id_def_proyecto: this.maestro.id_def_proyecto};
+            this.store.baseParams = {id_def_proyecto: this.maestro.id_def_proyecto,id_proyecto: this.maestro.id_proyecto};
             console.log((this.maestro))
             this.load({params: {start: 0, limit: 50}})
 
@@ -307,6 +307,19 @@ header("content-type: text/javascript; charset=UTF-8");
             this.reload();
 
         },
+         tabsouth:[
+         {
+          url:'../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
+          title:'definicion proyecto actividad pedido', 
+          
+          height:'50%',
+          cls:'DefProyectoActividadPedido'
+         }
+        ],
+    
+        
+        
+        
     })
 </script>
 		

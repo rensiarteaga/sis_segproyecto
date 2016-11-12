@@ -48,4 +48,16 @@ CREATE TABLE sp.tdef_proyecto_actividad (
 WITH (oids = false);
 /***********************************F-SCP-YAC-SP-0-01/03/2017****************************************/
 
+/***********************************I-SCP-JUAN-SP-0-03/03/2017****************************************/ --------------- SQL ---------------
+
+CREATE TABLE sp.tdef_proyecto_actividad_pedido (
+  id_def_proyecto_actividad_pedido SERIAL NOT NULL,
+  id_def_proyecto_actividad INTEGER,
+  id_pedido INTEGER,
+  PRIMARY KEY(id_def_proyecto_actividad_pedido)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+/***********************************F-SCP-JUAN-SP-0-03/03/2017****************************************/
+
 
