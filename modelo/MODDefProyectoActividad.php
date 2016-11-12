@@ -106,9 +106,12 @@ class MODDefProyectoActividad extends MODbase{
 		$this->transaccion='SP_DEPRACS_INS';
 		$this->tipo_procedimiento='IME';
 				
+			
 		//Define los parametros para la funcion
 		$this->setParametro('id_def_proyecto','id_def_proyecto','int4');
-		$this->setParametro('id_actividades','id_actividades','int4');
+		$this->setParametro('id_actividades','id_actividades','varchar');
+		
+	
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

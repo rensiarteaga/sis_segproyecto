@@ -12,7 +12,8 @@ header("content-type:text/javascript; charset=UTF-8");
     Phx.vista.BuscarActividad = Ext.extend(Phx.arbInterfaz, {
         constructor: function (config) {
 
-            this.maestro = config.maestro;
+			
+            this.maestro = config.data.objPadre.maestro;
             Phx.vista.BuscarActividad.superclass.constructor.call(this, config);
             this.init();
             this.iniciarEventos();
@@ -24,7 +25,7 @@ header("content-type:text/javascript; charset=UTF-8");
                 config: {
                     labelSeparator: '',
                     inputType: 'hidden',
-                    name: 'id_clasificacion'
+                    name: 'id_actividad'
                 },
                 type: 'Field',
                 form: true
@@ -155,9 +156,9 @@ header("content-type:text/javascript; charset=UTF-8");
         btriguerreturn: true,
 
         onButtonTriguerreturn: function () {
-
-            this.fireEvent('selectactividades', this, this.nodosCheckeados(), this.maestro.id_def_proyecto);
-
+        	
+           this.fireEvent('selectactividades', this, this.nodosCheckeados(), this.maestro.id_def_proyecto);
+			
         }
 
     });

@@ -98,6 +98,22 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             {
                 config: {
+                    name: 'descripcion',
+                    fieldLabel: 'descripcion',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'deprac.descripcion', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                egrid: true,
+                form: true
+            },
+            {
+                config: {
                     name: 'estado_reg',
                     fieldLabel: 'Estado Reg.',
                     allowBlank: true,
@@ -111,21 +127,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid: true,
                 form: false
             },
-            {
-                config: {
-                    name: 'descripcion',
-                    fieldLabel: 'descripcion',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 250
-                },
-                type: 'TextField',
-                filters: {pfiltro: 'deprac.descripcion', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: true
-            },
+            
             {
                 config: {
                     name: 'usuario_ai',
@@ -255,7 +257,7 @@ header("content-type: text/javascript; charset=UTF-8");
             //abrir formulario de solicitud
             var me = this;
             me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/actividad/BuscarActividad.php',
-                'Formulario de Solicitud de Compra',
+                'Formulario de asignacion de actividades',
                 {
                     modal: true,
                     width: '90%',
@@ -280,13 +282,13 @@ header("content-type: text/javascript; charset=UTF-8");
 
         onSaveForm: function (interface, valores, id_def_proyecto) {
              var  me = this;
-            alert(valores)
+            //alert(valores)
               Phx.CP.loadingShow();
              Ext.Ajax.request({
-                    url: '../../../sis_segproyecto/control/DefProyectoActividad/insertarDefinicionProyectosActividades',
+                    url: '../../sis_segproyecto/control/DefProyectoActividad/insertarDefinicionProyectosActividades',
                     params: {id_actividades : valores, id_def_proyecto: id_def_proyecto},
                     
-                    success: this.successSave,
+                    success: me.successSaveArb,
                     //argument: me.argumentSave,
 
                     failure: me.conexionFailure,
@@ -295,12 +297,15 @@ header("content-type: text/javascript; charset=UTF-8");
                 });
 
             interface.panel.close();
-
+            
 
         },
         
-        successSave: function(resp) {
-        console.log('sobre cargar successSave')
+        successSaveArb: function(resp) {
+                     
+            Phx.CP.loadingHide();
+            this.reload();
+
         },
     })
 </script>
