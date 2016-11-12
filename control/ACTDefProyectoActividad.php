@@ -45,6 +45,11 @@ class ACTDefProyectoActividad extends ACTbase{
 		$this->res=$this->objFunc->eliminarDefProyectoActividad($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function insertarDefinicionProyectosActividades(){
+		$this->objFunc=$this->create('MODDefProyectoActividad');	
+		$this->res=$this->objFunc->insertarDefinicionProyectosActividades($this->objParam);			
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

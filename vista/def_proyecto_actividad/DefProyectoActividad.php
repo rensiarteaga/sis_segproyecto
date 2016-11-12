@@ -278,14 +278,30 @@ header("content-type: text/javascript; charset=UTF-8");
 
         },
 
-        onSaveForm: function (interface, valores) {
-
+        onSaveForm: function (interface, valores, id_def_proyecto) {
+             var  me = this;
             alert(valores)
+              Phx.CP.loadingShow();
+             Ext.Ajax.request({
+                    url: '../../../sis_segproyecto/control/DefProyectoActividad/insertarDefinicionProyectosActividades',
+                    params: {id_actividades : valores, id_def_proyecto: id_def_proyecto},
+                    
+                    success: this.successSave,
+                    //argument: me.argumentSave,
+
+                    failure: me.conexionFailure,
+                    timeout: me.timeout,
+                    scope: me
+                });
 
             interface.panel.close();
 
 
-        }
+        },
+        
+        successSave: function(resp) {
+        console.log('sobre cargar successSave')
+        },
     })
 </script>
 		

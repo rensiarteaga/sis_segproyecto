@@ -98,12 +98,8 @@ header("content-type:text/javascript; charset=UTF-8");
                 Mynode.getUI().toggleCheck(valor);
             }, this);
 
-
             //console.log(node)
-
-
             //this.treePanel	.syncSize( )
-
             ///alert('llega' + valor)
         },
         getAllChildNodes: function (node) {
@@ -137,21 +133,30 @@ header("content-type:text/javascript; charset=UTF-8");
         nodosCheckeados: function () {
             //var nodoRoot = this.treePanel.getRootNode();
             //var allNodos = this.getAllChildNodes(nodoRoot);
-            this.treePanel.getChecked().forEach(this.obtenerdatosnodo)
-            console.log(this.treePanel.getChecked());
+            var arregloActividades= [];
+            var id_actividades = '';
+            this.treePanel.getChecked().forEach(function (node) {
+            	
+            	if(id_actividades ==''){
+            		id_actividades = node.attributes.id_actividad;
+            	}
+            	else
+            	{
+            		id_actividades = id_actividades +','+node.attributes.id_actividad;
+            	}
+               
+            });
+            return id_actividades;
 
         },
-        obtenerdatosnodo: function (node) {
-            console.log('datos');
-            console.log(node.attributes.actividad);
-        },
+
         id_clasificacion: '',
         desc_clasificacion: '',
         btriguerreturn: true,
 
         onButtonTriguerreturn: function () {
 
-            this.fireEvent('selectactividades', this, this.nodosCheckeados());
+            this.fireEvent('selectactividades', this, this.nodosCheckeados(), this.maestro.id_def_proyecto);
 
         }
 

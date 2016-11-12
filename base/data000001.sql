@@ -34,3 +34,11 @@ select pxp.f_insert_testructura_gui ('ACTI', 'SP');
 
 /********************************************F-DAT-YAC-SP-0-20/02/2017********************************************/
 
+/********************************************I-DAT-YAC-SP-0-03/03/2017********************************************/
+
+select pxp.f_insert_tgui ('SEGUIMIENTO DE PROYECTOS', '', 'SP', 'si', 1, '', 1, '', '', 'SP');
+select pxp.f_insert_tgui ('Actividades', 'actividades', 'ACTI', 'si', 1, 'sis_segproyecto/vista/actividad/ActividadPadre.php', 2, '', 'ActividadPadre', 'SP');
+select pxp.f_insert_tgui ('Proyecto actividad', 'Proyectos Actividades', 'PRAC', 'si', 1, 'sis_segproyecto/vista/def_proyecto/DefProyecto.php', 2, '', 'DefProyecto', 'SP');
+
+/********************************************F-DAT-YAC-SP-0-03/03/2017********************************************/
+

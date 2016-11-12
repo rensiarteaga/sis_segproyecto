@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "sp"."ft_def_proyecto_actividad_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION sp.ft_def_proyecto_actividad_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Seguimiento de Proyectos
  FUNCION: 		sp.ft_def_proyecto_actividad_ime
@@ -27,6 +32,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_def_proyecto_actividad	integer;
+    va_id_activiada	integer[];
 			    
 BEGIN
 
@@ -109,6 +115,42 @@ BEGIN
             return v_resp;
             
 		end;
+        /*********************************    
+ 	#TRANSACCION:  'SP_DEPRACS_INS'
+ 	#DESCRIPCION:	insertar varias actividades
+ 	#AUTOR:		yac	
+ 	#FECHA:		03-03-2017 06:41:48
+	***********************************/
+
+	elsif(p_transaccion='SP_DEPRACS_INS')then
+
+		begin
+        
+            va_id_activiada = dstring_to_array(v_parametros.id_actividades, ',');
+            
+            
+            
+            
+            
+			--Sentencia de la modificacion
+			update sp.tdef_proyecto_actividad set
+			id_def_proyecto = v_parametros.id_def_proyecto,
+			id_actividad = v_parametros.id_actividad,
+			descripcion = v_parametros.descripcion,
+			fecha_mod = now(),
+			id_usuario_mod = p_id_usuario,
+			id_usuario_ai = v_parametros._id_usuario_ai,
+			usuario_ai = v_parametros._nombre_usuario_ai
+			where id_def_proyecto_actividad=v_parametros.id_def_proyecto_actividad;
+               
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','DefinicionProyectoActividad modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_def_proyecto_actividad',v_parametros.id_def_proyecto_actividad::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
 
 	/*********************************    
  	#TRANSACCION:  'SP_DEPRAC_ELI'
@@ -149,7 +191,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "sp"."ft_def_proyecto_actividad_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

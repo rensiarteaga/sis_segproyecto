@@ -37,6 +37,12 @@ ALTER TABLE sp.tdef_proyecto_actividad
     NOT DEFERRABLE;
 
 
-/***********************************F-DEP-RAC-SP-0-01/03/2017*****************************************/
+/***********************************I-DEP-YAC-SP-0-01/03/2017*****************************************/
+
+select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('ACTI', 'SP');
+select pxp.f_insert_testructura_gui ('PRAC', 'SP');
+
+/***********************************F-DEP-YAC-SP-0-03/03/2017*****************************************/
 
 

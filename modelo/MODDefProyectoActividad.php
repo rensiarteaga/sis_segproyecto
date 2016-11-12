@@ -100,6 +100,23 @@ class MODDefProyectoActividad extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	function insertarDefinicionProyectosActividades(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='sp.ft_def_proyecto_actividad_ime';
+		$this->transaccion='SP_DEPRACS_INS';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_def_proyecto','id_def_proyecto','int4');
+		$this->setParametro('id_actividades','id_actividades','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>
