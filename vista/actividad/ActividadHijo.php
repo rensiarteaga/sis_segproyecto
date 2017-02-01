@@ -20,7 +20,7 @@ Phx.vista.ActividadHijo = {
         this.maestro=config.maestro;  
         Phx.vista.ActividadHijo.superclass.constructor.call(this,config);
         this.init();
-		
+		this.bloquearMenus();
     } ,
     
     loadValoresIniciales:function(){
