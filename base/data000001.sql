@@ -16,3 +16,20 @@ select pxp.f_insert_tgui ('SEGUIMIENTO DE PROYECTOS', '', 'SEP', 'si', 1, '', 1,
   
 /********************************************F-DAT-RAC-SEP-0-15/01/2013********************************************/
 
+
+/********************************************I-DAT-YAC-SP-0-20/02/2017********************************************/
+
+----------------------------------
+--COPY LINES TO data.sql FILE  
+---------------------------------
+
+select pxp.f_insert_tgui ('SEGUIMIENTO DE PROYECTOS', '', 'SP', 'si', 1, '', 1, '', '', 'SP');
+select pxp.f_insert_tgui ('Actividades', 'actividades', 'ACTI', 'si', 1, 'sis_segproyecto/vista/actividad/ActividadPadre.php', 2, '', 'ActividadPadre', 'SP');
+----------------------------------
+--COPY LINES TO dependencies.sql FILE  
+---------------------------------
+
+select pxp.f_insert_testructura_gui ('SEP', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('ACTI', 'SP');
+
+/********************************************F-DAT-YAC-SP-0-20/02/2017********************************************/
