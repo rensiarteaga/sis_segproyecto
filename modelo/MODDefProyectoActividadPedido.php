@@ -34,7 +34,13 @@ class MODDefProyectoActividadPedido extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('pedido','varchar');
 		$this->captura('nrosap','varchar');
-		
+		$this->captura('fechaordenproceder','varchar');
+		$this->captura('fecha_entrega_contrato_prev','varchar');
+		$this->captura('monto','double precision');
+		$this->captura('monedamonto','int4');
+		$this->captura('plazo','int4');
+		$this->captura('monto_total','double precision');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -116,7 +122,14 @@ class MODDefProyectoActividadPedido extends MODbase{
 		$this->captura('fecha_entrega_contrato_prev','varchar');
 		$this->captura('monto','double precision');
 		$this->captura('monedamonto','int4');
-		
+		$this->captura('fecha_adenda','varchar');
+		$this->captura('plazo_entrega_adenda','int4');
+		$this->captura('plazo_entrega_unidad_adenda','varchar');
+		$this->captura('monto_adenda','double precision');
+		$this->captura('descripcion_adenda','varchar');
+		$this->captura('contrato_adenda','varchar');
+		$this->captura('plazo','int4');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

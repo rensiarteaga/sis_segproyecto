@@ -56,7 +56,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 config: {
                     name: 'id_actividad',
-                    fieldLabel: 'actividad', //nombre de la cabecera de la tabla
+                    fieldLabel: 'Actividad', //nombre de la cabecera de la tabla
                     allowBlank: true,
                     emptyText: 'Elija una opción...',
                     store: new Ext.data.JsonStore({
@@ -99,7 +99,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 config: {
                     name: 'descripcion',
-                    fieldLabel: 'descripcion',
+                    fieldLabel: 'Descripción',
                     allowBlank: true,
                     anchor: '80%',
                     gwidth: 100,
@@ -112,6 +112,99 @@ header("content-type: text/javascript; charset=UTF-8");
                 egrid: true,
                 form: true
             },
+
+            {
+                config: {
+                    name: 'max_fecha_orden',
+                    fieldLabel: 'Fecha orden max.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250,
+                    renderer: function (value, p, record) {
+                        return value ? value : ''
+                    }
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'vpp.max_fecha_orden', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
+            {
+                config: {
+                    name: 'min_fecha_orden',
+                    fieldLabel: 'Fecha orden min.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250,
+                    renderer: function (value, p, record) {
+                        return value ? value : ''
+                    }
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'vpp.min_fecha_orden', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
+            {
+                config: {
+                    name: 'max_fecha_entrega',
+                    fieldLabel: 'Fecha entrega max.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250,
+                    renderer: function (value, p, record) {
+                        return value ? value : ''
+                    }
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'vpp.max_fecha_entrega', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
+            {
+                config: {
+                    name: 'min_fecha_entrega',
+                    fieldLabel: 'Fecha entrega min.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250,
+                    renderer: function (value, p, record) {
+                        return value ? value : ''
+                    }
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'vpp.min_fecha_entrega', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
+            {
+                config: {
+                    name: 'monto_suma',
+                    fieldLabel: 'Monto total.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 250,
+                    renderer: function (value, p, record) {
+                        return value ? value : ''
+                    }
+                },
+                type: 'TextArea',
+                filters: {pfiltro: 'vpp.monto_suma', type: 'numeric'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
+
+
             {
                 config: {
                     name: 'estado_reg',
@@ -244,7 +337,13 @@ header("content-type: text/javascript; charset=UTF-8");
             {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
             {name: 'id_usuario_mod', type: 'numeric'},
             {name: 'usr_reg', type: 'string'},
-            {name: 'usr_mod', type: 'string'}, 'actividad',
+            {name: 'usr_mod', type: 'string'},
+            'actividad',
+            'max_fecha_orden',
+            'min_fecha_orden',
+            'max_fecha_entrega',
+            'min_fecha_entrega',
+            'monto_suma',
 
         ],
         sortInfo: {

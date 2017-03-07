@@ -46,7 +46,7 @@ BEGIN
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select
+			v_consulta:='select distinct
 						deprac.id_def_proyecto_actividad,
 						deprac.id_def_proyecto,
 						deprac.id_actividad,
@@ -60,15 +60,28 @@ BEGIN
 						deprac.id_usuario_mod,
 						tact.actividad,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						max(vpp.fechaordenproceder)::varchar          AS max_fecha_orden,
+            min(vpp.fechaordenproceder)::varchar          AS min_fecha_orden,
+            max(vpp.fecha_entrega_contrato_prev)::varchar AS max_fecha_entrega,
+            min(vpp.fecha_entrega_contrato_prev)::varchar AS min_fecha_entrega,
+
+            CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
+              sum(vpp.monto_total)
+            else 0
+            END as monto_suma
 						from sp.tdef_proyecto_actividad deprac
 						inner join segu.tusuario usu1 on usu1.id_usuario = deprac.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = deprac.id_usuario_mod
-		        		join sp.tactividad tact on tact.id_actividad = deprac.id_actividad
-				        where  ';
+		        join sp.tactividad tact on tact.id_actividad = deprac.id_actividad
+            LEFT JOIN sp.tdef_proyecto_actividad_pedido dpap ON deprac.id_def_proyecto_actividad = dpap.id_def_proyecto_actividad
+            LEFT JOIN sp.vcsa_proyecto_pedido vpp ON vpp.id_pedido = dpap.id_pedido
+            where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' GROUP BY deprac.id_def_proyecto_actividad,tact.actividad,tact.id_actividad_padre,usu1.cuenta,usu2.cuenta ';
+
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 raise NOTICE '%',v_consulta;

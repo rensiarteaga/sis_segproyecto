@@ -65,7 +65,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 150,
 				minChars: 2,
 				renderer : function(value, p, record) {
-					return String.format('{0} --- {1}', record.data['desc_proyecto'],record.data['codproyecto']);
+					return String.format('( {0} ) {1}', record.data['codproyecto'],record.data['desc_proyecto']);
 				}
 			},
 			type: 'ComboBox',
@@ -77,7 +77,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -92,7 +92,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha_inicio_teorico',
-				fieldLabel: 'fecha_inicio_teorico',
+				fieldLabel: 'Fecha inicio teorico',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -109,7 +109,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha_fin_teorico',
-				fieldLabel: 'fecha_fin_teorico',
+				fieldLabel: 'Fecha fin teórico',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -125,7 +125,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
+				fieldLabel: 'Estado Registro',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -266,7 +266,7 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
         {
             url:'../../../sis_segproyecto/vista/def_proyecto_actividad/DefProyectoActividad.php',
             title:'Asignacion actividades',
-            width:400,
+            width:'50%',
             cls:'DefProyectoActividad'
         }
     ],

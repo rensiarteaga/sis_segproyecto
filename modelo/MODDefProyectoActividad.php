@@ -34,7 +34,12 @@ class MODDefProyectoActividad extends MODbase{
 		$this->captura('actividad','varchar');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
+		$this->captura('max_fecha_orden','varchar');
+		$this->captura('min_fecha_orden','varchar');
+		$this->captura('max_fecha_entrega','varchar');
+		$this->captura('min_fecha_entrega','varchar');
+		$this->captura('monto_suma','double precision');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
