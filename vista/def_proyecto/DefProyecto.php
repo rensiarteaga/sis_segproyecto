@@ -262,14 +262,14 @@ Phx.vista.DefProyecto=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true,
-    tabeast:[
+    east:
         {
             url:'../../../sis_segproyecto/vista/def_proyecto_actividad/DefProyectoActividad.php',
             title:'Asignacion actividades',
             width:'50%',
             cls:'DefProyectoActividad'
         }
-    ],
+    ,
 	}
 )
 </script>

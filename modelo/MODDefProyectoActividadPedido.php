@@ -57,7 +57,7 @@ class MODDefProyectoActividadPedido extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_def_proyecto_actividad','id_def_proyecto_actividad','int4');
-		$this->setParametro('id_pedido','id_pedido','int4');
+		$this->setParametro('id_pedidos','id_pedidos','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -122,12 +122,6 @@ class MODDefProyectoActividadPedido extends MODbase{
 		$this->captura('fecha_entrega_contrato_prev','varchar');
 		$this->captura('monto','double precision');
 		$this->captura('monedamonto','int4');
-		$this->captura('fecha_adenda','varchar');
-		$this->captura('plazo_entrega_adenda','int4');
-		$this->captura('plazo_entrega_unidad_adenda','varchar');
-		$this->captura('monto_adenda','double precision');
-		$this->captura('descripcion_adenda','varchar');
-		$this->captura('contrato_adenda','varchar');
 		$this->captura('plazo','int4');
 
 		//Ejecuta la instruccion

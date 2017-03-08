@@ -43,9 +43,54 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: true
                 },
 
+                //nuevo componente
+                /*{
+                    config:{
+                        name:'id_roles',
+                        fieldLabel:'Roles',
+                        allowBlank:true,
+                        emptyText:'Roles...',
+                        store: new Ext.data.JsonStore({
+                            url: '../../sis_seguridad/control/Rol/listarRol',
+                            id: 'id_rol',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'rol',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_rol','rol','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams:{par_filtro:'rol'}
+
+                        }),
+                        valueField: 'id_rol',
+                        displayField: 'rol',
+                        forceSelection:true,
+                        typeAhead: true,
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:10,
+                        queryDelay:1000,
+                        width:250,
+                        minChars:2,
+                        enableMultiSelect:true
+
+                        //renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+                    },
+                    type:'AwesomeCombo',
+                    id_grupo:0,
+                    grid:false,
+                    form:true
+                },*/
+
+
                 {
                     config: {
-                        name: 'id_pedido',
+                        name: 'id_pedidos',
                         fieldLabel: 'Pedido',
                         allowBlank: true,
                         emptyText: 'Elija una opción...',
@@ -76,13 +121,14 @@ header("content-type: text/javascript; charset=UTF-8");
                         anchor: '100%',
                         gwidth: 150,
                         minChars: 2,
+                        enableMultiSelect:true,
                         renderer: function (value, p, record) {
-                            return String.format('{0}', record.data['pedido']);
+                            return String.format('( {0} ) {1}', record.data['nrosap'],record.data['pedido']);
                         }
                     },
-                    type: 'ComboBox',
+                    type: 'AwesomeCombo',
                     id_grupo: 0,
-                    filters: {pfiltro: 'movtip.nombre', type: 'string'},
+                    filters: {pfiltro: 'nrosap', type: 'string'},
                     grid: true,
                     form: true
                 },

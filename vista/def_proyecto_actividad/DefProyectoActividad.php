@@ -26,7 +26,10 @@ header("content-type: text/javascript; charset=UTF-8");
 
         onReloadPage: function (m) {
             this.maestro = m;
-            this.store.baseParams = {id_def_proyecto: this.maestro.id_def_proyecto,id_proyecto: this.maestro.id_proyecto};
+            this.store.baseParams = {
+                id_def_proyecto: this.maestro.id_def_proyecto,
+                id_proyecto: this.maestro.id_proyecto
+            };
             console.log((this.maestro))
             this.load({params: {start: 0, limit: 50}})
 
@@ -113,24 +116,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 form: true
             },
 
-            {
-                config: {
-                    name: 'max_fecha_orden',
-                    fieldLabel: 'Fecha orden max.',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 250,
-                    renderer: function (value, p, record) {
-                        return value ? value : ''
-                    }
-                },
-                type: 'TextArea',
-                filters: {pfiltro: 'vpp.max_fecha_orden', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: true
-            },
+
             {
                 config: {
                     name: 'min_fecha_orden',
@@ -169,22 +155,23 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             {
                 config: {
-                    name: 'min_fecha_entrega',
-                    fieldLabel: 'Fecha entrega min.',
+                    name: 'plazo',
+                    fieldLabel: 'Plazo',
                     allowBlank: true,
                     anchor: '80%',
                     gwidth: 100,
                     maxLength: 250,
                     renderer: function (value, p, record) {
-                        return value ? value : ''
+                        return value ? value+ ' dias' : ''
                     }
                 },
-                type: 'TextArea',
-                filters: {pfiltro: 'vpp.min_fecha_entrega', type: 'string'},
+                type: 'Field',
+                filters: {pfiltro: 'vpp.plazo', type: 'numeric'},
                 id_grupo: 1,
                 grid: true,
                 form: true
             },
+
             {
                 config: {
                     name: 'monto_suma',
@@ -220,7 +207,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid: true,
                 form: false
             },
-            
+
             {
                 config: {
                     name: 'usuario_ai',
@@ -343,6 +330,7 @@ header("content-type: text/javascript; charset=UTF-8");
             'min_fecha_orden',
             'max_fecha_entrega',
             'min_fecha_entrega',
+            'plazo',
             'monto_suma',
 
         ],
@@ -380,45 +368,43 @@ header("content-type: text/javascript; charset=UTF-8");
         },
 
         onSaveForm: function (interface, valores, id_def_proyecto) {
-             var  me = this;
+            var me = this;
             //alert(valores)
-              Phx.CP.loadingShow();
-             Ext.Ajax.request({
-                    url: '../../sis_segproyecto/control/DefProyectoActividad/insertarDefinicionProyectosActividades',
-                    params: {id_actividades : valores, id_def_proyecto: id_def_proyecto},
-                    
-                    success: me.successSaveArb,
-                    //argument: me.argumentSave,
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url: '../../sis_segproyecto/control/DefProyectoActividad/insertarDefinicionProyectosActividades',
+                params: {id_actividades: valores, id_def_proyecto: id_def_proyecto},
 
-                    failure: me.conexionFailure,
-                    timeout: me.timeout,
-                    scope: me
-                });
+                success: me.successSaveArb,
+                //argument: me.argumentSave,
+
+                failure: me.conexionFailure,
+                timeout: me.timeout,
+                scope: me
+            });
 
             interface.panel.close();
-            
+
 
         },
-        
-        successSaveArb: function(resp) {
-                     
+
+        successSaveArb: function (resp) {
+
             Phx.CP.loadingHide();
             this.reload();
 
         },
-         tabsouth:[
-         {
-          url:'../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
-          title:'definicion proyecto actividad pedido', 
-          
-          height:'50%',
-          cls:'DefProyectoActividadPedido'
-         }
+        tabsouth: [
+            {
+                url: '../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
+                title: 'definicion proyecto actividad pedido',
+
+                height: '50%',
+                cls: 'DefProyectoActividadPedido'
+            }
         ],
-    
-        
-        
-        
+
+
     })
 </script>
 		
