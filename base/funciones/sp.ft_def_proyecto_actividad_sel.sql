@@ -61,11 +61,9 @@ BEGIN
 						tact.actividad,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						max(vpp.fechaordenproceder)::varchar          AS max_fecha_orden,
             min(vpp.fechaordenproceder)::varchar          AS min_fecha_orden,
             max(vpp.fecha_entrega_contrato_prev)::varchar AS max_fecha_entrega,
-            min(vpp.fecha_entrega_contrato_prev)::varchar AS min_fecha_entrega,
-
+            DATE_PART(''day'', max(vpp.fecha_entrega_contrato_prev)::date)- DATE_PART(''day'',min(vpp.fechaordenproceder)::DATE) AS plazo,
             CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
               sum(vpp.monto_total)
             else 0

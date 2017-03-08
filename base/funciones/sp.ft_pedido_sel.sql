@@ -55,12 +55,6 @@ BEGIN
                         vpd.fecha_entrega_contrato_prev::varchar,
                         vpd.monto,
                         vpd.monedamonto,
-                        fecha_adenda::varchar,
-                        plazo_entrega_adenda,
-                        plazo_entrega_unidad_adenda::varchar,
-                        monto_adenda,
-                        descripcion_adenda::varchar,
-                        contrato_adenda::varchar,
                         plazo
                         FROM  sp.vcsa_proyecto_pedido vpd
 				        where  ';
