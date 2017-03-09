@@ -1,26 +1,44 @@
 <?php
 /**
  * @package pXP
- * @file gen-DefProyecto.php
+ * @file gen-DefProyectoSeguimiento.php
  * @author  (admin)
- * @date 08-02-2017 19:56:10
+ * @date 24-02-2017 04:16:20
  * @description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-    Phx.vista.DefProyecto = Ext.extend(Phx.gridInterfaz, {
+    Phx.vista.DefProyectoSeguimiento = Ext.extend(Phx.gridInterfaz, {
 
             constructor: function (config) {
                 this.maestro = config.maestro;
                 //llama al constructor de la clase padre
-                Phx.vista.DefProyecto.superclass.constructor.call(this, config);
+                Phx.vista.DefProyectoSeguimiento.superclass.constructor.call(this, config);
                 this.init();
-                this.load({params: {start: 0, limit: this.tam_pag}})
+                this.iniciarEventos();
+                //this.load({params:{start:0, limit:this.tam_pag}})
+
+
             },
 
+
+            //asignarseguimiento:function(){
+            //	alert("paso");
+            //},
+
             Atributos: [
+                {
+                    //configuracion del componente
+                    config: {
+                        labelSeparator: '',
+                        inputType: 'hidden',
+                        name: 'id_def_proyecto_seguimiento'
+                    },
+                    type: 'Field',
+                    form: true
+                },
                 {
                     //configuracion del componente
                     config: {
@@ -33,129 +51,66 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config: {
-                        name: 'id_proyecto',
-                        fieldLabel: 'Proyecto',
-                        allowBlank: true,
-                        emptyText: 'Elija una opción...',
-                        store: new Ext.data.JsonStore({
-                            url: '../../sis_segproyecto/control/DefProyecto/listarProyectos',
-                            id: 'id_',
-                            root: 'datos',
-                            sortInfo: {
-                                field: 'nombre',
-                                direction: 'ASC'
-                            },
-                            totalProperty: 'total',
-                            fields: ['id_proyecto', 'nombre', 'codproyecto'], //campos de combo box
-                            remoteSort: true,
-                            baseParams: {par_filtro: 'nombre#codproyecto'} //para busquedas en el combo
-                        }),
-                        valueField: 'id_proyecto',
-                        displayField: 'nombre',
-                        gdisplayField: 'desc_proyecto',//vista en la grilla
-                        hiddenName: 'id_proyecto',
-                        forceSelection: true,
-                        typeAhead: false,
-                        triggerAction: 'all',
-                        lazyRender: true,
-                        mode: 'remote',
-                        pageSize: 15,
-                        queryDelay: 1000,
-                        anchor: '100%',
-                        gwidth: 150,
-                        minChars: 2,
-                        renderer: function (value, p, record) {
-                            return String.format('( {0} ) {1}', record.data['codproyecto'], record.data['desc_proyecto']);
-                        }
-                    },
-                    type: 'ComboBox',
-                    id_grupo: 0,
-                    filters: {pfiltro: 'nombre', type: 'string'},
-                    grid: true,
-                    form: true
-                },
-                {
-                    config: {
-                        name: 'descripcion',
-                        fieldLabel: 'Descripción',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 200
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'defproy.descripcion', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: true
-                },
-                {
-                    config: {
-                        name: 'fecha_inicio_teorico',
-                        fieldLabel: 'Fecha inicio teorico',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'defproy.fecha_inicio_teorico', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: true
-                },
-
-                {
-                    config: {
-                        name: 'fecha_fin_teorico',
-                        fieldLabel: 'Fecha fin teórico',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'defproy.fecha_fin_teorico', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: true
-                },
-                {
-                    config: {
                         name: 'estado_reg',
-                        fieldLabel: 'Estado Registro',
+                        fieldLabel: 'Estado Reg.',
                         allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
                         maxLength: 10
                     },
                     type: 'TextField',
-                    filters: {pfiltro: 'defproy.estado_reg', type: 'string'},
+                    filters: {pfiltro: 'sepr.estado_reg', type: 'string'},
                     id_grupo: 1,
                     grid: true,
                     form: false
                 },
-
                 {
                     config: {
-                        name: 'id_usuario_ai',
-                        fieldLabel: '',
+                        name: 'fecha',
+                        fieldLabel: 'fecha seguimineto',
                         allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
-                        maxLength: 4
+                        format: 'd/m/Y',
+                        renderer: function (value, p, record) {
+                            return value ? value.dateFormat('d/m/Y') : ''
+                        }
                     },
-                    type: 'Field',
-                    filters: {pfiltro: 'defproy.id_usuario_ai', type: 'numeric'},
+                    type: 'DateField',
+                    filters: {pfiltro: 'sepr.fecha', type: 'date'},
                     id_grupo: 1,
-                    grid: false,
-                    form: false
+                    grid: true,
+                    form: true
+                },
+                {
+                    config: {
+                        name: 'descripcion',
+                        fieldLabel: 'descripcion',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 255
+                    },
+                    type: 'TextField',
+                    filters: {pfiltro: 'sepr.descripcion', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: true
+                },
+                {
+                    config: {
+                        name: 'porcentaje',
+                        fieldLabel: 'porcentaje',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 393219
+                    },
+                    type: 'NumberField',
+                    filters: {pfiltro: 'sepr.porcentaje', type: 'numeric'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: true
                 },
                 {
                     config: {
@@ -182,7 +137,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength: 300
                     },
                     type: 'TextField',
-                    filters: {pfiltro: 'defproy.usuario_ai', type: 'string'},
+                    filters: {pfiltro: 'sepr.usuario_ai', type: 'string'},
                     id_grupo: 1,
                     grid: true,
                     form: false
@@ -200,9 +155,24 @@ header("content-type: text/javascript; charset=UTF-8");
                         }
                     },
                     type: 'DateField',
-                    filters: {pfiltro: 'defproy.fecha_reg', type: 'date'},
+                    filters: {pfiltro: 'sepr.fecha_reg', type: 'date'},
                     id_grupo: 1,
                     grid: true,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'id_usuario_ai',
+                        fieldLabel: 'Fecha creación',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 4
+                    },
+                    type: 'Field',
+                    filters: {pfiltro: 'sepr.id_usuario_ai', type: 'numeric'},
+                    id_grupo: 1,
+                    grid: false,
                     form: false
                 },
                 {
@@ -233,62 +203,101 @@ header("content-type: text/javascript; charset=UTF-8");
                         }
                     },
                     type: 'DateField',
-                    filters: {pfiltro: 'defproy.fecha_mod', type: 'date'},
+                    filters: {pfiltro: 'sepr.fecha_mod', type: 'date'},
                     id_grupo: 1,
                     grid: true,
                     form: false
                 }
             ],
             tam_pag: 50,
-            title: 'definición proyecto',
-            ActSave: '../../sis_segproyecto/control/DefProyecto/insertarDefProyecto',
-            ActDel: '../../sis_segproyecto/control/DefProyecto/eliminarDefProyecto',
-            ActList: '../../sis_segproyecto/control/DefProyecto/listarDefProyecto',
-            id_store: 'id_def_proyecto',
+            title: 'Seguimiento de proyectos',
+            ActSave: '../../sis_segproyecto/control/DefProyectoSeguimiento/insertarDefProyectoSeguimiento',
+            ActDel: '../../sis_segproyecto/control/DefProyectoSeguimiento/eliminarDefProyectoSeguimiento',
+            ActList: '../../sis_segproyecto/control/DefProyectoSeguimiento/listarDefProyectoSeguimiento',
+            id_store: 'id_def_proyecto_seguimiento',
             fields: [
+                {name: 'id_def_proyecto_seguimiento', type: 'numeric'},
                 {name: 'id_def_proyecto', type: 'numeric'},
-                {name: 'fecha_inicio_teorico', type: 'date', dateFormat: 'Y-m-d'},
-                {name: 'descripcion', type: 'string'},
-                {name: 'fecha_fin_teorico', type: 'date', dateFormat: 'Y-m-d'},
                 {name: 'estado_reg', type: 'string'},
-                {name: 'id_proyecto', type: 'numeric'},
-                {name: 'id_usuario_ai', type: 'numeric'},
+                {name: 'porcentaje', type: 'numeric'},
+                {name: 'fecha', type: 'date', dateFormat: 'Y-m-d'},
+                {name: 'descripcion', type: 'string'},
                 {name: 'id_usuario_reg', type: 'numeric'},
                 {name: 'usuario_ai', type: 'string'},
                 {name: 'fecha_reg', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
+                {name: 'id_usuario_ai', type: 'numeric'},
                 {name: 'id_usuario_mod', type: 'numeric'},
                 {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usr_reg', type: 'string'},
                 {name: 'usr_mod', type: 'string'},
-                'desc_proyecto',
-                'codproyecto',
 
             ],
             sortInfo: {
-                field: 'id_def_proyecto',
+                field: 'id_def_proyecto_seguimiento',
                 direction: 'ASC'
             },
-            bdel: true,
-            bsave: true,
 
-            south: {
-                url: '../../../sis_segproyecto/vista/def_proyecto_seguimiento/DefProyectoSeguimiento.php',
-                title: 'Seguimiento de proyectos',
-                width: '10%',
-                height: '50%',
-                cls: 'DefProyectoSeguimiento',
-                collapsed:true
-            }
-            ,
-            east: {
-                url: '../../../sis_segproyecto/vista/def_proyecto_actividad/DefProyectoActividad.php',
-                title: 'Asignacion actividades',
-                width: '50%',
-                cls: 'DefProyectoActividad',
-                collapsed:true
-            }
+            // cargar valores iniciales
+            loadValoresIniciales: function () {
+                Phx.vista.DefProyectoSeguimiento.superclass.loadValoresIniciales.call(this);
+                this.Cmp.id_def_proyecto.setValue(this.maestro.id_def_proyecto);
+            },
+            //relacion de padre hijo en vistas
+            onReloadPage: function (m) {
+                this.maestro = m;
+                this.store.baseParams = {id_def_proyecto: this.maestro.id_def_proyecto};
+                this.load({params: {start: 0, limit: 50}})
+            },
+
+            onButtonNew: function () {
+                //abrir formulario de solicitud
+                this.openForm('new', this.sm.getSelected());
+            },
+            onButtonEdit: function () {
+                this.openForm('edit', this.sm.getSelected());
+                console.log(' this.sm.getSelected()........', this.sm.getSelected())
+            },
+
+            openForm: function (tipo, record) {
+                var me = this;
+                me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/FormProyectoSeguimiento.php',
+                    'Formulario de seguimiento de proyecto',
+                    {
+                        modal: true,
+                        width: '50%',
+                        height: '60%'
+                    }, {
+                        data: {
+                            objPadre: me.maestro,
+                            tipo_form: tipo,
+                            datos_originales: record
+                        }
+                    },
+                    this.idContenedor,
+                    'FormProyectoSeguimiento',
+                    this.formClass,
+                    {
+                        config: [{
+                            event: 'successsave',
+                            delegate: this.onSaveForm,
+
+                        }],
+
+                        scope: this
+                    });
+            },
+
+
+            onSaveForm: function (frmproseg) {
+                this.reload();
+                frmproseg.panel.close();
+                //alert("paso");
+            },
+
+            bdel: true,
+            bsave: true
         }
     )
 </script>
-		
+
 		

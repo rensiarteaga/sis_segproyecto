@@ -145,7 +145,8 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('id_def_proyecto', 'int4');
         $this->captura('id_actividad', 'int4');
         $this->captura('actividad', 'varchar');
-        $this->captura('porcentaje', 'varchar');
+        $this->captura('porcentaje', 'numeric');
+        $this->captura('tipo_actividad', 'varchar');
 
 
         //Ejecuta la instruccion

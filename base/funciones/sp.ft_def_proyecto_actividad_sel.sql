@@ -174,8 +174,11 @@ BEGIN
             deprac.id_actividad,
             tact.actividad,
             case when (tact.id_actividad_padre is not null) then
-              ''0''::varchar else ''''::varchar
-            END as porcentaje
+              0::numeric
+            END as porcentaje,
+                    case when (tact.id_actividad_padre is not null) then
+                      ''hijo''::varchar
+                    else ''padre''::varchar end as tipo_actividad
             from sp.tdef_proyecto_actividad deprac
             join tree tact on tact.id_actividad = deprac.id_actividad
           where ';

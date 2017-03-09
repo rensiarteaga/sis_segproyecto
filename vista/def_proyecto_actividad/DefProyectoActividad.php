@@ -17,7 +17,7 @@ header("content-type: text/javascript; charset=UTF-8");
             //llama al constructor de la clase padre
             Phx.vista.DefProyectoActividad.superclass.constructor.call(this, config);
             this.init();
-            this.load({params: {start: 0, limit: this.tam_pag}})
+            //this.load({params: {start: 0, limit: this.tam_pag}})
         },
         loadValoresIniciales: function () {
             Phx.vista.DefProyectoActividad.superclass.loadValoresIniciales.call(this);
@@ -30,11 +30,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 id_def_proyecto: this.maestro.id_def_proyecto,
                 id_proyecto: this.maestro.id_proyecto
             };
-            console.log((this.maestro))
             this.load({params: {start: 0, limit: 50}})
-
         },
-
         Atributos: [
             {
                 //configuracion del componente
@@ -394,15 +391,16 @@ header("content-type: text/javascript; charset=UTF-8");
             this.reload();
 
         },
-        tabsouth: [
+        south:
             {
                 url: '../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
                 title: 'definicion proyecto actividad pedido',
 
-                height: '50%',
-                cls: 'DefProyectoActividadPedido'
+                height: 200,
+                cls: 'DefProyectoActividadPedido',
+                collapsed:true
             }
-        ],
+        ,
 
 
     })
