@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
 <script>
     Phx.vista.FormProyectoSeguimiento = Ext.extend(Phx.frmInterfaz, {
-        ActSave: '../../sis_segproyecto/control/DefProyectoSeguimiento/insertarFormDefProyectoSeguimiento',
+
         tam_pag: 10,
         //layoutType: 'wizard',
         layout: 'fit',
@@ -28,8 +28,12 @@ header("content-type: text/javascript; charset=UTF-8");
             this.mestore.baseParams = {id_def_proyecto: config.data.objPadre.id_def_proyecto};
             this.mestore.load();
             this.loadValoresIniciales();
+            this.tipo_form = config.data.tipo_form;
             console.log('que tipo de datos es ',config.data.tipo_form);
         },
+
+        ActSave: '../../sis_segproyecto/control/DefProyectoSeguimiento/insertarFormDefProyectoSeguimiento',
+
 
         Atributos: [
             {
