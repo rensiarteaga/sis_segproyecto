@@ -107,6 +107,8 @@ header("content-type: text/javascript; charset=UTF-8");
                             remoteSort: true,
                             baseParams: {par_filtro: 'pedido'}
                         }),
+                        //tpl:'<tpl for="."><div class="x-combo-list-item"><p>Nro. Sap:{nrosap}</p><p>Pedido:{pedido}</p> </div></tpl>',
+                        tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{nrosap}</div><p style="padding-left: 20px;">{pedido}</p> </div></tpl>',
                         valueField: 'id_pedido',
                         displayField: 'pedido',
                         gdisplayField: 'pedido',
@@ -354,6 +356,8 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             bdel: true,
             bsave: true,
+            bedit: false,
+            bexcel: false,
             loadValoresIniciales: function () {
                 Phx.vista.DefProyectoActividadPedido.superclass.loadValoresIniciales.call(this);
                 this.Cmp.id_def_proyecto_actividad.setValue(this.maestro.id_def_proyecto_actividad);

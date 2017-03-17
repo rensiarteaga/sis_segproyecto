@@ -18,8 +18,38 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.DefProyecto.superclass.constructor.call(this, config);
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
-            },
 
+                //Botón para Imprimir el Comprobante
+                this.addButton('btnImprimir', {
+                    text: 'Imprimir',
+                    iconCls: 'bprint',
+                    disabled: true,
+                    handler: this.imprimirCbte,
+                    tooltip: '<b>Imprimir Comprobante</b><br/>Imprime el Comprobante en el formato oficial'
+                });
+
+
+            },
+            imprimirCbte: function () {
+                console.log('entreeeeeeeeeeeeee')
+                var rec = this.sm.getSelected();
+                var data = rec.data;
+                console.log('valor seleccionado', this.sm.getSelected);
+                if (data) {
+                    Phx.CP.loadingShow();
+                    Ext.Ajax.request({
+                        url: '../../sis_segproyecto/control/DefProyecto/reporteResumenProyecto',
+                        params: {
+                            'id_def_proyecto': data.id_def_proyecto
+                        },
+                        success: this.successExport,
+                        failure: this.conexionFailure,
+                        timeout: this.timeout,
+                        scope: this
+                    });
+                }
+
+            },
             Atributos: [
                 {
                     //configuracion del componente
@@ -239,6 +269,24 @@ header("content-type: text/javascript; charset=UTF-8");
                     form: false
                 }
             ],
+
+            preparaMenu: function (n) {
+                var tb = Phx.vista.DefProyecto.superclass.preparaMenu.call(this);
+                var rec = this.sm.getSelected();
+                this.getBoton('btnImprimir').enable();
+
+                return tb;
+            },
+            liberaMenu: function () {
+                var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
+
+                this.getBoton('btnImprimir').disable();
+
+
+
+            },
+
+
             tam_pag: 50,
             title: 'definición proyecto',
             ActSave: '../../sis_segproyecto/control/DefProyecto/insertarDefProyecto',
@@ -277,7 +325,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 width: '10%',
                 height: '50%',
                 cls: 'DefProyectoSeguimiento',
-                collapsed:true
+                collapsed: true
             }
             ,
             east: {
@@ -285,7 +333,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 title: 'Asignacion actividades',
                 width: '50%',
                 cls: 'DefProyectoActividad',
-                collapsed:true
+                collapsed: true
             }
         }
     )

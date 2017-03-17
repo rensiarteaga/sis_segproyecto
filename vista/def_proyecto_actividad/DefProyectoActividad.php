@@ -87,7 +87,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     gwidth: 150,
                     minChars: 2,
                     renderer: function (value, p, record) {
-                        return String.format('{0}', record.data['actividad']);
+                        console.log(this)
+                        if (record.data['tipo_actividad'] == 'padre') {
+
+                            return String.format('<i class="fa fa-asterisk"></i> {0}', record.data['actividad']);
+                        } else if (record.data['tipo_actividad'] == 'hijo') {
+                            return String.format('{0}', record.data['actividad']);
+
+                        }
                     }
                 },
                 type: 'ComboBox',
@@ -159,7 +166,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     gwidth: 100,
                     maxLength: 250,
                     renderer: function (value, p, record) {
-                        return value ? value+ ' dias' : ''
+                        return value ? value + ' dias' : ''
                     }
                 },
                 type: 'Field',
@@ -329,6 +336,7 @@ header("content-type: text/javascript; charset=UTF-8");
             'min_fecha_entrega',
             'plazo',
             'monto_suma',
+            'tipo_actividad',
 
         ],
         sortInfo: {
@@ -337,6 +345,8 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         bdel: true,
         bsave: true,
+        bedit: false,
+        bexcel: false,
         onButtonNew: function () {
             //abrir formulario de solicitud
             var me = this;
@@ -391,15 +401,14 @@ header("content-type: text/javascript; charset=UTF-8");
             this.reload();
 
         },
-        south:
-            {
-                url: '../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
-                title: 'definicion proyecto actividad pedido',
+        south: {
+            url: '../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
+            title: 'definicion proyecto actividad pedido',
 
-                height: 200,
-                cls: 'DefProyectoActividadPedido',
-                collapsed:true
-            }
+            height: 200,
+            cls: 'DefProyectoActividadPedido',
+            collapsed: true
+        }
         ,
 
 

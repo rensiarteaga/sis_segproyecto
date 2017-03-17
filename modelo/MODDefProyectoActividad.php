@@ -41,6 +41,7 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('max_fecha_entrega', 'varchar');
         $this->captura('plazo', 'int4');
         $this->captura('monto_suma', 'double precision');
+        $this->captura('tipo_actividad', 'varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -147,6 +148,7 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('actividad', 'varchar');
         $this->captura('porcentaje', 'numeric');
         $this->captura('tipo_actividad', 'varchar');
+        $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
 
 
         //Ejecuta la instruccion
@@ -156,6 +158,33 @@ class MODDefProyectoActividad extends MODbase
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    function listarProyectoSeguimientoActividadEditar()
+    {
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento = 'sp.ft_def_proyecto_actividad_sel';
+        $this->setCount(false);
+        $this->transaccion = 'SP_PROSEGE_SEL';
+        $this->tipo_procedimiento = 'SEL';//tipo de transaccion
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_def_proyecto_actividad', 'int4');
+        $this->captura('id_def_proyecto', 'int4');
+        $this->captura('id_actividad', 'int4');
+        $this->captura('actividad', 'varchar');
+        $this->captura('porcentaje', 'numeric');
+        $this->captura('tipo_actividad', 'varchar');
+        $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+
 
 }
 

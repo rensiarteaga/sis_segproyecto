@@ -9,13 +9,13 @@ $BODY$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'sp.tdef_proyecto_seguimiento'
  AUTOR: 		 (admin)
  FECHA:	        24-02-2017 04:16:20
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
@@ -32,6 +32,7 @@ DECLARE
   v_id_def_proyecto_seguimiento_actividad INTEGER;
   v_promedio_pro_seg                      NUMERIC :=0;
   contador                                INTEGER :=0;
+  v_id_def_proyecto_seguimiento_temp      VARCHAR;
 
 BEGIN
 
@@ -163,81 +164,126 @@ BEGIN
       BEGIN
         --raise notice 'prueba de json %', (SELECT j_def_proyecto_seguimiento_actividad->>'porcentaje' AS promedio FROM json_array_elements(j_proyecto_seguimiento_actividad));
 
-
-        --Sentencia de la insercion
-        INSERT INTO sp.tdef_proyecto_seguimiento (
-          id_def_proyecto,
-          estado_reg,
-          fecha,
-          descripcion,
-          id_usuario_reg,
-          usuario_ai,
-          fecha_reg,
-          id_usuario_ai,
-          id_usuario_mod,
-          fecha_mod
-        ) VALUES (
-          v_parametros.id_def_proyecto,
-          'activo',
-          v_parametros.fecha,
-          v_parametros.descripcion,
-          p_id_usuario,
-          v_parametros._nombre_usuario_ai,
-          now(),
-          v_parametros._id_usuario_ai,
-          NULL,
-          NULL
-
-
-        )
-        RETURNING id_def_proyecto_seguimiento
-          INTO v_id_def_proyecto_seguimiento;
-
-        j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
-
-        FOR j_def_proyecto_seguimiento_actividad IN SELECT *
-                                                    FROM json_array_elements(j_proyecto_seguimiento_actividad)
-        LOOP
-
-          --RAISE NOTICE 'id_def_proyecto_actividad %', j_def_proyecto_seguimiento_actividad->>'id_def_proyecto_actividad';
-          INSERT INTO sp.tdef_proyecto_seguimiento_actividad (
-            id_def_proyecto_seguimiento,
-            id_def_proyecto_actividad,
+        IF (v_parametros.tipo_form = 'new')
+        THEN
+          --Sentencia de la insercion
+          INSERT INTO sp.tdef_proyecto_seguimiento (
+            id_def_proyecto,
             estado_reg,
-            porcentaje_avance,
+            fecha,
+            descripcion,
+            id_usuario_reg,
             usuario_ai,
             fecha_reg,
-            id_usuario_reg,
             id_usuario_ai,
             id_usuario_mod,
             fecha_mod
           ) VALUES (
-            v_id_def_proyecto_seguimiento,
-            (j_def_proyecto_seguimiento_actividad ->> 'id_def_proyecto_actividad') :: INTEGER,
+            v_parametros.id_def_proyecto,
             'activo',
-            (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC,
+            v_parametros.fecha,
+            v_parametros.descripcion,
+            p_id_usuario,
             v_parametros._nombre_usuario_ai,
             now(),
-            p_id_usuario,
             v_parametros._id_usuario_ai,
             NULL,
             NULL
 
 
           )
-          RETURNING id_def_proyecto_seguimiento_actividad
-            INTO v_id_def_proyecto_seguimiento_actividad;
-          v_promedio_pro_seg:=v_promedio_pro_seg + (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC;
-          contador := contador + 1;
+          RETURNING id_def_proyecto_seguimiento
+            INTO v_id_def_proyecto_seguimiento;
 
-        END LOOP;
+          j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
 
-        UPDATE sp.tdef_proyecto_seguimiento
-        SET
+          FOR j_def_proyecto_seguimiento_actividad IN SELECT *
+                                                      FROM json_array_elements(j_proyecto_seguimiento_actividad)
+          LOOP
 
-          porcentaje = (v_promedio_pro_seg / contador)
-        WHERE id_def_proyecto_seguimiento = v_id_def_proyecto_seguimiento;
+            --RAISE NOTICE 'id_def_proyecto_actividad %', j_def_proyecto_seguimiento_actividad->>'id_def_proyecto_actividad';
+            INSERT INTO sp.tdef_proyecto_seguimiento_actividad (
+              id_def_proyecto_seguimiento,
+              id_def_proyecto_actividad,
+              estado_reg,
+              porcentaje_avance,
+              usuario_ai,
+              fecha_reg,
+              id_usuario_reg,
+              id_usuario_ai,
+              id_usuario_mod,
+              fecha_mod
+            ) VALUES (
+              v_id_def_proyecto_seguimiento,
+              (j_def_proyecto_seguimiento_actividad ->> 'id_def_proyecto_actividad') :: INTEGER,
+              'activo',
+              (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC,
+              v_parametros._nombre_usuario_ai,
+              now(),
+              p_id_usuario,
+              v_parametros._id_usuario_ai,
+              NULL,
+              NULL
+            )
+            RETURNING id_def_proyecto_seguimiento_actividad
+              INTO v_id_def_proyecto_seguimiento_actividad;
+            IF ((j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC >= 0)
+            THEN
+              v_promedio_pro_seg:=v_promedio_pro_seg +
+                                  (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC;
+              contador := contador + 1;
+            END IF;
 
+          END LOOP;
+
+          UPDATE sp.tdef_proyecto_seguimiento
+          SET
+            porcentaje = (v_promedio_pro_seg / contador)
+          WHERE id_def_proyecto_seguimiento = v_id_def_proyecto_seguimiento;
+        ELSE
+          --Sentencia de la modificacion
+          UPDATE sp.tdef_proyecto_seguimiento
+          SET
+            id_def_proyecto = v_parametros.id_def_proyecto,
+            fecha           = v_parametros.fecha,
+            descripcion     = v_parametros.descripcion,
+            id_usuario_mod  = p_id_usuario,
+            fecha_mod       = now(),
+            id_usuario_ai   = v_parametros._id_usuario_ai,
+            usuario_ai      = v_parametros._nombre_usuario_ai
+          WHERE id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento;
+
+          -- guardadando las subactividades
+          j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
+
+          FOR j_def_proyecto_seguimiento_actividad IN SELECT *
+                                                      FROM json_array_elements(j_proyecto_seguimiento_actividad)
+          LOOP
+
+            --RAISE NOTICE 'id_def_proyecto_actividad %', j_def_proyecto_seguimiento_actividad->>'id_def_proyecto_actividad';
+            UPDATE sp.tdef_proyecto_seguimiento_actividad
+            SET
+              porcentaje_avance = (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC,
+              id_usuario_mod    = p_id_usuario,
+              fecha_mod         = now(),
+              id_usuario_ai     = v_parametros._id_usuario_ai,
+              usuario_ai        = v_parametros._nombre_usuario_ai
+            WHERE id_def_proyecto_seguimiento_actividad =
+                  (j_def_proyecto_seguimiento_actividad ->> 'id_def_proyecto_seguimiento_actividad') :: INTEGER;
+
+            IF ((j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC >= 0)
+            THEN
+              v_promedio_pro_seg:=v_promedio_pro_seg +
+                                  (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC;
+              contador := contador + 1;
+            END IF;
+
+          END LOOP;
+          UPDATE sp.tdef_proyecto_seguimiento
+          SET
+            porcentaje = (v_promedio_pro_seg / contador)
+          WHERE id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento;
+        END IF;
         --Definicion de la respuesta
         v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
                                     'Seguimiento de proyectos almacenado(a) con exito (id_def_proyecto_seguimiento' ||

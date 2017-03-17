@@ -62,12 +62,33 @@ class ACTDefProyectoActividad extends ACTbase
         $this->objParam->defecto('ordenacion', 'id_def_proyecto_actividad');
         $this->objParam->defecto('dir_ordenacion', 'asc');
         if ($this->objParam->getParametro('id_def_proyecto')) {
+            $this->objParam->addFiltro("deprac.id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
+            //$this->objParam->addFiltro(" tprseg.fecha = (select max(fecha) from sp.tdef_proyecto_seguimiento) ");
+        } else {
+            $this->objParam->addFiltro("deprac.id_def_proyecto = 0");
+        }
+        $this->objFunc = $this->create('MODDefProyectoActividad');
+        $this->res = $this->objFunc->listarProyectoSeguimientoActividad($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
+    function listarProyectoSeguimientoActividadEditar()
+    {
+        $this->objParam->defecto('ordenacion', 'id_def_proyecto_actividad');
+        $this->objParam->defecto('dir_ordenacion', 'asc');
+        if ($this->objParam->getParametro('id_def_proyecto')) {
             $this->objParam->addFiltro("id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
         } else {
             $this->objParam->addFiltro("id_def_proyecto = 0");
         }
+        if ($this->objParam->getParametro('id_def_proyecto_seguimiento')) {
+            $this->objParam->addFiltro("id_def_proyecto_seguimiento = " . $this->objParam->getParametro('id_def_proyecto_seguimiento'));
+        }else{
+            $this->objParam->addFiltro("id_def_proyecto_seguimiento = 0");
+        }
+
         $this->objFunc = $this->create('MODDefProyectoActividad');
-        $this->res = $this->objFunc->listarProyectoSeguimientoActividad($this->objParam);
+        $this->res = $this->objFunc->listarProyectoSeguimientoActividadEditar($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 

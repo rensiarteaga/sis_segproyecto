@@ -136,6 +136,36 @@ class MODDefProyecto extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+    function listarReporteResumen(){
+
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sp.ft_def_proyecto_rep';
+        $this->transaccion='SP_DEFPROREP_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        $this->setTipoRetorno('record');
+
+        //captura parametros adicionales para el count
+
+        $this->setParametro('id_def_proyecto','id_def_proyecto','int4');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_def_proyecto_actividad','int4');
+        $this->captura('id_def_proyecto','int4');
+        $this->captura('id_actividad','int4');
+        $this->captura('descripcion','varchar');
+        $this->captura('actividad','varchar');
+        $this->captura('plazo','int4');
+        $this->captura('monto_suma','double precision');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

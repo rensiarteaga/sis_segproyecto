@@ -251,11 +251,10 @@ header("content-type: text/javascript; charset=UTF-8");
 
             onButtonNew: function () {
                 //abrir formulario de solicitud
-                this.openForm('new', this.sm.getSelected());
+                this.openForm('new');
             },
             onButtonEdit: function () {
                 this.openForm('edit', this.sm.getSelected());
-                console.log(' this.sm.getSelected()........', this.sm.getSelected())
             },
 
             openForm: function (tipo, record) {
@@ -275,27 +274,25 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     this.idContenedor,
                     'FormProyectoSeguimiento',
-                    this.formClass,
                     {
                         config: [{
-                            event: 'successsave',
+                            event: 'successsaveformulario',
                             delegate: this.onSaveForm,
-
                         }],
-
-                        scope: this
+                        scope: me
                     });
             },
-
-
             onSaveForm: function (frmproseg) {
-                this.reload();
+                var me = this;
+                me.reload();
+                console.log('entre a cerrar el paneeellll', frmproseg)
                 frmproseg.panel.close();
                 //alert("paso");
             },
 
             bdel: true,
-            bsave: true
+            bsave: true,
+            bexcel: false
         }
     )
 </script>

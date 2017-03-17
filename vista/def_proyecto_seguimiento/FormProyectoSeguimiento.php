@@ -11,6 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
 <script>
     Phx.vista.FormProyectoSeguimiento = Ext.extend(Phx.frmInterfaz, {
+        urlEstore: '../../sis_segproyecto/control/DefProyectoActividad/listarProyectoSeguimientoActividad',
 
         tam_pag: 10,
         //layoutType: 'wizard',
@@ -19,17 +20,37 @@ header("content-type: text/javascript; charset=UTF-8");
         breset: false,
         labelSubmit: '<i class="fa fa-check"></i> Guardar seguimiento',
         constructor: function (config) {
+            if (config.data.tipo_form == 'edit') {
+                this.urlEstore = '../../sis_segproyecto/control/DefProyectoActividad/listarProyectoSeguimientoActividadEditar';
+            }
             this.buildComponentesDetalle();
             this.buildDetailGrid();
             this.buildGrupos();
 
+
             Phx.vista.FormProyectoSeguimiento.superclass.constructor.call(this, config);
             this.init();
-            this.mestore.baseParams = {id_def_proyecto: config.data.objPadre.id_def_proyecto};
+            if (this.data.tipo_form == 'new') {
+
+                this.mestore.baseParams = {id_def_proyecto: config.data.objPadre.id_def_proyecto};
+            } else {
+
+                this.mestore.baseParams = {
+                    id_def_proyecto: config.data.objPadre.id_def_proyecto,
+                    id_def_proyecto_seguimiento: this.data.datos_originales.data.id_def_proyecto_seguimiento
+                };
+            }
             this.mestore.load();
+            console.log('que tipo de datos es ', this.data.tipo_form);
+
+            if (this.data.tipo_form == 'new') {
+                this.onNew();
+            }
+            else {
+                this.onEdit();
+            }
             this.loadValoresIniciales();
-            this.tipo_form = config.data.tipo_form;
-            console.log('que tipo de datos es ',config.data.tipo_form);
+
         },
 
         ActSave: '../../sis_segproyecto/control/DefProyectoSeguimiento/insertarFormDefProyectoSeguimiento',
@@ -42,6 +63,17 @@ header("content-type: text/javascript; charset=UTF-8");
                     labelSeparator: '',
                     inputType: 'hidden',
                     name: 'id_def_proyecto_seguimiento'
+                },
+                type: 'Field',
+                id_grupo: 0,
+                form: true
+            },
+            {
+                //configuracion del componente
+                config: {
+                    labelSeparator: '',
+                    inputType: 'hidden',
+                    name: 'tipo_form'
                 },
                 type: 'Field',
                 id_grupo: 0,
@@ -76,7 +108,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 config: {
                     name: 'descripcion',
-                    fieldLabel: 'DescripciÓn',
+                    fieldLabel: 'Descripción',
                     allowBlank: true,
                     width: 300,
 
@@ -170,10 +202,9 @@ header("content-type: text/javascript; charset=UTF-8");
             }
 
         },
-
         buildDetailGrid: function () {
 
-            //cantidad,detalle,peso,totalo
+            //cantidad,detalle,peso,total
             var Items = Ext.data.Record.create([{
                 name: 'actividad',
                 type: 'string'
@@ -184,13 +215,15 @@ header("content-type: text/javascript; charset=UTF-8");
             }
             ]);
 
+            console.log('url del store', this.urlEstore)
             this.mestore = new Ext.data.JsonStore({
-                url: '../../sis_segproyecto/control/DefProyectoActividad/listarProyectoSeguimientoActividad',
+
+                url: this.urlEstore,
                 id: 'id_def_proyecto_actividad',
                 root: 'datos',
                 totalProperty: 'total',
-                fields: ['id_def_proyecto_actividad', 'actividad', 'porcentaje', 'tipo_actividad'
-                ], remoteSort: true,
+                fields: ['id_def_proyecto_actividad', 'id_def_proyecto_seguimiento_actividad', 'actividad', 'porcentaje', 'tipo_actividad'],
+                remoteSort: true,
                 baseParams: {dir: 'ASC', sort: 'id_def_proyecto_actividad', limit: '50', start: '0'}
             });
 
@@ -210,7 +243,7 @@ header("content-type: text/javascript; charset=UTF-8");
             //al cancelar la edicion
             //this.editorDetail.on('validateedit', this.onUpdateRegister, this);
 
-           // this.editorDetail.on('afteredit', this.onAfterEdit, this);
+            // this.editorDetail.on('afteredit', this.onAfterEdit, this);
 
 
             this.megrid = new Ext.grid.GridPanel({
@@ -223,7 +256,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 //autoHeight: true,
                 plugins: [this.editorDetail, this.summary],
                 stripeRows: true,
-
 
                 columns: [
                     new Ext.grid.RowNumberer(),
@@ -249,34 +281,55 @@ header("content-type: text/javascript; charset=UTF-8");
                         width: 200,
                         //egrid: true,
                         renderer: function (value, p, record) {
-                            return value ? String.format('{0} %', record.data['porcentaje']) : '';
+                            return value ? String.format('{0}', record.data['porcentaje']) : ' ';
                         },
                         editor: this.detCmp.porcentaje
                     }
                 ]
             });
-            // console.log("pruebas", this.megrid);
         },
         buildComponentesDetalle: function () {
             this.detCmp = {
 
-                'porcentaje': new Ext.form.NumberField({
-                    name: 'porcentaje',
-                    msgTarget: 'title',
-                    currencyChar: ' ',
-                    fieldLabel: 'Prec. Unit.',
-                    minValue: 0.0001,
-                    maxValue: 100,
+                /*'porcentaje': new Ext.form.NumberField({
+                 name: 'porcentaje',
+                 msgTarget: 'title',
+                 currencyChar: ' ',
+                 fieldLabel: 'Porcentaje',
+                 minValue: 0.0001,
+                 maxValue: 100,
+                 allowBlank: false,
+                 allowDecimals: true,
+                 allowNegative: false,
+                 decimalPrecision: 2
+
+                 })*/
+                'porcentaje': new Ext.form.ComboBox({
                     allowBlank: false,
-                    allowDecimals: true,
-                    allowNegative: false,
-                    decimalPrecision: 2
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    lazyRender: true,
+                    mode: 'local',
+                    store: new Ext.data.ArrayStore({
+                        id: 0,
+                        fields: [
+                            'porcentaje'
+                        ],
+                        data: [[0], [0.25], [0.5], [0.75], [1]]
+                    }),
+                    valueField: 'porcentaje',
+                    displayField: 'porcentaje'
 
                 })
-
             }
+        },
+        onEdit: function () {
 
-
+            this.accionFormulario = 'EDIT';
+            this.loadForm(this.data.datos_originales)
+        },
+        onNew: function () {
+            this.accionFormulario = 'NEW';
         },
         onSubmit: function (o) {
             //  validar formularios
@@ -285,10 +338,12 @@ header("content-type: text/javascript; charset=UTF-8");
                 record = me.megrid.store.getAt(i);
                 if (record.data.tipo_actividad == 'hijo') {
                     arra.push(record.data);
+                } else {
+                    arra.push(record.data);
+
                 }
 
             }
-
 
             me.argumentExtraSubmit = {
                 'json_new_records': JSON.stringify(arra, function replacer(key, value) {
@@ -311,15 +366,15 @@ header("content-type: text/javascript; charset=UTF-8");
 
             Phx.CP.loadingHide();
             var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-            this.fireEvent('successsave', this, objRes);
+            console.log('estoy guardando', this, objRes);
+            this.fireEvent('successsaveformulario', this, objRes);
 
         },
-
         loadValoresIniciales: function () {
             Phx.vista.FormProyectoSeguimiento.superclass.loadValoresIniciales.call(this);
             this.Cmp.id_def_proyecto.setValue(this.data.objPadre.id_def_proyecto);
+            this.Cmp.tipo_form.setValue(this.data.tipo_form);
         },
-
 
     })
 </script>

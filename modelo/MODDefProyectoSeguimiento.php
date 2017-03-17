@@ -115,6 +115,7 @@ class MODDefProyectoSeguimiento extends MODbase{
         $this->setParametro('descripcion','descripcion','varchar');
         $this->setParametro('porcentaje','porcentaje','numeric');
         $this->setParametro('id_actividad_padre','id_actividad_padre','int4');
+        $this->setParametro('tipo_form','tipo_form','varchar');
 
         $this->setParametro('json_new_records','json_new_records','json_text');
 

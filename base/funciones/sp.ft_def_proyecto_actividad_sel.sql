@@ -97,8 +97,13 @@ BEGIN
     else (SELECT sum(vcpp.monto_total) from ((select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad_padre=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
     where tdpa.id_def_proyecto=deprac.id_def_proyecto) union all (select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
     where tdpa.id_def_proyecto=deprac.id_def_proyecto)) ped JOIN  sp.vcsa_proyecto_pedido vcpp on ped.id_pedido=vcpp.id_pedido)
-    END as monto_suma
-    from sp.tdef_proyecto_actividad deprac
+    END as monto_suma,
+    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
+     ''hijo''::varchar
+    ELSE
+    ''padre''::varchar
+    END as tipo_acticidad
+      from sp.tdef_proyecto_actividad deprac
     inner join segu.tusuario usu1 on usu1.id_usuario = deprac.id_usuario_reg
     left join segu.tusuario usu2 on usu2.id_usuario = deprac.id_usuario_mod
     join tree tact on tact.id_actividad = deprac.id_actividad
@@ -178,16 +183,76 @@ BEGIN
             END as porcentaje,
                     case when (tact.id_actividad_padre is not null) then
                       ''hijo''::varchar
-                    else ''padre''::varchar end as tipo_actividad
+                    else ''padre''::varchar end as tipo_actividad,
+            0 as id_def_proyecto_seguimiento_actividad
             from sp.tdef_proyecto_actividad deprac
             join tree tact on tact.id_actividad = deprac.id_actividad
-          where ';
+            WHERE ';
 
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
         v_consulta:=v_consulta || ' ORDER BY tact.ancestors ASC ';
 
         RAISE NOTICE '%', v_consulta;
+        --Devuelve la respuesta
+        RETURN v_consulta;
+
+      END;
+      /*********************************
+#TRANSACCION:  'SP_PROSEGE_SEL'
+#DESCRIPCION:	Consulta de datos para devolver actividades y sub activi8dades de una definicion de proyecto cuando se lo edita
+#AUTOR:		YAC
+#FECHA:	13-03-2017 06:41:48
+***********************************/
+
+  ELSIF (p_transaccion = 'SP_PROSEGE_SEL')
+    THEN
+
+      BEGIN
+        --Sentencia de la consulta
+        v_consulta:=' WITH RECURSIVE tree AS (
+        SELECT
+          id_actividad,
+          actividad,
+          id_actividad_padre,
+          id_actividad :: TEXT AS ancestors
+        FROM sp.tactividad
+        WHERE id_actividad_padre IS NULL
+        UNION ALL
+        SELECT
+          ta.id_actividad,
+          ta.actividad,
+          ta.id_actividad_padre,
+          (tree.ancestors || '' -> '' || ta.id_actividad :: TEXT) AS ancestors
+        FROM sp.tactividad ta, tree
+        WHERE ta.id_actividad_padre = tree.id_actividad
+      ) SELECT
+          deprac.id_def_proyecto_actividad,
+          deprac.id_def_proyecto,
+          deprac.id_actividad,
+          tact.actividad,
+          CASE WHEN (tact.id_actividad_padre IS NOT NULL)
+            THEN
+              tdpsa.porcentaje_avance :: NUMERIC
+          END                          AS porcentaje,
+          CASE WHEN (tact.id_actividad_padre IS NOT NULL)
+            THEN
+              ''hijo'':: VARCHAR
+          ELSE ''padre'':: VARCHAR END AS tipo_actividad,
+          tdpsa.id_def_proyecto_seguimiento_actividad
+        FROM sp.tdef_proyecto_actividad deprac
+          JOIN tree tact ON tact.id_actividad = deprac.id_actividad
+          LEFT JOIN sp.tdef_proyecto_seguimiento_actividad tdpsa
+            ON deprac.id_def_proyecto_actividad = tdpsa.id_def_proyecto_actividad
+        WHERE ';
+
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
+        v_consulta:=v_consulta || '
+        ORDER BY tact.ancestors ASC ';
+
+        RAISE NOTICE '%', v_consulta;
+        --RAISE EXCEPTION ' prueba de guardado';
         --Devuelve la respuesta
         RETURN v_consulta;
 
@@ -207,7 +272,7 @@ BEGIN
       v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
       v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
       v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
-      RAISE EXCEPTION '%', v_resp;
+      RAISE EXCEPTION ' % ', v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'
