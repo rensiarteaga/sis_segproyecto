@@ -20,19 +20,24 @@ WITH (oids = false);
 
 CREATE EXTENSION tds_fdw;
 
-CREATE SERVER mssql_csa
+CREATE SERVER mssql_csa_prod
 FOREIGN DATA WRAPPER tds_fdw
-OPTIONS (servername '172.18.79.90', port '1433');
+OPTIONS (servername '172.18.79.22', port '1433');
 
 
 CREATE USER MAPPING FOR postgres
-SERVER mssql_csa
-OPTIONS (username 'usrPXP', password 'usrPXP');
+SERVER mssql_csa_prod
+OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 
 
 CREATE USER MAPPING FOR dbkerp_admin
-SERVER mssql_csa
-OPTIONS (username 'usrPXP', password 'usrPXP');
+SERVER mssql_csa_prod
+OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
+CREATE USER MAPPING FOR dbetr_capacitacion_admin
+SERVER mssql_csa_prod
+OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
+
+
 
 -- diseñado la tabla foranea del csa proyecto pedido
 -- usamos el bytea para poder recicir los nvchar de sql server
@@ -55,7 +60,7 @@ CREATE FOREIGN TABLE sp.csa_proyecto_pedido (
   plazo                         INTEGER NULL,
   monto_total                   FLOAT NULL
 )
-SERVER mssql_csa
+SERVER mssql_csa_prod
 OPTIONS (QUERY 'SELECT
   idproyecto,
   cast(codproyecto AS NVARCHAR(20))                     AS codproyecto,
