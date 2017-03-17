@@ -44,7 +44,7 @@ select pxp.f_insert_tgui ('Proyecto actividad', 'Proyectos Actividades', 'PRAC',
 
 /********************************************I-DAT-YAC-SP-0-17/03/2017********************************************/
 
-CREATE OR REPLACE FUNCTION sp.registro_actividad(actividad_padre VARCHAR, actividades_hijos VARCHAR [])
+CREATE OR REPLACE FUNCTION sp.ft_registro_actividad(actividad_padre VARCHAR, actividades_hijos VARCHAR [])
   RETURNS BOOL AS
 $$ DECLARE
   hijo           VARCHAR;
@@ -53,11 +53,11 @@ $$ DECLARE
 BEGIN
 
   INSERT INTO sp.tactividad (fecha_reg, actividad, id_actividad_padre)
-  VALUES (now() + INTERVAL , actividad_padre, NULL)
+  VALUES (now()  , actividad_padre, NULL)
   RETURNING id_actividad INTO v_id_actividad;
   FOREACH hijo IN ARRAY (actividades_hijos) LOOP
     INSERT INTO sp.tactividad (fecha_reg, actividad, id_actividad_padre)
-    VALUES (now() + INTERVAL,hijo, v_id_actividad);
+    VALUES (now() ,hijo, v_id_actividad);
     valor := true;
   END LOOP;
   return valor;
@@ -67,13 +67,13 @@ END; $$ LANGUAGE plpgsql;
 
 -------realizando el registro de las actividades
 
-SELECT sp.registro_actividad('Ingeniería del proyecto'::VARCHAR,ARRAY['Norma 30','Compra de terreno','Planos aprobados para invitación']);
-SELECT sp.registro_actividad('Suministros subestaciones'::VARCHAR,ARRAY['Porticos','Estructuras soporte','Interruptores','Seccionadores','PT''s CT''s','Pararrayos','Transformador de potencia','Tableros control y protecciones','Telecomunicaciones','Cables de Control y potencia','Otros varios (menores a 50.000 Bs.)']);
-SELECT sp.registro_actividad('Conformación plataforma'::VARCHAR,ARRAY['Instalación faenas','Relevamiento topografico','Limpieza y retiro de capa vegetal (orgánico)','Excavación no clasificada.','Rellenos Compactados','Cerco perimetral de malla olímpica con postes de hormigón de 3.50 metros','Construcción sitemas de drenajes']);
-SELECT sp.registro_actividad('Construcción Sala de Control'::VARCHAR,ARRAY['Instalación faenas','Replanteo y excavaciones','Fundaciones, columnas y vigas','Construcción de Muros','Construcción Techo ','Zanjas sala de control','Conformación del piso de la sala','Instalación carpinteria en sala','Instalaciones sanitarias y electricas','Pintura y acabados sala de control']);
-SELECT sp.registro_actividad('Obras Civiles de Patio'::VARCHAR,ARRAY['Instalación faenas','Replanteo y excavaciones','fundaciones pórtico y equipos','Fundación transformador','Malla de tierra','Zanjas de patio','Fundaciones tableros intermediarios','Fundaciones postes iluminación eterna','Cerco o muro perimetral','Drenajes internos','Cordones de protección','Tendido de grava']);
-SELECT sp.registro_actividad('Montaje electromecanico S/E'::VARCHAR,ARRAY['Instalación faenas','Montaje porticos y soportes equipos','Sistema de barras en alta tension','Sistema de barras rigidas','Montaje interruptores','Montaje seccionadores','Montaje PT''s y CT''s','Montaje otros equipos','Montaje del Transformador','Instalación iluminación de patio','Conexionado cables C&P','Comissioning C&P','Estudios Norma Operativa 8, 11 y 17','Pruebas a equipos de patio y C&P','Puesta en servicio']);
-SELECT sp.registro_actividad('Cierre de proyecto'::VARCHAR,ARRAY['Informe puesta en sevicio','Cierre Contable del proyecto']);
+SELECT sp.ft_registro_actividad('Ingeniería del proyecto'::VARCHAR,ARRAY['Norma 30','Compra de terreno','Planos aprobados para invitación']);
+SELECT sp.ft_registro_actividad('Suministros subestaciones'::VARCHAR,ARRAY['Porticos','Estructuras soporte','Interruptores','Seccionadores','PT''s CT''s','Pararrayos','Transformador de potencia','Tableros control y protecciones','Telecomunicaciones','Cables de Control y potencia','Otros varios (menores a 50.000 Bs.)']);
+SELECT sp.ft_registro_actividad('Conformación plataforma'::VARCHAR,ARRAY['Instalación faenas','Relevamiento topografico','Limpieza y retiro de capa vegetal (orgánico)','Excavación no clasificada.','Rellenos Compactados','Cerco perimetral de malla olímpica con postes de hormigón de 3.50 metros','Construcción sitemas de drenajes']);
+SELECT sp.ft_registro_actividad('Construcción Sala de Control'::VARCHAR,ARRAY['Instalación faenas','Replanteo y excavaciones','Fundaciones, columnas y vigas','Construcción de Muros','Construcción Techo ','Zanjas sala de control','Conformación del piso de la sala','Instalación carpinteria en sala','Instalaciones sanitarias y electricas','Pintura y acabados sala de control']);
+SELECT sp.ft_registro_actividad('Obras Civiles de Patio'::VARCHAR,ARRAY['Instalación faenas','Replanteo y excavaciones','fundaciones pórtico y equipos','Fundación transformador','Malla de tierra','Zanjas de patio','Fundaciones tableros intermediarios','Fundaciones postes iluminación eterna','Cerco o muro perimetral','Drenajes internos','Cordones de protección','Tendido de grava']);
+SELECT sp.ft_registro_actividad('Montaje electromecanico S/E'::VARCHAR,ARRAY['Instalación faenas','Montaje porticos y soportes equipos','Sistema de barras en alta tension','Sistema de barras rigidas','Montaje interruptores','Montaje seccionadores','Montaje PT''s y CT''s','Montaje otros equipos','Montaje del Transformador','Instalación iluminación de patio','Conexionado cables C&P','Comissioning C&P','Estudios Norma Operativa 8, 11 y 17','Pruebas a equipos de patio y C&P','Puesta en servicio']);
+SELECT sp.ft_registro_actividad('Cierre de proyecto'::VARCHAR,ARRAY['Informe puesta en sevicio','Cierre Contable del proyecto']);
 
 
 
