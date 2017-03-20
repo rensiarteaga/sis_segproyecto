@@ -84,7 +84,7 @@ header("content-type:text/javascript; charset=UTF-8");
                         if (!nodoPadre.attributes.checked) {
 
                             nodoPadre.getUI().toggleCheck(valor);
-                            console.log(nodoPadre);
+                            console.log('nodo padre',nodoPadre);
                         }
                         //nodoPadre.getUI().toggleCheck(true);
                     }

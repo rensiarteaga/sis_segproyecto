@@ -17,7 +17,7 @@ class ACTActividad extends ACTbase{
 		if($this->objParam->getParametro('nombreVista')=='ActividadPadre'){
             $this->objParam->addFiltro("id_actividad_padre is null ");    
         }
-		if($this->objParam->getParametro('nombreVista')=='ActividadHijo'){
+		if($this->objParam->getParametro('nombreVista')=='ActividadHijo' or $this->objParam->getParametro('nombreVista')=='ActividadNieto'){
             $this->objParam->addFiltro("id_actividad_padre = ".$this->objParam->getParametro('id_actividad_padre'));    
         }
 		
@@ -81,7 +81,7 @@ function listarActividadArb() {
 		
         /*Estas funciones definen reglas para los nodos en funcion a los tipo de nodos que contenga cada uno*/
         $this->res->addNivelArbol('tipo_nodo', 'raiz', array('leaf' => false, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'cls' => 'folder', 'tipo_nodo' => 'raiz', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);
-        $this->res->addNivelArbol('tipo_nodo', 'hijo', array('leaf' => true, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'tipo_nodo' => 'hijo', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);
+        $this->res->addNivelArbol('tipo_nodo', 'rama', array('leaf' => false, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'tipo_nodo' => 'hijo', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);
       
     
         //Se imprime el arbol en formato JSON

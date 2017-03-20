@@ -87,14 +87,16 @@ header("content-type: text/javascript; charset=UTF-8");
                     gwidth: 150,
                     minChars: 2,
                     renderer: function (value, p, record) {
-                        console.log(this)
-                        if (record.data['tipo_actividad'] == 'padre') {
+                        //calculando el tamaño del nivel del arbol
+                        //var tamanio = record.data['ancestors'].replace(/[^>]/g, "").length + 1;
+                        var asteriscos = '';
 
-                            return String.format('<i class="fa fa-asterisk"></i> {0}', record.data['actividad']);
-                        } else if (record.data['tipo_actividad'] == 'hijo') {
-                            return String.format('{0}', record.data['actividad']);
-
+                        for (i = 0; i < record.data['nivel']; i++) {
+                            asteriscos += '<i class="fa fa-asterisk"></i>  ';
                         }
+
+                        return String.format(asteriscos + '{0}', record.data['actividad']);
+
                     }
                 },
                 type: 'ComboBox',
@@ -329,6 +331,8 @@ header("content-type: text/javascript; charset=UTF-8");
             {name: 'id_usuario_mod', type: 'numeric'},
             {name: 'usr_reg', type: 'string'},
             {name: 'usr_mod', type: 'string'},
+            {name: 'ancestors', type: 'string'},
+            {name: 'nivel', type: 'numeric'},
             'actividad',
             'max_fecha_orden',
             'min_fecha_orden',

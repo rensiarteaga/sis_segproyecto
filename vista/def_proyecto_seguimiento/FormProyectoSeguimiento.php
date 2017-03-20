@@ -222,7 +222,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 id: 'id_def_proyecto_actividad',
                 root: 'datos',
                 totalProperty: 'total',
-                fields: ['id_def_proyecto_actividad', 'id_def_proyecto_seguimiento_actividad', 'actividad', 'porcentaje', 'tipo_actividad'],
+                fields: ['id_def_proyecto_actividad', 'id_def_proyecto_seguimiento_actividad', 'actividad', 'porcentaje', 'tipo_actividad', 'nivel'],
                 remoteSort: true,
                 baseParams: {dir: 'ASC', sort: 'id_def_proyecto_actividad', limit: '50', start: '0'}
             });
@@ -265,12 +265,11 @@ header("content-type: text/javascript; charset=UTF-8");
                         width: 200,
                         sortable: false,
                         renderer: function (value, p, record) {
-                            if (record.data.tipo_actividad == 'padre') {
-                                return String.format('<i class="fa fa-asterisk"></i> {0}', record.data['actividad']);
-                            } else {
-                                return String.format('{0}', record.data['actividad']);
-
+                            var asteriscos = '';
+                            for (i = 0; i < record.data['nivel']; i++) {
+                                asteriscos += '<i class="fa fa-asterisk"></i>  ';
                             }
+                            return String.format(asteriscos + ' {0}', record.data['actividad']);
                         },
 
                     },
@@ -336,13 +335,8 @@ header("content-type: text/javascript; charset=UTF-8");
             var arra = [], i, me = this;
             for (i = 0; i < me.megrid.store.getCount(); i++) {
                 record = me.megrid.store.getAt(i);
-                if (record.data.tipo_actividad == 'hijo') {
-                    arra.push(record.data);
-                } else {
-                    arra.push(record.data);
 
-                }
-
+                arra.push(record.data);
             }
 
             me.argumentExtraSubmit = {

@@ -23,6 +23,7 @@ class MODActividad extends MODbase{
 		$this->captura('id_actividad','int4');
 		$this->captura('id_actividad_padre','int4');
 		$this->captura('actividad','varchar');
+		$this->captura('tipo_actividad','varchar');
 		$this->captura('estado_reg','varchar');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('usuario_ai','varchar');
@@ -50,6 +51,7 @@ class MODActividad extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_actividad_padre','id_actividad_padre','int4');
 		$this->setParametro('actividad','actividad','varchar');
+		$this->setParametro('tipo_actividad','tipo_actividad','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -70,6 +72,7 @@ class MODActividad extends MODbase{
 		$this->setParametro('id_actividad','id_actividad','int4');
 		$this->setParametro('id_actividad_padre','id_actividad_padre','int4');
 		$this->setParametro('actividad','actividad','varchar');
+		$this->setParametro('tipo_actividad','tipo_actividad','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion

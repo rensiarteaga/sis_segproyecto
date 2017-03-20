@@ -102,7 +102,9 @@ BEGIN
      ''hijo''::varchar
     ELSE
     ''padre''::varchar
-    END as tipo_acticidad
+    END as tipo_acticidad,
+    tact.ancestors,
+    sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 AS nivel
       from sp.tdef_proyecto_actividad deprac
     inner join segu.tusuario usu1 on usu1.id_usuario = deprac.id_usuario_reg
     left join segu.tusuario usu2 on usu2.id_usuario = deprac.id_usuario_mod
@@ -178,13 +180,14 @@ BEGIN
             deprac.id_def_proyecto,
             deprac.id_actividad,
             tact.actividad,
-            case when (tact.id_actividad_padre is not null) then
+            case when (tact.id_actividad_padre is not null and sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 > 2) then
               0::numeric
             END as porcentaje,
                     case when (tact.id_actividad_padre is not null) then
                       ''hijo''::varchar
                     else ''padre''::varchar end as tipo_actividad,
-            0 as id_def_proyecto_seguimiento_actividad
+            0 as id_def_proyecto_seguimiento_actividad,
+            sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 AS nivel
             from sp.tdef_proyecto_actividad deprac
             join tree tact on tact.id_actividad = deprac.id_actividad
             WHERE ';
@@ -231,7 +234,7 @@ BEGIN
           deprac.id_def_proyecto,
           deprac.id_actividad,
           tact.actividad,
-          CASE WHEN (tact.id_actividad_padre IS NOT NULL)
+          CASE WHEN (tact.id_actividad_padre IS NOT NULL and sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 >2 )
             THEN
               tdpsa.porcentaje_avance :: NUMERIC
           END                          AS porcentaje,
@@ -239,7 +242,8 @@ BEGIN
             THEN
               ''hijo'':: VARCHAR
           ELSE ''padre'':: VARCHAR END AS tipo_actividad,
-          tdpsa.id_def_proyecto_seguimiento_actividad
+          tdpsa.id_def_proyecto_seguimiento_actividad,
+              sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 AS nivel
         FROM sp.tdef_proyecto_actividad deprac
           JOIN tree tact ON tact.id_actividad = deprac.id_actividad
           LEFT JOIN sp.tdef_proyecto_seguimiento_actividad tdpsa

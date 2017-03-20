@@ -23,11 +23,12 @@ Phx.vista.ActividadPadre = {
         this.store.baseParams={nombreVista:this.nombreVista}
 		this.load({params:{start:0, limit:this.tam_pag }})  
     } ,
+
     tabeast:[
          {
           url:'../../../sis_segproyecto/vista/actividad/ActividadHijo.php',
           title:'Subactividad', 
-          width:400,
+          width:700,
           cls:'ActividadHijo'
          }
         ],

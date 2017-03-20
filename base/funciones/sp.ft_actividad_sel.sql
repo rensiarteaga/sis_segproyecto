@@ -50,6 +50,7 @@ BEGIN
 						acti.id_actividad,
 						acti.id_actividad_padre,
 						acti.actividad,
+						acti.tipo_actividad,
 						acti.estado_reg,
 						acti.fecha_reg,
 						acti.usuario_ai,
@@ -126,7 +127,7 @@ BEGIN
                           when acti.id_actividad_padre is null then
                              ''raiz''::varchar
                           else
-                             ''hijo''::varchar
+                             ''rama''::varchar
                         end as  tipo_nodo,
                         ''false''::varchar as checked
 						from sp.tactividad acti

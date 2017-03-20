@@ -18,157 +18,185 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.Actividad.superclass.constructor.call(this, config);
                 this.init();
             },
+        Atributos: [
+            {
+                //configuracion del componente
+                config: {
+                    labelSeparator: '',
+                    inputType: 'hidden',
+                    name: 'id_actividad'
+                },
+                type: 'Field',
+                form: true
+            },
 
-            Atributos: [
-                {
-                    //configuracion del componente
-                    config: {
-                        labelSeparator: '',
-                        inputType: 'hidden',
-                        name: 'id_actividad'
-                    },
-                    type: 'Field',
-                    form: true
+            {
+                //configuracion del componente
+                config: {
+                    labelSeparator: '',
+                    inputType: 'hidden',
+                    name: 'id_actividad_padre'
                 },
+                type: 'Field',
+                form: true
+            },
 
-                {
-                    //configuracion del componente
-                    config: {
-                        labelSeparator: '',
-                        inputType: 'hidden',
-                        name: 'id_actividad_padre'
-                    },
-                    type: 'Field',
-                    form: true
+            {
+                config: {
+                    name: 'actividad',
+                    fieldLabel: 'actividad',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 150
                 },
+                type: 'TextField',
+                filters: {pfiltro: 'acti.actividad', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: true
+            },
 
-                {
-                    config: {
-                        name: 'actividad',
-                        fieldLabel: 'actividad',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 150
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'acti.actividad', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: true
+
+            {
+                config:{
+                    name:'tipo_actividad',
+                    fieldLabel:'Tipo actividad',
+                    allowBlank:false,
+                    emptyText:'Seleccione un tipo..',
+
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    lazyRender:true,
+                    mode: 'local',
+                    //readOnly:true,
+                    valueField: 'tipo_actividad',
+                    // displayField: 'descestilo',
+                    store:['suministro','construccion']
+
                 },
-                {
-                    config: {
-                        name: 'estado_reg',
-                        fieldLabel: 'Estado Reg.',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 10
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'acti.estado_reg', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
+                type:'ComboBox',
+                id_grupo:0,
+                filters:{
+                    type: 'list',
+                    options: ['suministro','construccion'],
                 },
-                {
-                    config: {
-                        name: 'fecha_reg',
-                        fieldLabel: 'Fecha creación',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'acti.fecha_reg', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
+                grid:true,
+                form:true
+            },
+            {
+                config: {
+                    name: 'estado_reg',
+                    fieldLabel: 'Estado Reg.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 10
                 },
-                {
-                    config: {
-                        name: 'usuario_ai',
-                        fieldLabel: 'Funcionaro AI',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 300
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'acti.usuario_ai', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
+                type: 'TextField',
+                filters: {pfiltro: 'acti.estado_reg', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            },
+            {
+                config: {
+                    name: 'fecha_reg',
+                    fieldLabel: 'Fecha creación',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    format: 'd/m/Y',
+                    renderer: function (value, p, record) {
+                        return value ? value.dateFormat('d/m/Y H:i:s') : ''
+                    }
                 },
-                {
-                    config: {
-                        name: 'usr_reg',
-                        fieldLabel: 'Creado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'usu1.cuenta', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
+                type: 'DateField',
+                filters: {pfiltro: 'acti.fecha_reg', type: 'date'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            },
+            {
+                config: {
+                    name: 'usuario_ai',
+                    fieldLabel: 'Funcionaro AI',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 300
                 },
-                {
-                    config: {
-                        name: 'id_usuario_ai',
-                        fieldLabel: 'Creado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'acti.id_usuario_ai', type: 'numeric'},
-                    id_grupo: 1,
-                    grid: false,
-                    form: false
+                type: 'TextField',
+                filters: {pfiltro: 'acti.usuario_ai', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            },
+            {
+                config: {
+                    name: 'usr_reg',
+                    fieldLabel: 'Creado por',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 4
                 },
-                {
-                    config: {
-                        name: 'fecha_mod',
-                        fieldLabel: 'Fecha Modif.',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        format: 'd/m/Y',
-                        renderer: function (value, p, record) {
-                            return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                        }
-                    },
-                    type: 'DateField',
-                    filters: {pfiltro: 'acti.fecha_mod', type: 'date'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
+                type: 'Field',
+                filters: {pfiltro: 'usu1.cuenta', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            },
+            {
+                config: {
+                    name: 'id_usuario_ai',
+                    fieldLabel: 'Creado por',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 4
                 },
-                {
-                    config: {
-                        name: 'usr_mod',
-                        fieldLabel: 'Modificado por',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 4
-                    },
-                    type: 'Field',
-                    filters: {pfiltro: 'usu2.cuenta', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                }
-            ],
+                type: 'Field',
+                filters: {pfiltro: 'acti.id_usuario_ai', type: 'numeric'},
+                id_grupo: 1,
+                grid: false,
+                form: false
+            },
+            {
+                config: {
+                    name: 'fecha_mod',
+                    fieldLabel: 'Fecha Modif.',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    format: 'd/m/Y',
+                    renderer: function (value, p, record) {
+                        return value ? value.dateFormat('d/m/Y H:i:s') : ''
+                    }
+                },
+                type: 'DateField',
+                filters: {pfiltro: 'acti.fecha_mod', type: 'date'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            },
+            {
+                config: {
+                    name: 'usr_mod',
+                    fieldLabel: 'Modificado por',
+                    allowBlank: true,
+                    anchor: '80%',
+                    gwidth: 100,
+                    maxLength: 4
+                },
+                type: 'Field',
+                filters: {pfiltro: 'usu2.cuenta', type: 'string'},
+                id_grupo: 1,
+                grid: true,
+                form: false
+            }
+        ],
+
             tam_pag: 50,
             title: 'Actividad',
             ActSave: '../../sis_segproyecto/control/Actividad/insertarActividad',
@@ -179,6 +207,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'id_actividad', type: 'numeric'},
                 {name: 'id_actividad_padre', type: 'numeric'},
                 {name: 'actividad', type: 'string'},
+                {name: 'tipo_actividad', type: 'string'},
                 {name: 'estado_reg', type: 'string'},
                 {name: 'fecha_reg', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usuario_ai', type: 'string'},

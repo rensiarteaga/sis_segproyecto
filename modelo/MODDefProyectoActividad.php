@@ -42,6 +42,8 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('plazo', 'int4');
         $this->captura('monto_suma', 'double precision');
         $this->captura('tipo_actividad', 'varchar');
+        $this->captura('ancestors', 'text');
+        $this->captura('nivel', 'int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -149,6 +151,8 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('porcentaje', 'numeric');
         $this->captura('tipo_actividad', 'varchar');
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
+        $this->captura('nivel', 'int4');
+
 
 
         //Ejecuta la instruccion
@@ -174,6 +178,7 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('porcentaje', 'numeric');
         $this->captura('tipo_actividad', 'varchar');
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
+        $this->captura('nivel', 'int4');
 
 
         //Ejecuta la instruccion
