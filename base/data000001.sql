@@ -75,6 +75,18 @@ SELECT sp.ft_registro_actividad('Obras Civiles de Patio'::VARCHAR,ARRAY['Instala
 SELECT sp.ft_registro_actividad('Montaje electromecanico S/E'::VARCHAR,ARRAY['Instalación faenas','Montaje porticos y soportes equipos','Sistema de barras en alta tension','Sistema de barras rigidas','Montaje interruptores','Montaje seccionadores','Montaje PT''s y CT''s','Montaje otros equipos','Montaje del Transformador','Instalación iluminación de patio','Conexionado cables C&P','Comissioning C&P','Estudios Norma Operativa 8, 11 y 17','Pruebas a equipos de patio y C&P','Puesta en servicio']);
 SELECT sp.ft_registro_actividad('Cierre de proyecto'::VARCHAR,ARRAY['Informe puesta en sevicio','Cierre Contable del proyecto']);
 
-
-
 /********************************************F-DAT-YAC-SP-0-17/03/2017********************************************/
+/********************************************I-DAT-YAC-SP-0-20/03/2017********************************************/
+create or REPLACE FUNCTION sp.ft_cantidad_cadena_caracter(cadena VARCHAR,caracter VARCHAR) RETURNS INTEGER AS
+$$
+DECLARE
+  resultado INTEGER;
+BEGIN
+
+  resultado := LENGTH(cadena) - LENGTH(REPLACE(cadena, caracter, ''));
+
+  RETURN resultado;
+END;
+$$
+LANGUAGE 'plpgsql';
+/********************************************F-DAT-YAC-SP-0-20/03/2017********************************************/
