@@ -14,14 +14,14 @@ Phx.vista.ActividadPadre = {
     require:'../../../sis_segproyecto/vista/actividad/Actividad.php',
     requireclase:'Phx.vista.Actividad',
     title:'Actividad Padre',
-    nombreVista: 'ActividadPadre',    
+    nombreVista: 'ActividadPadre',
 
     constructor: function(config) {
-        this.maestro=config.maestro;  
+        this.maestro=config.maestro;
         Phx.vista.ActividadPadre.superclass.constructor.call(this,config);
         this.init();
         this.store.baseParams={nombreVista:this.nombreVista}
-		this.load({params:{start:0, limit:this.tam_pag }})  
+		this.load({params:{start:0, limit:this.tam_pag }})
     } ,
 
     tabeast:[

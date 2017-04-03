@@ -19,14 +19,82 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.init();
                 this.iniciarEventos();
                 //this.load({params:{start:0, limit:this.tam_pag}})
+                this.addButton('btnPonderacionD', {
+                    text: 'Ponderación detallada',
+                    iconCls: 'bchecklist',
+                    disabled: true,
+                    handler: this.ponderacionDetallada,
+                    tooltip: '<b>Ponderación detallada</b><br/>Tabla de Ponderación Detallada'
+                });
+                //Botón para Imprimir el resumen
+                this.addButton('btnImprimirSeguimiento', {
+                    text: 'Imprimir',
+                    iconCls: 'bprint',
+                    disabled: true,
+                    handler: this.imprimirPond,
+                    tooltip: '<b>Imprimir la ponderacion del del seguimiento</b><br/>Imprime a ponderacion de los datos de seguimiento'
+                });
+            },
 
+            ponderacionDetallada: function () {
+                console.log('entreeeeeeeeeeeeee')
+                var rec = this.sm.getSelected();
+                var data = rec.data;
+                var me = this;
+                console.log('valor seleccionado', this);
+                me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/PonderacionDetallada.php',
+                    'Tabla de ponderación detallada',
+                    {
+                        modal: true,
+                        width: '90%',
+                        height: '90%'
+                    }, {
+                        data: {
+                            objPadre: me.maestro,
+                            datos_originales: data
+                        }
+                    },
+                    this.idContenedor,
+                    'PonderacionDetallada',
+                    {
+                        config: [{
+                            event: 'selectactividades',
+                            delegate: this.onSaveForm,
+                        }],
+
+                        scope: this
+                    });
+            },
+            imprimirPond: function () {
+                var rec = this.sm.getSelected();
+                var data = rec.data;
+                if (data) {
+                    Phx.CP.loadingShow();
+                    Ext.Ajax.request({
+                        url: '../../sis_segproyecto/control/DefProyectoSeguimiento/reporteResumenProyecto',
+                        params: {
+                            'id_def_proyecto': data.id_def_proyecto,
+                            'id_def_proyecto_seguimiento': data.id_def_proyecto_seguimiento
+                        },
+                        success: this.successExport,
+                        failure: this.conexionFailure,
+                        timeout: this.timeout,
+                        scope: this
+                    });
+                }
 
             },
 
 
+            onSaveForm: function (interface, valores, id_def_proyecto) {
+                alert('guarde los datos');
+                interface.panel.close();
+            },
+
             //asignarseguimiento:function(){
             //	alert("paso");
             //},
+
 
             Atributos: [
                 {
@@ -288,6 +356,22 @@ header("content-type: text/javascript; charset=UTF-8");
                 console.log('entre a cerrar el paneeellll', frmproseg)
                 frmproseg.panel.close();
                 //alert("paso");
+            },
+            preparaMenu: function (n) {
+                var tb = Phx.vista.DefProyecto.superclass.preparaMenu.call(this);
+                var rec = this.sm.getSelected();
+                this.getBoton('btnPonderacionD').enable();
+                this.getBoton('btnImprimirSeguimiento').enable();
+
+                return tb;
+            },
+            liberaMenu: function () {
+                var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
+
+                this.getBoton('btnPonderacionD').disable();
+                this.getBoton('btnImprimirSeguimiento').disable();
+
+
             },
 
             bdel: true,

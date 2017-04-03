@@ -185,5 +185,80 @@ ALTER TABLE sp.tactividad
   ADD COLUMN tipo_actividad VARCHAR(100);
 
 /***********************************F-SCP-YAC-SP-0-20/03/2017****************************************/
+/***********************************I-SCP-YAC-SP-0-27/03/2017****************************************/
+
+ALTER TABLE sp.tactividad
+  ADD COLUMN id_tipo INTEGER;
+
+--------------- SQL ---------------
+
+ALTER TABLE sp.tactividad
+  ADD CONSTRAINT tactividad_fk FOREIGN KEY (id_tipo)
+REFERENCES sp.ttipo(id_tipo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+/***********************************F-SCP-YAC-SP-0-27/03/2017****************************************/
+/***********************************I-SCP-YAC-SP-0-30/03/2017****************************************/
+--------------- SQL ---------------
+CREATE TABLE sp.tsuministro (
+  id_seguimiento_suministro SERIAL NOT NULL,
+  id_def_proyecto INTEGER,
+  id_def_proyecto_actividad INTEGER,
+  invitacion BIT(1),
+  adjudicacion BIT(1),
+  documento_emarque BIT(1),
+  llegada_sitio BIT(1),
+  PRIMARY KEY(id_seguimiento_suministro)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+/***********************************F-SCP-YAC-SP-0-30/03/2017****************************************/
 
 
+/***********************************I-SCP-JUAN-SP-0-31/03/2017****************************************/
+--------------- SQL ---------------
+
+CREATE TABLE sp.ttipo (
+  id_tipo SERIAL NOT NULL,
+  tipo VARCHAR(100),
+  PRIMARY KEY(id_tipo)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+CREATE TABLE sp.testado_seguimiento (
+  id_estado_seguimiento SERIAL NOT NULL,
+  estado VARCHAR(100),
+  id_tipo INTEGER,
+  PRIMARY KEY(id_estado_seguimiento)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+CREATE TABLE sp.tdef_proyecto_seguimiento_total (
+  id_def_proyecto_seguimiento_total SERIAL NOT NULL,
+  id_def_proyecto INTEGER,
+  fecha DATE,
+  descripcion VARCHAR(500),
+  PRIMARY KEY(id_def_proyecto_seguimiento_total)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+CREATE TABLE sp.tproy_seguimiento_actividad_estado (
+  id_proy_seguimiento_actividad_estado SERIAL,
+  id_estado_seguimiento INTEGER,
+  id_def_proyecto_seguimiento_total INTEGER,
+  id_proyecto_actividad INTEGER,
+  PRIMARY KEY(id_proy_seguimiento_actividad_estado)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+/***********************************F-SCP-JUAN-SP-0-31/03/2017****************************************/

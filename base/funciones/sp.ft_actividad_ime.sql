@@ -54,7 +54,8 @@ BEGIN
 			id_usuario_reg,
 			id_usuario_ai,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+						id_tipo
           	) values(
 			v_parametros.id_actividad_padre,
 			v_parametros.actividad,
@@ -65,7 +66,8 @@ BEGIN
 			p_id_usuario,
 			v_parametros._id_usuario_ai,
 			null,
-			null
+			null,
+			v_parametros.id_tipo
 							
 			
 			
@@ -95,6 +97,7 @@ BEGIN
 			id_actividad_padre = v_parametros.id_actividad_padre,
 			actividad = v_parametros.actividad,
 			tipo_actividad = v_parametros.tipo_actividad,
+			id_tipo = v_parametros.id_tipo,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,

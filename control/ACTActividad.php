@@ -89,6 +89,17 @@ function listarActividadArb() {
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 
+    function listarTipos()
+    {
+        $this->objParam->defecto('ordenacion', 'id_tipo');
+
+        $this->objParam->defecto('dir_ordenacion', 'asc');
+
+        $this->objFunc = $this->create('MODActividad');
+        $this->res = $this->objFunc->listarTipos();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
 			
 }
 

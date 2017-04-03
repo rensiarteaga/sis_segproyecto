@@ -56,13 +56,55 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid: true,
                 form: true
             },
-
+            {
+                config: {
+                    name: 'id_tipo',
+                    fieldLabel: 'Tipo actividad',
+                    allowBlank: false,
+                    emptyText: 'Elija un tipo...',
+                    store: new Ext.data.JsonStore({
+                        url: '../../sis_segproyecto/control/Actividad/listarTipos',
+                        id: 'id_tipo',
+                        root: 'datos',
+                        sortInfo: {
+                            field: 'tipo',
+                            direction: 'ASC'
+                        },
+                        totalProperty: 'total',
+                        fields: ['id_tipo', 'tipo'], //campos de combo box
+                        remoteSort: true,
+                        baseParams: {par_filtro: 'tipo'} //para busquedas en el combo
+                    }),
+                    valueField: 'id_tipo',
+                    displayField: 'tipo',
+                    gdisplayField: 'tipo',//vista en la grilla
+                    hiddenName: 'id_tipo',
+                    forceSelection: true,
+                    typeAhead: false,
+                    triggerAction: 'all',
+                    lazyRender: true,
+                    mode: 'remote',
+                    pageSize: 15,
+                    queryDelay: 1000,
+                    anchor: '100%',
+                    gwidth: 150,
+                    minChars: 2,
+                    renderer: function (value, p, record) {
+                        return String.format('{0} ', record.data['tipo']);
+                    }
+                },
+                type: 'ComboBox',
+                id_grupo: 0,
+                filters: {pfiltro: 'tipo', type: 'string'},
+                grid: true,
+                form: true
+            },
 
             {
                 config:{
                     name:'tipo_actividad',
                     fieldLabel:'Tipo actividad',
-                    allowBlank:false,
+                    allowBlank:true,
                     emptyText:'Seleccione un tipo..',
 
                     typeAhead: true,
@@ -72,14 +114,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     //readOnly:true,
                     valueField: 'tipo_actividad',
                     // displayField: 'descestilo',
-                    store:['suministro','construccion']
+                    store:['ingenieria','cierre']
 
                 },
                 type:'ComboBox',
                 id_grupo:0,
                 filters:{
                     type: 'list',
-                    options: ['suministro','construccion'],
+                    options: ['ingenieria','cierre'],
                 },
                 grid:true,
                 form:true
@@ -208,6 +250,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'id_actividad_padre', type: 'numeric'},
                 {name: 'actividad', type: 'string'},
                 {name: 'tipo_actividad', type: 'string'},
+                {name: 'id_tipo', type: 'numeric'},
+                {name: 'tipo', type: 'string'},
                 {name: 'estado_reg', type: 'string'},
                 {name: 'fecha_reg', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usuario_ai', type: 'string'},

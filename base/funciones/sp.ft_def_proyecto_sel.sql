@@ -70,7 +70,7 @@ BEGIN
 						from sp.tdef_proyecto defproy
 						inner join segu.tusuario usu1 on usu1.id_usuario = defproy.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = defproy.id_usuario_mod
-                        inner join sp.vcsa_proyecto_pedido vcpp on vcpp.id_proyecto=defproy.id_proyecto
+            inner join sp.vcsa_proyecto_pedido vcpp on vcpp.id_proyecto=defproy.id_proyecto
 				        where  ';
 
       --Definicion de la respuesta
@@ -101,7 +101,6 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = defproy.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = defproy.id_usuario_mod
 						inner join sp.vcsa_proyecto_pedido vcpp on vcpp.id_proyecto=defproy.id_proyecto
-
 					    where ';
 
         --Definicion de la respuesta

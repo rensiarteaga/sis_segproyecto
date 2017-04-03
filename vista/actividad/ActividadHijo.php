@@ -27,6 +27,7 @@ header("content-type: text/javascript; charset=UTF-8");
             Phx.vista.ActividadHijo.superclass.loadValoresIniciales.call(this);
             this.Cmp.id_actividad_padre.setValue(this.maestro.id_actividad);
             this.Cmp.tipo_actividad.setValue(this.maestro.tipo_actividad);
+            this.Cmp.id_tipo.setValue(this.maestro.id_tipo);
         },
 
         onReloadPage: function (m) {

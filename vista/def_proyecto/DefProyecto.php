@@ -19,17 +19,27 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
 
-                //Botón para Imprimir el Comprobante
+                //Botón para Imprimir el resumen
                 this.addButton('btnImprimir', {
                     text: 'Imprimir',
                     iconCls: 'bprint',
                     disabled: true,
                     handler: this.imprimirCbte,
-                    tooltip: '<b>Imprimir Comprobante</b><br/>Imprime el Comprobante en el formato oficial'
+                    tooltip: '<b>Imprimir Resumen</b><br/>Imprime el Resumen del proyecto'
+                });
+                //Botón para Cargar Suministro
+                this.addButton('btnSeguimientoSuministro', {
+                    text: 'Suministro',
+                    iconCls: ' x-btn-text bgood',
+                    disabled: true,
+                    handler: this.CargarSuministro,
+                    tooltip: '<b>Suministro</b><br/>Muestra los seguimientos al suministro'
                 });
 
 
             },
+
+
             imprimirCbte: function () {
                 console.log('entreeeeeeeeeeeeee')
                 var rec = this.sm.getSelected();
@@ -49,6 +59,36 @@ header("content-type: text/javascript; charset=UTF-8");
                     });
                 }
 
+            },
+            CargarSuministro: function () {
+
+                this.openFormSuministro('new', this.sm.getSelected());
+            },
+
+            openFormSuministro: function (tipo, record) {
+                var me = this;
+                me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/suministro/Suministro.php',
+                    'Formulario de seguimiento al suministro',
+                    {
+                        modal: true,
+                        width: '60%',
+                        height: '60%'
+                    }, {
+                        data: {
+                            objPadre: me.maestro,
+                            tipo_form: tipo,
+                            datos_originales: record
+                        }
+                    },
+                    this.idContenedor,
+                    'Suministro',
+                    {
+                        config: [{
+                            event: 'successsaveformulario',
+                            delegate: this.onSaveForm,
+                        }],
+                        scope: me
+                    });
             },
             Atributos: [
                 {
@@ -274,6 +314,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 var tb = Phx.vista.DefProyecto.superclass.preparaMenu.call(this);
                 var rec = this.sm.getSelected();
                 this.getBoton('btnImprimir').enable();
+                this.getBoton('btnSeguimientoSuministro').enable();
 
                 return tb;
             },
@@ -281,6 +322,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
 
                 this.getBoton('btnImprimir').disable();
+                this.getBoton('btnSeguimientoSuministro').disable();
 
 
 
@@ -317,7 +359,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel: true,
-            bsave: true,
+            bsave: true
+            /*
+            ,
 
             south: {
                 url: '../../../sis_segproyecto/vista/def_proyecto_seguimiento/DefProyectoSeguimiento.php',
@@ -335,6 +379,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 cls: 'DefProyectoActividad',
                 collapsed: true
             }
+            */
         }
     )
 </script>

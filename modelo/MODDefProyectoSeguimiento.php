@@ -126,6 +126,64 @@ class MODDefProyectoSeguimiento extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+
+    function listarDefProyectoSeguiminetoTablaPonderacion(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sp.ft_def_proyecto_seguimiento_sel';
+        $this->transaccion='SP_SEPRTAPON_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
+        $this->setParametro('id_def_proyecto_seguimiento', 'id_def_proyecto_seguimiento', 'int4');
+        //Dshabilitar el count para mostrar los datos.
+
+        //$this->
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_actividad','int4');
+        $this->captura('id_actividad_padre','int4');
+        $this->captura('avance','numeric');
+        $this->captura('ancestors','varchar');
+        $this->captura('total_avance','numeric');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    //funcion para realizar el reporte.
+    function listarReporteResumen(){
+
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='sp.ft_def_proyecto_seguimiento_rep';
+        $this->transaccion='SP_DEFPROSEGREP_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        $this->setTipoRetorno('record');
+
+        //captura parametros adicionales para el count
+
+        // Agregar mas parametros parqa definir la tabla resumen de ponderacion
+        $this->setParametro('id_def_proyecto','id_def_proyecto','int4');
+        $this->setParametro('id_def_proyecto_seguimiento','id_def_proyecto_seguimiento','int4');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_actividad','int4');
+        $this->captura('id_actividad_padre','int4');
+        $this->captura('avance','numeric');
+        $this->captura('ancestors','varchar');
+        $this->captura('total_avance','numeric');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

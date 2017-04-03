@@ -1,12 +1,12 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION sp.ft_actividad_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
+CREATE OR REPLACE FUNCTION sp.ft_actividad_sel(
+  p_administrador INTEGER,
+  p_id_usuario    INTEGER,
+  p_tabla         VARCHAR,
+  p_transaccion   VARCHAR
 )
-  RETURNS varchar AS
+  RETURNS VARCHAR AS
 $body$
 /**************************************************************************
  SISTEMA:		Seguimiento de Proyectos
@@ -25,10 +25,10 @@ $body$
 
 DECLARE
 
-  v_consulta    		varchar;
-  v_parametros  		record;
-  v_nombre_funcion   	text;
-  v_resp				varchar;
+  v_consulta       VARCHAR;
+  v_parametros     RECORD;
+  v_nombre_funcion TEXT;
+  v_resp           VARCHAR;
 
 BEGIN
 
@@ -42,9 +42,10 @@ BEGIN
    #FECHA:		31-01-2017 21:38:35
   ***********************************/
 
-  if(p_transaccion='SP_ACTI_SEL')then
+  IF (p_transaccion = 'SP_ACTI_SEL')
+  THEN
 
-    begin
+    BEGIN
       --Sentencia de la consulta
       v_consulta:='select
 						acti.id_actividad,
@@ -57,22 +58,27 @@ BEGIN
 						acti.id_usuario_reg,
 						acti.id_usuario_ai,
 						acti.fecha_mod,
+						t.id_tipo,
+						t.tipo,
 						acti.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod
 						from sp.tactividad acti
 						left join segu.tusuario usu1 on usu1.id_usuario = acti.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = acti.id_usuario_mod
+            left join sp.ttipo t on t.id_tipo = acti.id_tipo
 				        where  ';
 
       --Definicion de la respuesta
-      v_consulta:=v_consulta||v_parametros.filtro;
-      v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+      v_consulta:=v_consulta || v_parametros.filtro;
+      v_consulta:=
+      v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
+      v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       --Devuelve la respuesta
-      return v_consulta;
+      RETURN v_consulta;
 
-    end;
+    END;
 
     /*********************************
      #TRANSACCION:  'SP_ACTI_CONT'
@@ -81,36 +87,38 @@ BEGIN
      #FECHA:		31-01-2017 21:38:35
     ***********************************/
 
-  elsif(p_transaccion='SP_ACTI_CONT')then
+  ELSIF (p_transaccion = 'SP_ACTI_CONT')
+    THEN
 
-    begin
-      --Sentencia de la consulta de conteo de registros
-      v_consulta:='select count(id_actividad)
+      BEGIN
+        --Sentencia de la consulta de conteo de registros
+        v_consulta:='select count(id_actividad)
 					    from sp.tactividad acti
 					    inner join segu.tusuario usu1 on usu1.id_usuario = acti.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = acti.id_usuario_mod
 					    where ';
 
-      --Definicion de la respuesta
-      v_consulta:=v_consulta||v_parametros.filtro;
+        --Definicion de la respuesta
+        v_consulta:=v_consulta || v_parametros.filtro;
 
-      --Devuelve la respuesta
-      return v_consulta;
+        --Devuelve la respuesta
+        RETURN v_consulta;
 
-    end;
+      END;
 
-    /*********************************
-     #TRANSACCION:  'SP_ACT_ARB_SEL'
-     #DESCRIPCION:	Consulta de datos
-     #AUTOR:		admin
-     #FECHA:		31-01-2017 21:38:35
-    ***********************************/
+      /*********************************
+       #TRANSACCION:  'SP_ACT_ARB_SEL'
+       #DESCRIPCION:	Consulta de datos
+       #AUTOR:		admin
+       #FECHA:		31-01-2017 21:38:35
+      ***********************************/
 
-  elseif(p_transaccion='SP_ACT_ARB_SEL')then
+  ELSEIF (p_transaccion = 'SP_ACT_ARB_SEL')
+    THEN
 
-    begin
-      --Sentencia de la consulta
-      v_consulta:='select
+      BEGIN
+        --Sentencia de la consulta
+        v_consulta:='select
 						acti.id_actividad,
 						acti.id_actividad_padre,
 						acti.actividad,
@@ -135,35 +143,53 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = acti.id_usuario_mod
 				        where  ';
 
-      --Definicion de la respuesta
-      if v_parametros.id_padre != '%' then
-        v_consulta:=v_consulta||' acti.id_actividad_padre = '||v_parametros.id_padre;
-      ELSE
-        v_consulta:=v_consulta||' acti.id_actividad_padre is null';
+        --Definicion de la respuesta
+        IF v_parametros.id_padre != '%'
+        THEN
+          v_consulta:=v_consulta || ' acti.id_actividad_padre = ' || v_parametros.id_padre;
+        ELSE
+          v_consulta:=v_consulta || ' acti.id_actividad_padre is null';
 
-      end if;
-      v_consulta:=v_consulta||' order by acti.id_actividad';
-      raise NOTICE '%',v_consulta;
-      --Devuelve la respuesta
-      return v_consulta;
+        END IF;
+        v_consulta:=v_consulta || ' order by acti.id_actividad';
+        RAISE NOTICE '%', v_consulta;
+        --Devuelve la respuesta
+        RETURN v_consulta;
 
-    end;
+      END;
+      /*********************************
+          #TRANSACCION:  'SP_ACT_TIP_SEL'
+          #DESCRIPCION:	Consulta de datos para obtener los tipos de una actividad
+          #AUTOR:		admin
+          #FECHA:		27-03-2017 21:38:35
+         ***********************************/
 
+  ELSEIF (p_transaccion = 'SP_ACT_TIP_SEL')
+    THEN
 
-  else
+      BEGIN
+        --Sentencia de la consulta
+        v_consulta:='select
+                    id_tipo,
+                    tipo
+                    from sp.ttipo';
+        RETURN v_consulta;
+      END;
+  ELSE
 
-    raise exception 'Transaccion inexistente';
+    RAISE EXCEPTION 'Transaccion inexistente';
 
-  end if;
+  END IF;
 
   EXCEPTION
 
-  WHEN OTHERS THEN
-    v_resp='';
-    v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-    v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-    raise exception '%',v_resp;
+  WHEN OTHERS
+    THEN
+      v_resp = '';
+      v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
+      v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
+      v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
+      RAISE EXCEPTION '%', v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'

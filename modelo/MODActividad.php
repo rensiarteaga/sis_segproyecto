@@ -30,6 +30,8 @@ class MODActividad extends MODbase{
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('id_usuario_ai','int4');
 		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_tipo','int4');
+		$this->captura('tipo','varchar');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
@@ -52,6 +54,7 @@ class MODActividad extends MODbase{
 		$this->setParametro('id_actividad_padre','id_actividad_padre','int4');
 		$this->setParametro('actividad','actividad','varchar');
 		$this->setParametro('tipo_actividad','tipo_actividad','varchar');
+		$this->setParametro('id_tipo','id_tipo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -73,6 +76,7 @@ class MODActividad extends MODbase{
 		$this->setParametro('id_actividad_padre','id_actividad_padre','int4');
 		$this->setParametro('actividad','actividad','varchar');
 		$this->setParametro('tipo_actividad','tipo_actividad','varchar');
+		$this->setParametro('id_tipo','id_tipo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -128,6 +132,25 @@ class MODActividad extends MODbase{
         $this->armarConsulta();
         $this->ejecutarConsulta();
 
+        return $this->respuesta;
+    }
+
+    public function listarTipos()
+    {
+        $this->procedimiento='sp.ft_actividad_sel';
+        $this->transaccion='SP_ACT_TIP_SEL';
+        $this->setCount(false);
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_tipo','int4');
+        $this->captura('tipo','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
         return $this->respuesta;
     }
 			

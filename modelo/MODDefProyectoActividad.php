@@ -143,17 +143,16 @@ class MODDefProyectoActividad extends MODbase
         $this->transaccion = 'SP_PROSEG_SEL';
         $this->tipo_procedimiento = 'SEL';//tipo de transaccion
 
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
         //Definicion de la lista del resultado del query
         $this->captura('id_def_proyecto_actividad', 'int4');
         $this->captura('id_def_proyecto', 'int4');
         $this->captura('id_actividad', 'int4');
         $this->captura('actividad', 'varchar');
         $this->captura('porcentaje', 'numeric');
-        $this->captura('tipo_actividad', 'varchar');
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
         $this->captura('nivel', 'int4');
-
-
+        $this->captura('interno', 'numeric');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -169,16 +168,18 @@ class MODDefProyectoActividad extends MODbase
         $this->setCount(false);
         $this->transaccion = 'SP_PROSEGE_SEL';
         $this->tipo_procedimiento = 'SEL';//tipo de transaccion
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
 
         //Definicion de la lista del resultado del query
+
         $this->captura('id_def_proyecto_actividad', 'int4');
         $this->captura('id_def_proyecto', 'int4');
         $this->captura('id_actividad', 'int4');
         $this->captura('actividad', 'varchar');
         $this->captura('porcentaje', 'numeric');
-        $this->captura('tipo_actividad', 'varchar');
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
         $this->captura('nivel', 'int4');
+        $this->captura('interno', 'numeric');
 
 
         //Ejecuta la instruccion
@@ -188,6 +189,70 @@ class MODDefProyectoActividad extends MODbase
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    function listarProyectoSeguimientoActividadTotal()
+    {
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento = 'sp.ft_def_proyecto_actividad_sel';
+        $this->setCount(false);
+        $this->transaccion = 'SP_PROSEGAT_SEL';
+        $this->tipo_procedimiento = 'SEL';//tipo de transaccion
+
+        //envia parametros a la transaccion
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
+        //Definicion de la lista del resultado del query
+        $this->captura('v_id_def_proyecto_actividad', 'int4');
+        // $this->captura('id_def_proyecto', 'int4');
+        $this->captura('v_id_actividad', 'int4');
+        $this->captura('v_actividad', 'varchar');
+        $this->captura('estado', 'varchar');
+        $this->captura('id_tipo', 'int4');
+        $this->captura('tipo', 'varchar');
+        $this->captura('id_proy_seguimiento_actividad_estado', 'int4');
+        $this->captura('id_def_proyecto_seguimiento_total', 'int4');
+        $this->captura('v_nivel', 'int4');
+        $this->captura('id_estado_seguimiento', 'int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    function listarProyectoSeguimientoActividadTotalEditar()
+    {
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento = 'sp.ft_def_proyecto_actividad_sel';
+        $this->setCount(false);
+        $this->transaccion = 'SP_PROSEGAT_EDIT_SEL';
+        $this->tipo_procedimiento = 'SEL';//tipo de transaccion
+
+        //envia parametros a la transaccion
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
+        $this->setParametro('id_def_proyecto_seguimiento_total', 'id_def_proyecto_seguimiento_total', 'int4');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('v_id_def_proyecto_actividad', 'int4');
+        // $this->captura('id_def_proyecto', 'int4');
+        $this->captura('v_id_actividad', 'int4');
+        $this->captura('v_actividad', 'varchar');
+        $this->captura('estado', 'varchar');
+        $this->captura('id_tipo', 'int4');
+        $this->captura('tipo', 'varchar');
+        $this->captura('id_proy_seguimiento_actividad_estado', 'int4');
+        $this->captura('id_def_proyecto_seguimiento_total', 'int4');
+        $this->captura('v_nivel', 'int4');
+        $this->captura('id_estado_seguimiento', 'int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
 
 
 

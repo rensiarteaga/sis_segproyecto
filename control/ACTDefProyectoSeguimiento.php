@@ -6,6 +6,7 @@
 *@date 24-02-2017 04:16:20
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
+require_once(dirname(__FILE__) . '/../reportes/ReporteTablaResumenSeguimiento.php');
 
 class ACTDefProyectoSeguimiento extends ACTbase{    
 			
@@ -72,6 +73,64 @@ class ACTDefProyectoSeguimiento extends ACTbase{
         $this->res=$this->objFunc->insertarFormDefProyectoSeguimiento($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+
+    function listarDefProyectoSeguiminetoTablaPonderacion(){
+        $this->objParam->defecto('ordenacion','id_def_proyecto_seguimiento');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+
+
+            $this->objFunc=$this->create('MODDefProyectoSeguimiento');
+
+            $this->res=$this->objFunc->listarDefProyectoSeguiminetoTablaPonderacion($this->objParam);
+
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function recuperarReporteResumen()
+    {
+        $this->objFunc = $this->create('MODDefProyectoSeguimiento');
+        $cbteHeader = $this->objFunc->listarReporteResumen($this->objParam);
+
+        if ($cbteHeader->getTipo() == 'EXITO') {
+            return $cbteHeader;
+        } else {
+            $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+            exit;
+        }
+
+    }
+
+    function reporteResumenProyecto()
+    {
+
+        $nombreArchivo = 'Reporte_ponderacion_detallada_' . uniqid(md5(session_id())) . '.pdf';
+
+
+        $dataSource = $this->recuperarReporteResumen();
+
+        //parametros basicos
+        $tamano = 'LETTER';
+        $orientacion = 'L';
+        $titulo = 'Tabla ponderado';
+
+        $this->objParam->addParametro('orientacion', $orientacion);
+        $this->objParam->addParametro('tamano', $tamano);
+        $this->objParam->addParametro('titulo_archivo', $titulo);
+        $this->objParam->addParametro('nombre_archivo', $nombreArchivo);
+        $reporte = new ReporteTablaResumenSeguimiento($this->objParam);
+        $reporte->datosHeader($dataSource->getDatos());
+        $reporte->generarReporte();
+        $reporte->output($reporte->url_archivo, 'F');
+
+        $this->mensajeExito = new Mensaje();
+        //dudas sobre el nombre de reporteSeguimiento.php en donde esta en Reporte.php
+        $this->mensajeExito->setMensaje('EXITO', 'Reporte.php', 'Reporte generado', 'Se generó con éxito el reporte: ' . $nombreArchivo, 'control');
+        $this->mensajeExito->setArchivoGenerado($nombreArchivo);
+        $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+
+    }
+
+
 			
 }
 

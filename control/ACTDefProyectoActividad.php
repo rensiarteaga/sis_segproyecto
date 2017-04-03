@@ -61,13 +61,10 @@ class ACTDefProyectoActividad extends ACTbase
     {
         $this->objParam->defecto('ordenacion', 'id_def_proyecto_actividad');
         $this->objParam->defecto('dir_ordenacion', 'asc');
-        if ($this->objParam->getParametro('id_def_proyecto')) {
-            $this->objParam->addFiltro("deprac.id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
-            //$this->objParam->addFiltro(" tprseg.fecha = (select max(fecha) from sp.tdef_proyecto_seguimiento) ");
-        } else {
-            $this->objParam->addFiltro("deprac.id_def_proyecto = 0");
-        }
+        //si es la actividades de tipo construccion o ingenieria
+        $this->objParam->addFiltro(" (tad.id_tipo=1 OR id_tipo=3 or id_tipo=4 ) ");
         $this->objFunc = $this->create('MODDefProyectoActividad');
+
         $this->res = $this->objFunc->listarProyectoSeguimientoActividad($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
@@ -76,19 +73,41 @@ class ACTDefProyectoActividad extends ACTbase
     {
         $this->objParam->defecto('ordenacion', 'id_def_proyecto_actividad');
         $this->objParam->defecto('dir_ordenacion', 'asc');
-        if ($this->objParam->getParametro('id_def_proyecto')) {
-            $this->objParam->addFiltro("id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
-        } else {
-            $this->objParam->addFiltro("id_def_proyecto = 0");
-        }
+
         if ($this->objParam->getParametro('id_def_proyecto_seguimiento')) {
-            $this->objParam->addFiltro("id_def_proyecto_seguimiento = " . $this->objParam->getParametro('id_def_proyecto_seguimiento'));
+            $this->objParam->addFiltro("tpsa.id_def_proyecto_seguimiento = " . $this->objParam->getParametro('id_def_proyecto_seguimiento'));
         }else{
-            $this->objParam->addFiltro("id_def_proyecto_seguimiento = 0");
+            $this->objParam->addFiltro("tpsa.id_def_proyecto_seguimiento = 0");
         }
 
         $this->objFunc = $this->create('MODDefProyectoActividad');
         $this->res = $this->objFunc->listarProyectoSeguimientoActividadEditar($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function listarProyectoSeguimientoActividadTotal()
+    {
+        $this->objParam->defecto('ordenacion', 'v_id_def_proyecto_actividad');
+        $this->objParam->defecto('dir_ordenacion', 'asc');
+
+        //$this->objParam->addFiltro("id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
+
+
+        $this->objFunc = $this->create('MODDefProyectoActividad');
+        $this->res = $this->objFunc->listarProyectoSeguimientoActividadTotal($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function listarProyectoSeguimientoActividadTotalEditar()
+    {
+        $this->objParam->defecto('ordenacion', 'v_id_def_proyecto_actividad');
+        $this->objParam->defecto('dir_ordenacion', 'asc');
+
+        //$this->objParam->addFiltro("id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
+
+
+
+
+        $this->objFunc = $this->create('MODDefProyectoActividad');
+        $this->res = $this->objFunc->listarProyectoSeguimientoActividadTotalEditar($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 

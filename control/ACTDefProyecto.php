@@ -6,7 +6,7 @@
  * @date 08-02-2017 19:56:10
  * @description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
  */
-require_once(dirname(__FILE__) . '/../reportes/REjecucionPorPartida.php');
+require_once(dirname(__FILE__) . '/../reportes/ReporteResumen.php');
 
 class ACTDefProyecto extends ACTbase
 {
@@ -74,7 +74,7 @@ class ACTDefProyecto extends ACTbase
     function reporteResumenProyecto()
     {
 
-         $nombreArchivo = 'EjecucionPorPartida' . uniqid(md5(session_id())) . '.pdf';
+         $nombreArchivo = 'Reporte_resumen_proyecto_' . uniqid(md5(session_id())) . '.pdf';
 
 
         $dataSource = $this->recuperarReporteResumen();
@@ -88,7 +88,7 @@ class ACTDefProyecto extends ACTbase
         $this->objParam->addParametro('tamano', $tamano);
         $this->objParam->addParametro('titulo_archivo', $titulo);
         $this->objParam->addParametro('nombre_archivo', $nombreArchivo);
-        $reporte = new REjecucionPorPartida($this->objParam);
+        $reporte = new ReporteResumen($this->objParam);
         $reporte->datosHeader($dataSource->getDatos());
         $reporte->generarReporte();
         $reporte->output($reporte->url_archivo, 'F');
