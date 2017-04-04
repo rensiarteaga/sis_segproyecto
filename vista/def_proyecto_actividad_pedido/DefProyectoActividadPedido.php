@@ -45,52 +45,52 @@ header("content-type: text/javascript; charset=UTF-8");
 
                 //nuevo componente
                 /*{
-                    config:{
-                        name:'id_roles',
-                        fieldLabel:'Roles',
-                        allowBlank:true,
-                        emptyText:'Roles...',
-                        store: new Ext.data.JsonStore({
-                            url: '../../sis_seguridad/control/Rol/listarRol',
-                            id: 'id_rol',
-                            root: 'datos',
-                            sortInfo:{
-                                field: 'rol',
-                                direction: 'ASC'
-                            },
-                            totalProperty: 'total',
-                            fields: ['id_rol','rol','descripcion'],
-                            // turn on remote sorting
-                            remoteSort: true,
-                            baseParams:{par_filtro:'rol'}
+                 config:{
+                 name:'id_roles',
+                 fieldLabel:'Roles',
+                 allowBlank:true,
+                 emptyText:'Roles...',
+                 store: new Ext.data.JsonStore({
+                 url: '../../sis_seguridad/control/Rol/listarRol',
+                 id: 'id_rol',
+                 root: 'datos',
+                 sortInfo:{
+                 field: 'rol',
+                 direction: 'ASC'
+                 },
+                 totalProperty: 'total',
+                 fields: ['id_rol','rol','descripcion'],
+                 // turn on remote sorting
+                 remoteSort: true,
+                 baseParams:{par_filtro:'rol'}
 
-                        }),
-                        valueField: 'id_rol',
-                        displayField: 'rol',
-                        forceSelection:true,
-                        typeAhead: true,
-                        triggerAction: 'all',
-                        lazyRender:true,
-                        mode:'remote',
-                        pageSize:10,
-                        queryDelay:1000,
-                        width:250,
-                        minChars:2,
-                        enableMultiSelect:true
+                 }),
+                 valueField: 'id_rol',
+                 displayField: 'rol',
+                 forceSelection:true,
+                 typeAhead: true,
+                 triggerAction: 'all',
+                 lazyRender:true,
+                 mode:'remote',
+                 pageSize:10,
+                 queryDelay:1000,
+                 width:250,
+                 minChars:2,
+                 enableMultiSelect:true
 
-                        //renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+                 //renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
 
-                    },
-                    type:'AwesomeCombo',
-                    id_grupo:0,
-                    grid:false,
-                    form:true
-                },*/
+                 },
+                 type:'AwesomeCombo',
+                 id_grupo:0,
+                 grid:false,
+                 form:true
+                 },*/
 
 
                 {
                     config: {
-                        name: 'id_pedidos',
+                        name: 'id_pedidos',//se agrega una s para guardar en formato de arreglo[] el name
                         fieldLabel: 'Pedido',
                         allowBlank: true,
                         emptyText: 'Elija una opción...',
@@ -105,10 +105,10 @@ header("content-type: text/javascript; charset=UTF-8");
                             totalProperty: 'total',
                             fields: ['id_pedido', 'pedido', 'nrosap'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'pedido'}
+                            baseParams: {par_filtro: 'pedido#nrosap'}
                         }),
                         //tpl:'<tpl for="."><div class="x-combo-list-item"><p>Nro. Sap:{nrosap}</p><p>Pedido:{pedido}</p> </div></tpl>',
-                        tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{nrosap}</div><p style="padding-left: 20px;">{pedido}</p> </div></tpl>',
+                        tpl: '<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{nrosap}</div><p style="padding-left: 20px;">{pedido}</p> </div></tpl>',
                         valueField: 'id_pedido',
                         displayField: 'pedido',
                         gdisplayField: 'pedido',
@@ -123,9 +123,9 @@ header("content-type: text/javascript; charset=UTF-8");
                         anchor: '100%',
                         gwidth: 150,
                         minChars: 2,
-                        enableMultiSelect:true,
+                        enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('( {0} ) {1}', record.data['nrosap'],record.data['pedido']);
+                            return String.format('( {0} ) {1}', record.data['nrosap'], record.data['pedido']);
                         }
                     },
                     type: 'AwesomeCombo',
@@ -144,7 +144,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
                         renderer: function (value, p, record) {
                             //return value?new Date(value).dateFormat('d/m/Y') :''
-                            return value?value:''
+                            return value ? value : ''
                         }
                     },
                     type: 'DateField',
@@ -162,7 +162,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         anchor: '80%',
                         gwidth: 100,
                         renderer: function (value, p, record) {
-                            return value?value+' dias':''
+                            return value ? value + ' dias' : ''
                         }
                     },
                     type: 'TextField',
@@ -348,7 +348,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 'monto',
                 'plazo',
                 'monto_total',
-
             ],
             sortInfo: {
                 field: 'id_def_proyecto_actividad_pedido',
@@ -369,6 +368,35 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.load({params: {start: 0, limit: 50}})
 
             },
+
+                /*
+                 //trabajando para la deehabilitacion de las opciones de los botones del tab
+                 preparaMenu: function (n) {
+                 var tb = Phx.vista.DefProyecto.superclass.preparaMenu.call(this);
+                 var rec = this.sm.getSelected();
+                 console.log('desde prepara menu', this.maestro)
+
+                 return tb;
+                 },
+
+                 liberaMenu: function () {
+
+                 console.log('imprimiendo el this',this)
+                 var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
+                 if(this.maestro.nivel == 3){
+                 this.bnew = false;
+                 //this.getBoton('bnew').disabled();
+                 //this.getBoton('bedit').disabled();
+
+                 console.log('entre, soy un nieto')
+                 }else{
+                 //this.getBoton('bnew').enable();
+                 //this.getBoton('bedit').enable();
+                 console.log('soy un padre o hijo')
+                 }
+                 console.log('desde liberar menu', this.maestro)
+
+                 },*/
         }
     )
 </script>

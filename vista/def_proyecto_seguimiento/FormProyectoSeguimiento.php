@@ -315,7 +315,6 @@ header("content-type: text/javascript; charset=UTF-8");
                  allowDecimals: true,
                  allowNegative: false,
                  decimalPrecision: 2
-
                  })*/
                 'porcentaje': new Ext.form.ComboBox({
                     allowBlank: false,
@@ -332,12 +331,10 @@ header("content-type: text/javascript; charset=UTF-8");
                     }),
                     valueField: 'porcentaje',
                     displayField: 'porcentaje'
-
                 })
             }
         },
         onEdit: function () {
-
             this.accionFormulario = 'EDIT';
             this.loadForm(this.data.datos_originales)
         },
@@ -355,7 +352,7 @@ header("content-type: text/javascript; charset=UTF-8");
             }*/
             for (i = 0; i < me.megrid.store.getCount(); i++) {
                 record = me.megrid.store.getAt(i);
-                console.log('impriimedo los Valores records',record)
+                console.log('imprimedo los Valores records',record)
                 arra.push(record.data);
             }
             console.log('arreglo de los datos quse cargaran',arra)

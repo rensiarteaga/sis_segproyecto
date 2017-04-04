@@ -120,6 +120,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             remoteSort: true,
                             baseParams: {par_filtro: 'nombre#codproyecto'} //para busquedas en el combo
                         }),
+                        tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{codproyecto}</div><p style="padding-left: 20px;">{nombre}</p> </div></tpl>',
                         valueField: 'id_proyecto',
                         displayField: 'nombre',
                         gdisplayField: 'desc_proyecto',//vista en la grilla
@@ -318,16 +319,13 @@ header("content-type: text/javascript; charset=UTF-8");
 
                 return tb;
             },
+
             liberaMenu: function () {
                 var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
 
                 this.getBoton('btnImprimir').disable();
                 this.getBoton('btnSeguimientoSuministro').disable();
-
-
-
             },
-
 
             tam_pag: 50,
             title: 'definición proyecto',

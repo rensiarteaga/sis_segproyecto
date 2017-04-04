@@ -53,7 +53,7 @@ class MODActividad extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_actividad_padre','id_actividad_padre','int4');
 		$this->setParametro('actividad','actividad','varchar');
-		$this->setParametro('tipo_actividad','tipo_actividad','varchar');
+		//$this->setParametro('tipo_actividad','tipo_actividad','varchar');
 		$this->setParametro('id_tipo','id_tipo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 

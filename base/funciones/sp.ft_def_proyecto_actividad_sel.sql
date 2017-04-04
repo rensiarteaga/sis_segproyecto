@@ -48,81 +48,25 @@ BEGIN
 
     BEGIN
       --Sentencia de la consulta
-      v_consulta:='WITH RECURSIVE tree AS (
-  SELECT id_actividad,actividad,id_actividad_padre, id_actividad::TEXT AS ancestors
-  FROM sp.tactividad WHERE id_actividad_padre IS NULL
 
-  UNION ALL
+      v_consulta:='SELECT
+                tpa.id_def_proyecto_actividad,
+                tpa.id_def_proyecto,
+                v_id_actividad                AS id_actividad,
+                tpa.descripcion,
+                v_actividad                   AS actividad,
+                v_fechaordenproceder          AS min_fecha_orden,
+                v_fecha_entrega_contrato_prev AS max_fecha_entrega,
+                (DATE (v_fecha_entrega_contrato_prev)-DATE (v_fechaordenproceder))::integer as plazo,
+                v_monto::numeric as monto_suma,
+                v_id_tipo                     AS tipo_actividad,
+                v_ancestors::varchar                   AS ancestors,
+                v_nivel                       AS nivel
+              FROM sp.f_obtener_arbol_actividades(' || v_parametros.id_def_proyecto || ') aa
+                JOIN sp.tdef_proyecto_actividad tpa
+                  ON aa.v_id_def_proyecto_actividad = tpa.id_def_proyecto_actividad
+              ORDER BY aa.v_id_tipo, aa.v_ancestors';
 
-  SELECT ta.id_actividad,ta.actividad,ta.id_actividad_padre,(tree.ancestors || ''->'' || ta.id_actividad::TEXT) as ancestors
-  FROM sp.tactividad ta, tree
-  WHERE ta.id_actividad_padre= tree.id_actividad
-) select
-    deprac.id_def_proyecto_actividad,
-    deprac.id_def_proyecto,
-    deprac.id_actividad,
-    deprac.estado_reg,
-    deprac.descripcion,
-    deprac.usuario_ai,
-    deprac.fecha_reg,
-    deprac.id_usuario_reg,
-    deprac.id_usuario_ai,
-    deprac.fecha_mod,
-    deprac.id_usuario_mod,
-    tact.actividad,
-    usu1.cuenta as usr_reg,
-    usu2.cuenta as usr_mod,
-    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
-      min(vpp.fechaordenproceder)::varchar
-    else
-     (SELECT min(vcpp.fechaordenproceder)::varchar from ((select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad_padre=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto) union all (select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto)) ped JOIN  sp.vcsa_proyecto_pedido vcpp on ped.id_pedido=vcpp.id_pedido)
-    END AS min_fecha_orden,
-    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
-      max(vpp.fecha_entrega_contrato_prev)::varchar
-    ELSE
-      (SELECT max(vcpp.fecha_entrega_contrato_prev)::varchar from ((select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad_padre=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto) union all (select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto)) ped JOIN  sp.vcsa_proyecto_pedido vcpp on ped.id_pedido=vcpp.id_pedido)
-    END AS max_fecha_entrega,
-    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
-      (DATE (max(vpp.fecha_entrega_contrato_prev)::date) - DATE (min(vpp.fechaordenproceder)::date))::integer
-    ELSE
-      (SELECT (date (max(vcpp.fecha_entrega_contrato_prev)) - DATE (min(vcpp.fechaordenproceder)))::integer from ((select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad_padre=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto) union all (select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto)) ped JOIN  sp.vcsa_proyecto_pedido vcpp on ped.id_pedido=vcpp.id_pedido)
-    END AS plazo,
-    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
-      sum(vpp.monto_total)
-    else (SELECT sum(vcpp.monto_total) from ((select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad_padre=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto) union all (select DISTINCT tdpap.id_pedido from sp.tdef_proyecto_actividad tdpa join sp.tactividad ta on tdpa.id_actividad = ta.id_actividad and ta.id_actividad=deprac.id_actividad join sp.tdef_proyecto_actividad_pedido tdpap on tdpa.id_def_proyecto_actividad = tdpap.id_def_proyecto_actividad
-    where tdpa.id_def_proyecto=deprac.id_def_proyecto)) ped JOIN  sp.vcsa_proyecto_pedido vcpp on ped.id_pedido=vcpp.id_pedido)
-    END as monto_suma,
-    CASE WHEN (tact.id_actividad_padre IS NOT NULL ) THEN
-     ''hijo''::varchar
-    ELSE
-    ''padre''::varchar
-    END as tipo_acticidad,
-    tact.ancestors,
-    sp.ft_cantidad_cadena_caracter(tact.ancestors,''>'')+1 AS nivel
-      from sp.tdef_proyecto_actividad deprac
-    inner join segu.tusuario usu1 on usu1.id_usuario = deprac.id_usuario_reg
-    left join segu.tusuario usu2 on usu2.id_usuario = deprac.id_usuario_mod
-    join tree tact on tact.id_actividad = deprac.id_actividad
-    LEFT JOIN sp.tdef_proyecto_actividad_pedido dpap ON deprac.id_def_proyecto_actividad = dpap.id_def_proyecto_actividad
-    LEFT JOIN sp.vcsa_proyecto_pedido vpp ON vpp.id_pedido = dpap.id_pedido
-
-             where  ';
-
-      --Definicion de la respuesta
-      v_consulta:=v_consulta || v_parametros.filtro;
-      v_consulta:=v_consulta ||
-                  ' GROUP BY deprac.id_def_proyecto_actividad,tact.actividad,tact.id_actividad_padre,usu1.cuenta,usu2.cuenta,tact.ancestors ';
-
-      v_consulta:=
-      v_consulta || ' order by tact.ancestors ASC, ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion ||
-      ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       RAISE NOTICE '%', v_consulta;
       --Devuelve la respuesta

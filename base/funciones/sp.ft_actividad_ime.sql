@@ -47,7 +47,6 @@ BEGIN
         	insert into sp.tactividad(
 			id_actividad_padre,
 			actividad,
-			tipo_actividad,
 			estado_reg,
 			fecha_reg,
 			usuario_ai,
@@ -59,7 +58,6 @@ BEGIN
           	) values(
 			v_parametros.id_actividad_padre,
 			v_parametros.actividad,
-			v_parametros.tipo_actividad,
 			'activo',
 			now(),
 			v_parametros._nombre_usuario_ai,
@@ -96,7 +94,6 @@ BEGIN
 			update sp.tactividad set
 			id_actividad_padre = v_parametros.id_actividad_padre,
 			actividad = v_parametros.actividad,
-			tipo_actividad = v_parametros.tipo_actividad,
 			id_tipo = v_parametros.id_tipo,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,

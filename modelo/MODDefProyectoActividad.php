@@ -22,27 +22,20 @@ class MODDefProyectoActividad extends MODbase
         $this->transaccion = 'SP_DEPRAC_SEL';
         $this->tipo_procedimiento = 'SEL';//tipo de transaccion
 
+        $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
+
         //Definicion de la lista del resultado del query
         $this->captura('id_def_proyecto_actividad', 'int4');
         $this->captura('id_def_proyecto', 'int4');
         $this->captura('id_actividad', 'int4');
-        $this->captura('estado_reg', 'varchar');
         $this->captura('descripcion', 'varchar');
-        $this->captura('usuario_ai', 'varchar');
-        $this->captura('fecha_reg', 'timestamp');
-        $this->captura('id_usuario_reg', 'int4');
-        $this->captura('id_usuario_ai', 'int4');
-        $this->captura('fecha_mod', 'timestamp');
-        $this->captura('id_usuario_mod', 'int4');
         $this->captura('actividad', 'varchar');
-        $this->captura('usr_reg', 'varchar');
-        $this->captura('usr_mod', 'varchar');
-        $this->captura('min_fecha_orden', 'varchar');
-        $this->captura('max_fecha_entrega', 'varchar');
+        $this->captura('min_fecha_orden', 'date');
+        $this->captura('max_fecha_entrega', 'date');
         $this->captura('plazo', 'int4');
-        $this->captura('monto_suma', 'double precision');
-        $this->captura('tipo_actividad', 'varchar');
-        $this->captura('ancestors', 'text');
+        $this->captura('monto_suma', 'numeric');
+        $this->captura('tipo_actividad', 'int4');
+        $this->captura('ancestors', 'varchar');
         $this->captura('nivel', 'int4');
 
         //Ejecuta la instruccion
@@ -252,10 +245,6 @@ class MODDefProyectoActividad extends MODbase
         //Devuelve la respuesta
         return $this->respuesta;
     }
-
-
-
-
 }
 
 ?>

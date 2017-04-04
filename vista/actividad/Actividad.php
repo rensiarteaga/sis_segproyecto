@@ -29,7 +29,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 type: 'Field',
                 form: true
             },
-
             {
                 //configuracion del componente
                 config: {
@@ -40,7 +39,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 type: 'Field',
                 form: true
             },
-
             {
                 config: {
                     name: 'actividad',
@@ -235,7 +233,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'id_usuario_mod', type: 'numeric'},
                 {name: 'usr_reg', type: 'string'},
                 {name: 'usr_mod', type: 'string'},
-
             ],
             sortInfo: {
                 field: 'id_actividad',

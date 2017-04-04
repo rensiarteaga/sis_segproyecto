@@ -89,14 +89,17 @@ header("content-type: text/javascript; charset=UTF-8");
                     renderer: function (value, p, record) {
                         //calculando el tamaño del nivel del arbol
                         //var tamanio = record.data['ancestors'].replace(/[^>]/g, "").length + 1;
-                        var asteriscos = '';
+                        var flechas = '';
 
                         for (i = 0; i < record.data['nivel']; i++) {
-                            asteriscos += '<i class="fa fa-asterisk"></i>  ';
+                            flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                         }
+                        if (record.data['nivel'] == 1) {
 
-                        return String.format(asteriscos + '{0}', record.data['actividad']);
-
+                            return String.format('<h4>{0}</h4>', record.data['actividad']);
+                        } else {
+                            return String.format(flechas + '{0}', record.data['actividad']);
+                        }
                     }
                 },
                 type: 'ComboBox',
@@ -195,120 +198,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 id_grupo: 1,
                 grid: true,
                 form: true
-            },
-
-
-            {
-                config: {
-                    name: 'estado_reg',
-                    fieldLabel: 'Estado Reg.',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 10
-                },
-                type: 'TextField',
-                filters: {pfiltro: 'deprac.estado_reg', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: false
-            },
-
-            {
-                config: {
-                    name: 'usuario_ai',
-                    fieldLabel: 'Funcionaro AI',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 300
-                },
-                type: 'TextField',
-                filters: {pfiltro: 'deprac.usuario_ai', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: false
-            },
-            {
-                config: {
-                    name: 'fecha_reg',
-                    fieldLabel: 'Fecha creación',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    format: 'd/m/Y',
-                    renderer: function (value, p, record) {
-                        return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                    }
-                },
-                type: 'DateField',
-                filters: {pfiltro: 'deprac.fecha_reg', type: 'date'},
-                id_grupo: 1,
-                grid: true,
-                form: false
-            },
-            {
-                config: {
-                    name: 'usr_reg',
-                    fieldLabel: 'Creado por',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 4
-                },
-                type: 'Field',
-                filters: {pfiltro: 'usu1.cuenta', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: false
-            },
-            {
-                config: {
-                    name: 'id_usuario_ai',
-                    fieldLabel: 'Creado por',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 4
-                },
-                type: 'Field',
-                filters: {pfiltro: 'deprac.id_usuario_ai', type: 'numeric'},
-                id_grupo: 1,
-                grid: false,
-                form: false
-            },
-            {
-                config: {
-                    name: 'fecha_mod',
-                    fieldLabel: 'Fecha Modif.',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    format: 'd/m/Y',
-                    renderer: function (value, p, record) {
-                        return value ? value.dateFormat('d/m/Y H:i:s') : ''
-                    }
-                },
-                type: 'DateField',
-                filters: {pfiltro: 'deprac.fecha_mod', type: 'date'},
-                id_grupo: 1,
-                grid: true,
-                form: false
-            },
-            {
-                config: {
-                    name: 'usr_mod',
-                    fieldLabel: 'Modificado por',
-                    allowBlank: true,
-                    anchor: '80%',
-                    gwidth: 100,
-                    maxLength: 4
-                },
-                type: 'Field',
-                filters: {pfiltro: 'usu2.cuenta', type: 'string'},
-                id_grupo: 1,
-                grid: true,
-                form: false
             }
         ],
         tam_pag: 50,
@@ -321,23 +210,12 @@ header("content-type: text/javascript; charset=UTF-8");
             {name: 'id_def_proyecto_actividad', type: 'numeric'},
             {name: 'id_def_proyecto', type: 'numeric'},
             {name: 'id_actividad', type: 'numeric'},
-            {name: 'estado_reg', type: 'string'},
             {name: 'descripcion', type: 'string'},
-            {name: 'usuario_ai', type: 'string'},
-            {name: 'fecha_reg', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
-            {name: 'id_usuario_reg', type: 'numeric'},
-            {name: 'id_usuario_ai', type: 'numeric'},
-            {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
-            {name: 'id_usuario_mod', type: 'numeric'},
-            {name: 'usr_reg', type: 'string'},
-            {name: 'usr_mod', type: 'string'},
             {name: 'ancestors', type: 'string'},
             {name: 'nivel', type: 'numeric'},
             'actividad',
-            'max_fecha_orden',
             'min_fecha_orden',
             'max_fecha_entrega',
-            'min_fecha_entrega',
             'plazo',
             'monto_suma',
             'tipo_actividad',

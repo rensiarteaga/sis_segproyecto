@@ -23,10 +23,19 @@ header("content-type: text/javascript; charset=UTF-8");
             this.bloquearMenus();
         },
 
+        onButtonNew: function () {
+
+            Phx.vista.ActividadHijo.superclass.onButtonNew.call(this);
+            this.ocultarComponente(this.Cmp.id_tipo);
+        },
+        onButtonEdit: function () {
+            Phx.vista.ActividadHijo.superclass.onButtonEdit.call(this);
+            this.mostrarComponente(this.Cmp.id_tipo);
+        },
+
         loadValoresIniciales: function () {
             Phx.vista.ActividadHijo.superclass.loadValoresIniciales.call(this);
             this.Cmp.id_actividad_padre.setValue(this.maestro.id_actividad);
-            this.Cmp.tipo_actividad.setValue(this.maestro.tipo_actividad);
             this.Cmp.id_tipo.setValue(this.maestro.id_tipo);
         },
 
@@ -44,6 +53,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 cls: 'ActividadNieto'
             }
         ],
+
 
     };
 </script>
