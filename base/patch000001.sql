@@ -18,7 +18,7 @@ WITH (oids = false);
 /***********************************F-SCP-YAC-SP-0-13/02/2017****************************************/
 /***********************************I-SCP-YAC-SP-0-14/02/2017****************************************/
 
-CREATE EXTENSION tds_fdw;
+CREATE EXTENSION IF NOT EXISTS tds_fdw;
 
 CREATE SERVER mssql_csa_prod
 FOREIGN DATA WRAPPER tds_fdw
@@ -42,6 +42,8 @@ OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 -- diseñado la tabla foranea del csa proyecto pedido
 -- usamos el bytea para poder recicir los nvchar de sql server
 -- En la consulta de sql server es necesario poner un alias(as)cuando se recupera de una nvchar
+drop VIEW IF EXISTS sp.vcsa_proyecto_pedido;
+drop FOREIGN TABLE IF EXISTS sp.csa_proyecto_pedido;
 CREATE FOREIGN TABLE sp.csa_proyecto_pedido (
   idproyecto                    INTEGER NULL,
   codproyecto                   BYTEA NULL,

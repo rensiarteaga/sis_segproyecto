@@ -152,3 +152,18 @@ select pxp.f_insert_tgui ('Proyectos seguimiento Totales', 'Proyectos seguimient
 select pxp.f_insert_tgui ('Parametrización', 'Parametrización de las actividades', 'SEPROPONd', 'si', 1, '', 2, '', '', 'SP');
 
 /********************************************F-DAT-YAC-SP-1-02/04/2017********************************************/
+/********************************************I-DAT-YAC-SP-0-04/04/2017********************************************/
+BEGIN;
+
+/* Data for the 'sp.ttipo' table  (Records 1 - 4) */
+
+INSERT INTO sp.ttipo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_tipo", "tipo")
+VALUES
+  (NULL, NULL, E'2017-03-27 10:23:16', E'2017-03-27 10:23:16', E'activo', NULL, NULL, 2, E'Suministro'),
+  (NULL, NULL, E'2017-03-28 11:58:07', E'2017-03-28 11:58:07', E'activo', NULL, NULL, 4, E'Cierre'),
+  (NULL, NULL, E'2017-03-27 10:22:25', E'2017-03-27 10:22:25', E'activo', NULL, NULL, 1, E'Ingenieria'),
+  (NULL, NULL, E'1899-12-30 00:00:00', E'1899-12-30 00:00:00', E'', NULL, NULL, 3, E'Construccion / Obra');
+
+COMMIT;
+
+/********************************************F-DAT-YAC-SP-0-04/04/2017********************************************/
