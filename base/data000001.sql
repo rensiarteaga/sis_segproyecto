@@ -110,7 +110,6 @@ LANGUAGE 'plpgsql';*/
 /********************************************F-DAT-YAC-SP-0-20/03/2017********************************************/
 /********************************************I-DAT-YAC-SP-0-02/04/2017********************************************/
 
-BEGIN;
 
 /* Data for the 'sp.testado_seguimiento' table  (Records 1 - 23) */
 
@@ -140,7 +139,6 @@ VALUES
   (NULL, NULL, E'2016-11-13 15:17:05.715', E'2016-11-13 15:17:05.715', E'activo', NULL, NULL, 10, E'Recepción provisional', 3),
   (NULL, NULL, E'2016-11-13 15:17:09.539', E'2016-11-13 15:17:09.539', E'activo', NULL, NULL, 11, E'Recepción definitiva', 3);
 
-COMMIT;
 /********************************************F-DAT-YAC-SP-0-02/04/2017********************************************/
 /********************************************I-DAT-YAC-SP-1-02/04/2017********************************************/
 
@@ -153,7 +151,6 @@ select pxp.f_insert_tgui ('Parametrización', 'Parametrización de las actividad
 
 /********************************************F-DAT-YAC-SP-1-02/04/2017********************************************/
 /********************************************I-DAT-YAC-SP-0-04/04/2017********************************************/
-BEGIN;
 
 /* Data for the 'sp.ttipo' table  (Records 1 - 4) */
 
@@ -164,6 +161,11 @@ VALUES
   (NULL, NULL, E'2017-03-27 10:22:25', E'2017-03-27 10:22:25', E'activo', NULL, NULL, 1, E'Ingenieria'),
   (NULL, NULL, E'1899-12-30 00:00:00', E'1899-12-30 00:00:00', E'', NULL, NULL, 3, E'Construccion / Obra');
 
-COMMIT;
+select pxp.f_insert_tgui ('SEGUIMIENTO DE PROYECTOS', '', 'SP', 'si', 1, '', 1, '', '', 'SP');
+select pxp.f_insert_tgui ('Actividades', 'actividades', 'ACTI', 'si', 1, 'sis_segproyecto/vista/actividad/ActividadPadre.php', 2, '', 'ActividadPadre', 'SP');
+select pxp.f_insert_tgui ('Proyecto actividad', 'Proyectos Actividades', 'PRAC', 'si', 1, 'sis_segproyecto/vista/def_proyecto/DefProyectoActividad.php', 2, '', 'DefProyectoActividad', 'SP');
+select pxp.f_insert_tgui ('Proyecto seguimiento construcción', 'Proyectos seguimient construcciçon', 'PRSECO', 'si', 6, 'sis_segproyecto/vista/def_proyecto/DefProyectoSeguimientoConstruccion.php', 2, '', 'DefProyectoSeguimientoConstruccion', 'SP');
+select pxp.f_insert_tgui ('Proyectos seguimiento Totales', 'Proyectos seguimiento Totales', 'PRSETO', 'si', 7, 'sis_segproyecto/vista/def_proyecto/DefProyectoSeguimientoTotal.php', 3, '', 'DefProyectoSeguimientoTotal', 'SP');
+select pxp.f_insert_tgui ('Parametrización', 'Parametrización de las actividades', 'SEPROPONd', 'si', 1, '', 2, '', '', 'SP');
 
 /********************************************F-DAT-YAC-SP-0-04/04/2017********************************************/

@@ -31,6 +31,8 @@ class MODSuministro extends MODbase{
         $this->captura('invitacion','bit');
 		$this->captura('adjudicacion','bit');
 		$this->captura('llegada_sitio','bit');
+		$this->captura('padre','bool');
+
 		//$this->captura('fecha_reg','timestamp');
 		//$this->captura('usuario_ai','varchar');
 		//$this->captura('id_usuario_reg','int4');
@@ -64,6 +66,8 @@ class MODSuministro extends MODbase{
 		$this->setParametro('llegada_sitio','llegada_sitio','bit');
         $this->setParametro('tipo_guardar','tipo_guardar','bool');
         $this->setParametro('id_seguimiento_suministro','id_seguimiento_suministro','int4');
+
+		 $this->setParametro('padre','padre','bool');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

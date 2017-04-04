@@ -159,5 +159,7 @@ select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
 select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
 select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
 
+
+
 /***********************************I-DEP-YAC-SP-1-02/04/2017*****************************************/
 

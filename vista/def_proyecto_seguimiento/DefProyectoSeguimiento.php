@@ -135,7 +135,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {
                     config: {
                         name: 'fecha',
-                        fieldLabel: 'fecha seguimineto',
+                        fieldLabel: 'fecha seguimiento',
                         allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
