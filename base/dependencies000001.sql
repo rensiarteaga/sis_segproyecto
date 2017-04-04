@@ -145,5 +145,19 @@ select pxp.f_insert_testructura_gui ('SEPROPONd', 'SP');
 select pxp.f_insert_testructura_gui ('PRSECO', 'SEPROPONd');
 select pxp.f_insert_testructura_gui ('PRSETO', 'SEPROPONd');
 
-/***********************************F-DEP-JUAN-SP-0-02/04/2017*****************************************/
+/***********************************F-DEP-JUAN-SP-1-02/04/2017*****************************************/
+
+select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
+select pxp.f_delete_testructura_gui ('ACTI', 'SP');
+select pxp.f_insert_testructura_gui ('PRAC', 'SP');
+select pxp.f_delete_testructura_gui ('ACTI', 'SP');
+select pxp.f_insert_testructura_gui ('SEPROPONd', 'SP');
+select pxp.f_delete_testructura_gui ('PRSECO', 'SEPROPONd');
+select pxp.f_delete_testructura_gui ('PRSETO', 'SEPROPONd');
+select pxp.f_delete_testructura_gui ('PRSETO', 'SP');
+select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
+select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
+select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
+
+/***********************************I-DEP-YAC-SP-1-02/04/2017*****************************************/
 

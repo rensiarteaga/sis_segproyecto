@@ -101,32 +101,6 @@ header("content-type: text/javascript; charset=UTF-8");
             },
 
             {
-                config:{
-                    name:'tipo_actividad',
-                    fieldLabel:'Tipo actividad',
-                    allowBlank:true,
-                    emptyText:'Seleccione un tipo..',
-
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    lazyRender:true,
-                    mode: 'local',
-                    //readOnly:true,
-                    valueField: 'tipo_actividad',
-                    // displayField: 'descestilo',
-                    store:['ingenieria','cierre']
-
-                },
-                type:'ComboBox',
-                id_grupo:0,
-                filters:{
-                    type: 'list',
-                    options: ['ingenieria','cierre'],
-                },
-                grid:true,
-                form:true
-            },
-            {
                 config: {
                     name: 'estado_reg',
                     fieldLabel: 'Estado Reg.',

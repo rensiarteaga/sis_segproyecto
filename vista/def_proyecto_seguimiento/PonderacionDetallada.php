@@ -14,15 +14,17 @@ header("content-type: text/javascript; charset=UTF-8");
 
             constructor: function (config) {
                 this.maestro = config.maestro;
-                console.log('maestro de pondercion detallada',config)
+                console.log('maestro de pondercion detallada', config)
                 //llama al constructor de la clase padre
                 Phx.vista.PonderacionDetallada.superclass.constructor.call(this, config);
                 this.init();
                 this.iniciarEventos();
                 console.log('Mostrado los valos del config', config.data.datos_originales)
-                this.store.baseParams = {id_def_proyecto: config.data.datos_originales.id_def_proyecto,
-                    id_def_proyecto_seguimiento: config.data.datos_originales.id_def_proyecto_seguimiento};
-                this.load({params:{start:0, limit:this.tam_pag}})
+                this.store.baseParams = {
+                    id_def_proyecto: config.data.datos_originales.id_def_proyecto,
+                    id_def_proyecto_seguimiento: config.data.datos_originales.id_def_proyecto_seguimiento
+                };
+                this.load({params: {start: 0, limit: this.tam_pag}})
             },
 
             //asignarseguimiento:function(){
@@ -53,46 +55,52 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 {
                     config: {
-                        name: 'avance',
-                        fieldLabel: 'Avance',
+                        name: 'actividad',
+                        fieldLabel: 'actividad',
                         allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 10
-                    },
-                    type: 'NumberField',
-                    //filters: {pfiltro: 'avance', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    form: false
-                },
+                        anchor: '100%',
+                        gwidth: 300,
+                        maxLength: 10,
+                        renderer: function (value, p, record) {
+                            var flechas = '';
+                            for (i = 0; i < record.data['nivel']; i++) {
+                                flechas += '<i class="fa fa-long-arrow-right"></i>  ';
+                            }
+                            if (record.data['nivel'] == 1) {
+                                return String.format('<h4> {0}</h4>', record.data['actividad']);
+                            } else {
+                                return String.format(flechas + ' {0}', record.data['actividad']);
 
-                {
-                    config: {
-                        name: 'ancestors',
-                        fieldLabel: 'ancestors',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 100,
-                        maxLength: 255
+                            }
+                        }
                     },
                     type: 'TextField',
-                   // filters: {pfiltro: 't1.ancestors', type: 'string'},
+                    //filters: {pfiltro: 'avance', type: 'string'},
                     id_grupo: 1,
                     grid: true,
                     form: true
                 },
+
                 {
                     config: {
                         name: 'total_avance',
-                        fieldLabel: 'total_avance',
+                        fieldLabel: '% avance',
                         allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
-                        maxLength: 393219
+                        maxLength: 393219,
+                        renderer: function (value, p, record) {
+
+                            if (record.data['nivel'] == 1) {
+                                return String.format(' <h4>{0}</h4>', record.data['total_avance']);
+                            } else {
+                                return String.format(' {0}', record.data['total_avance']);
+
+                            }
+                        }
                     },
                     type: 'NumberField',
-                  //  filters: {pfiltro: 't1.total_avance', type: 'numeric'},
+                    //  filters: {pfiltro: 't1.total_avance', type: 'numeric'},
                     id_grupo: 1,
                     grid: true,
                     form: true
@@ -107,10 +115,12 @@ header("content-type: text/javascript; charset=UTF-8");
             id_store: 'id_actividad',
             fields: [
                 {name: 'id_actividad', type: 'numeric'},
+                {name: 'actividad', type: 'string'},
                 {name: 'id_actividad_padre', type: 'numeric'},
                 {name: 'avance', type: 'numeric'},
                 {name: 'ancestors', type: 'string'},
                 {name: 'total_avance', type: 'numeric'},
+                {name: 'nivel', type: 'string'},
 
             ],
             sortInfo: {
@@ -122,6 +132,7 @@ header("content-type: text/javascript; charset=UTF-8");
             bedit: false,
             bsave: false,
             bexcel: false
+
         }
     )
 </script>

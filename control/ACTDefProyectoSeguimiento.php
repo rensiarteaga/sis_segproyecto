@@ -110,7 +110,7 @@ class ACTDefProyectoSeguimiento extends ACTbase{
 
         //parametros basicos
         $tamano = 'LETTER';
-        $orientacion = 'L';
+        $orientacion = 'P';
         $titulo = 'Tabla ponderado';
 
         $this->objParam->addParametro('orientacion', $orientacion);

@@ -142,6 +142,8 @@ class MODDefProyectoSeguimiento extends MODbase{
         //Definicion de la lista del resultado del query
         $this->captura('id_actividad','int4');
         $this->captura('id_actividad_padre','int4');
+        $this->captura('actividad','varchar');
+        $this->captura('nivel','int4');
         $this->captura('avance','numeric');
         $this->captura('ancestors','varchar');
         $this->captura('total_avance','numeric');
@@ -173,9 +175,12 @@ class MODDefProyectoSeguimiento extends MODbase{
         //Definicion de la lista del resultado del query
         $this->captura('id_actividad','int4');
         $this->captura('id_actividad_padre','int4');
+        $this->captura('actividad','varchar');
+        $this->captura('nivel','int4');
         $this->captura('avance','numeric');
         $this->captura('ancestors','varchar');
         $this->captura('total_avance','numeric');
+
 
         //Ejecuta la instruccion
         $this->armarConsulta();

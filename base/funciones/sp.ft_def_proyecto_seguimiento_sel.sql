@@ -151,10 +151,10 @@ BEGIN
               CASE WHEN tapa.id_actividad_padre IS NOT NULL AND tapa.nivel > 2
                 THEN
                   coalesce(tpsa.porcentaje_avance, 0) :: NUMERIC * tad.interno :: NUMERIC
-              WHEN tapa.id_actividad_padre IS NOT NULL AND tad.nivel > 1 AND (tad.id_tipo = 4 OR tad.id_tipo = 1 OR tad.id_tipo = 2)
+              WHEN tapa.id_actividad_padre IS NOT NULL AND tad.nivel > 1 AND (tad.id_tipo = 4 OR tad.id_tipo = 1 OR tad.id_tipo = 2 OR tad.id_tipo = 3) --AGREGANDO EL ID DE CONSTRUCCION (TEMP)
                 THEN
                   coalesce(tpsa.porcentaje_avance, 0) :: NUMERIC * tad.interno :: NUMERIC
-            
+
               ELSE
                 0:: NUMERIC--tad.interno :: NUMERIC
               END AS avance
@@ -176,16 +176,19 @@ BEGIN
         SELECT
           t1.id_actividad,
           t1.id_actividad_padre,
+          t1.actividad,
+          t1.nivel,
           round(t1.avance, 2)                   AS avance,
           t1.ancestors,
           CASE WHEN t1.nivel = 3 THEN
             round(coalesce(t1.avance,0),2)
             ELSE
-          round(sum(coalesce(t2.avance, 0)+t1.avance), 2) end AS total_avance
+          round(sum(coalesce(t2.avance, 0)+
+                    CASE WHEN t1.nivel=2 AND t1.id_tipo<>3 THEN t1.avance ELSE 0 END ), 2) end AS total_avance
         FROM tt_actividades_seguimiento_actividad t1
           left JOIN tt_actividades_seguimiento_actividad t2
             ON t2.id_actividad <> t1.id_actividad AND t1.id_actividad = t2.id_actividad_padre
-        where t1.nivel<=3
+        where t1.nivel<=2
         GROUP BY t1.id_tipo,
           t1.id_actividad,
           t1.id_actividad_padre,

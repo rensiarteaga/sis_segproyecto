@@ -74,7 +74,7 @@ BEGIN
               THEN
                 tpsa.porcentaje_avance :: NUMERIC
             WHEN tapa.id_actividad_padre IS NOT NULL AND tapa.nivel > 1 AND
-                 (tapa.id_tipo = 4 OR tapa.id_tipo = 1 OR tapa.id_tipo = 2)
+                 (tapa.id_tipo = 4 OR tapa.id_tipo = 1 OR tapa.id_tipo = 2 )
               THEN
                 tpsa.porcentaje_avance :: NUMERIC
             END AS porcentaje_avance,
@@ -84,8 +84,8 @@ BEGIN
             CASE WHEN tapa.id_actividad_padre IS NOT NULL AND tapa.nivel > 2
               THEN
                 coalesce(tpsa.porcentaje_avance, 0) :: NUMERIC * tad.interno :: NUMERIC
-            WHEN tapa.id_actividad_padre IS NOT NULL AND tad.nivel > 1 AND
-                 (tad.id_tipo = 4 OR tad.id_tipo = 1 OR tad.id_tipo = 2)
+            WHEN tapa.id_actividad_padre IS NOT NULL AND tad.nivel > 1  AND
+                 (tad.id_tipo = 4 OR tad.id_tipo = 1 OR tad.id_tipo = 2  OR tad.id_tipo = 3 ) --agregando al tipo construccion
               THEN
                 coalesce(tpsa.porcentaje_avance, 0) :: NUMERIC * tad.interno :: NUMERIC
 
@@ -116,17 +116,19 @@ BEGIN
       SELECT
         t1.id_actividad,
         t1.id_actividad_padre,
-        round(t1.avance, 2)                                     AS avance,
-        t1.ancestors,
+        t1.actividad,
+        t1.nivel,
+        round(t1.avance, 2)::NUMERIC                   AS avance,
+        t1.ancestors::VARCHAR,
         CASE WHEN t1.nivel = 3
           THEN
             round(coalesce(t1.avance, 0), 2)
         ELSE
-          round(sum(coalesce(t2.avance, 0) + t1.avance), 2) END AS total_avance
+          round(sum(coalesce(t2.avance, 0) + CASE WHEN t1.nivel=2 AND t1.id_tipo<>3 THEN t1.avance ELSE 0 END ), 2) END AS total_avance
       FROM tt_actividades_seguimiento_actividad t1
         LEFT JOIN tt_actividades_seguimiento_actividad t2
           ON t2.id_actividad <> t1.id_actividad AND t1.id_actividad = t2.id_actividad_padre
-      WHERE t1.nivel <= 3
+      WHERE t1.nivel <= 2
       GROUP BY t1.id_tipo,
         t1.id_actividad,
         t1.id_actividad_padre,

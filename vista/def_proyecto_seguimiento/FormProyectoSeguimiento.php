@@ -193,8 +193,10 @@ header("content-type: text/javascript; charset=UTF-8");
 
             var arra = [], i, me = this;
             record = me.megrid.store.getAt(i);
-            console.log('datos antes del edit', record, record.data.tipo_actividad)
-            if (record.data.tipo_actividad == 'padre') {
+            console.log('datos de prueba yac', record)
+            //los padres no puden colocar valores en la evaluacion
+            //record.data.nivel == 1 --> padre
+            if (record.data.nivel == 1) {
                 return false;
             }
             else {
@@ -267,11 +269,11 @@ header("content-type: text/javascript; charset=UTF-8");
                         width: 200,
                         sortable: false,
                         renderer: function (value, p, record) {
-                            var asteriscos = '';
+                            var flechas = '';
                             for (i = 0; i < record.data['nivel']; i++) {
-                                asteriscos += '<i class="fa fa-asterisk"></i>  ';
+                                flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                             }
-                            return String.format(asteriscos + ' {0}', record.data['actividad']);
+                            return String.format(flechas + ' {0}', record.data['actividad']);
                         },
 
                     },{
@@ -285,7 +287,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         }
                     },
                     {
-                        header: 'Porcentaje',
+                        header: 'Avance',
                         dataIndex: 'porcentaje',
                         align: 'center',
                         width: 200,
@@ -345,11 +347,18 @@ header("content-type: text/javascript; charset=UTF-8");
         onSubmit: function (o) {
             //  validar formularios
             var arra = [], i, me = this;
+
+       /*     for (i = me.megrid.store.getCount()-1; i >= 0; i--) {
+                record = me.megrid.store.getAt(i);
+                console.log('impriimedo los Valores records '+i,record)
+                arra.push(record.data);
+            }*/
             for (i = 0; i < me.megrid.store.getCount(); i++) {
                 record = me.megrid.store.getAt(i);
-
+                console.log('impriimedo los Valores records',record)
                 arra.push(record.data);
             }
+            console.log('arreglo de los datos quse cargaran',arra)
 
             me.argumentExtraSubmit = {
                 'json_new_records': JSON.stringify(arra, function replacer(key, value) {
@@ -378,6 +387,7 @@ header("content-type: text/javascript; charset=UTF-8");
             Phx.vista.FormProyectoSeguimiento.superclass.loadValoresIniciales.call(this);
             this.Cmp.id_def_proyecto.setValue(this.data.objPadre.id_def_proyecto);
             this.Cmp.tipo_form.setValue(this.data.tipo_form);
+
         },
 
     })

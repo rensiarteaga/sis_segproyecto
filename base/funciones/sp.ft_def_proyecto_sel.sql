@@ -49,7 +49,7 @@ BEGIN
 
     BEGIN
       --Sentencia de la consulta
-      v_consulta:='select
+      v_consulta:='select DISTINCT
 						defproy.id_def_proyecto,
 						defproy.fecha_inicio_teorico,
 						defproy.descripcion,
@@ -96,7 +96,7 @@ BEGIN
 
       BEGIN
         --Sentencia de la consulta de conteo de registros
-        v_consulta:='select count(id_def_proyecto)
+        v_consulta:='select count(DISTINCT id_def_proyecto)
 					    from sp.tdef_proyecto defproy
 					    inner join segu.tusuario usu1 on usu1.id_usuario = defproy.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = defproy.id_usuario_mod

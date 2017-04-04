@@ -245,7 +245,7 @@ BEGIN
           actividad,
             CASE WHEN id_actividad_padre is not NULL and tad.nivel>2 THEN
           tpsa.porcentaje_avance::numeric
-        when id_actividad_padre is not NULL and tad.nivel>1 and (tad.id_tipo = 4 or tad.id_tipo = 1) then
+        when id_actividad_padre is not NULL and tad.nivel>1 and (tad.id_tipo = 4 or tad.id_tipo = 1 or tad.id_tipo = 3 ) then --AGREGANDO A LA CONSTRUCCION MAS
          tpsa.porcentaje_avance::numeric
         end  as porcentaje,
         coalesce(tpsa.id_def_proyecto_seguimiento_actividad,0)::integer as id_def_proyecto_seguimiento_actividad,
