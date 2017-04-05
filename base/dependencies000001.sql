@@ -161,5 +161,14 @@ select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
 
 
 
-/***********************************I-DEP-YAC-SP-1-02/04/2017*****************************************/
+/***********************************F-DEP-YAC-SP-1-02/04/2017*****************************************/
+/***********************************I-DEP-YAC-SP-1-05/04/2017*****************************************/
+select pxp.f_delete_testructura_gui ('ACTI', 'SP');
+select pxp.f_delete_testructura_gui ('PRSECO', 'SEPROPONd');
+select pxp.f_delete_testructura_gui ('PRSETO', 'SEPROPONd');
+select pxp.f_delete_testructura_gui ('PRSETO', 'SP');
+select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
+select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
+select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
+/***********************************F-DEP-YAC-SP-1-05/04/2017*****************************************/
 

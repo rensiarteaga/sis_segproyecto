@@ -169,3 +169,11 @@ select pxp.f_insert_tgui ('Proyectos seguimiento Totales', 'Proyectos seguimient
 select pxp.f_insert_tgui ('Parametrización', 'Parametrización de las actividades', 'SEPROPONd', 'si', 1, '', 2, '', '', 'SP');
 
 /********************************************F-DAT-YAC-SP-0-04/04/2017********************************************/
+/********************************************I-DAT-YAC-SP-0-05/04/2017********************************************/
+select pxp.f_insert_tgui ('Actividades', 'actividades', 'ACTI', 'si', 1, 'sis_segproyecto/vista/actividad/ActividadPadre.php', 2, '', 'ActividadPadre', 'SP');
+select pxp.f_insert_tgui ('Definición seguimiento', 'Definición de los proyectos actividades', 'PRAC', 'si', 1, 'sis_segproyecto/vista/def_proyecto/DefProyectoActividad.php', 2, '', 'DefProyectoActividad', 'SP');
+select pxp.f_insert_tgui ('Seguimiento operativo', 'Proyectos seguimientos operativos', 'PRSECO', 'si', 6, 'sis_segproyecto/vista/def_proyecto/DefProyectoSeguimientoConstruccion.php', 2, '', 'DefProyectoSeguimientoConstruccion', 'SP');
+select pxp.f_insert_tgui ('Seguimiento estratégico', 'Proyectos seguimientos Estrategicos', 'PRSETO', 'si', 7, 'sis_segproyecto/vista/def_proyecto/DefProyectoSeguimientoTotal.php', 3, '', 'DefProyectoSeguimientoTotal', 'SP');
+select pxp.f_insert_tgui ('Parametrización', 'Parametrización de las actividades', 'SEPROPONd', 'si', 1, '', 2, '', '', 'SP');
+
+/********************************************F-DAT-YAC-SP-0-05/04/2017********************************************/

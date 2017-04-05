@@ -42,7 +42,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 config: {
                     name: 'actividad',
-                    fieldLabel: 'actividad',
+                    fieldLabel: 'Actividad',
                     allowBlank: true,
                     anchor: '80%',
                     gwidth: 100,

@@ -19,6 +19,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.maestro = config.maestro;
             Phx.vista.DefProyectoActividad.superclass.constructor.call(this, config);
             this.init();
+
             this.bloquearMenus();
         },
         

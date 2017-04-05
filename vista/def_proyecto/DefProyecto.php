@@ -19,77 +19,17 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
 
-                //Botón para Imprimir el resumen
-                this.addButton('btnImprimir', {
-                    text: 'Imprimir',
-                    iconCls: 'bprint',
-                    disabled: true,
-                    handler: this.imprimirCbte,
-                    tooltip: '<b>Imprimir Resumen</b><br/>Imprime el Resumen del proyecto'
-                });
-                //Botón para Cargar Suministro
-                this.addButton('btnSeguimientoSuministro', {
-                    text: 'Suministro',
-                    iconCls: ' x-btn-text bgood',
-                    disabled: true,
-                    handler: this.CargarSuministro,
-                    tooltip: '<b>Suministro</b><br/>Muestra los seguimientos al suministro'
-                });
+
+
 
 
             },
 
 
-            imprimirCbte: function () {
-                console.log('entreeeeeeeeeeeeee')
-                var rec = this.sm.getSelected();
-                var data = rec.data;
-                console.log('valor seleccionado', this.sm.getSelected);
-                if (data) {
-                    Phx.CP.loadingShow();
-                    Ext.Ajax.request({
-                        url: '../../sis_segproyecto/control/DefProyecto/reporteResumenProyecto',
-                        params: {
-                            'id_def_proyecto': data.id_def_proyecto
-                        },
-                        success: this.successExport,
-                        failure: this.conexionFailure,
-                        timeout: this.timeout,
-                        scope: this
-                    });
-                }
 
-            },
-            CargarSuministro: function () {
 
-                this.openFormSuministro('new', this.sm.getSelected());
-            },
 
-            openFormSuministro: function (tipo, record) {
-                var me = this;
-                me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/suministro/Suministro.php',
-                    'Formulario de seguimiento al suministro',
-                    {
-                        modal: true,
-                        width: '60%',
-                        height: '60%'
-                    }, {
-                        data: {
-                            objPadre: me.maestro,
-                            tipo_form: tipo,
-                            datos_originales: record
-                        }
-                    },
-                    this.idContenedor,
-                    'Suministro',
-                    {
-                        config: [{
-                            event: 'successsaveformulario',
-                            delegate: this.onSaveForm,
-                        }],
-                        scope: me
-                    });
-            },
+
             Atributos: [
                 {
                     //configuracion del componente
@@ -311,22 +251,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 }
             ],
 
-            preparaMenu: function (n) {
-                var tb = Phx.vista.DefProyecto.superclass.preparaMenu.call(this);
-                var rec = this.sm.getSelected();
-                this.getBoton('btnImprimir').enable();
-                this.getBoton('btnSeguimientoSuministro').enable();
-
-                return tb;
-            },
-
-            liberaMenu: function () {
-                var tb = Phx.vista.DefProyecto.superclass.liberaMenu.call(this);
-
-                this.getBoton('btnImprimir').disable();
-                this.getBoton('btnSeguimientoSuministro').disable();
-            },
-
             tam_pag: 50,
             title: 'definición proyecto',
             ActSave: '../../sis_segproyecto/control/DefProyecto/insertarDefProyecto',
@@ -357,7 +281,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel: true,
-            bsave: true
+            bsave: true,
+            bexcel:false
             /*
             ,
 
