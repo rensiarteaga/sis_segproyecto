@@ -150,7 +150,10 @@ BEGIN
         WHERE ';
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
+        v_consulta:=v_consulta || ' ORDER BY tipo,id_def_proyecto_actividad ';
 
+        --RAISE NOTICE '%',v_consulta;
+        --RAISE EXCEPTION 'error de provocado de yac';
         --Devuelve la respuesta
         RETURN v_consulta;
 
