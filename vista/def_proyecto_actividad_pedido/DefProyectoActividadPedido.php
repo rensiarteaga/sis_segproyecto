@@ -14,9 +14,11 @@ header("content-type: text/javascript; charset=UTF-8");
 
             constructor: function (config) {
                 this.maestro = config.maestro;
+
                 //llama al constructor de la clase padre
                 Phx.vista.DefProyectoActividadPedido.superclass.constructor.call(this, config);
                 this.init();
+
                 //this.load({params:{start:0, limit:this.tam_pag}})
             },
 
@@ -86,13 +88,11 @@ header("content-type: text/javascript; charset=UTF-8");
                  grid:false,
                  form:true
                  },*/
-
-
                 {
                     config: {
                         name: 'id_pedidos',//se agrega una s para guardar en formato de arreglo[] el name
-                        fieldLabel: 'Pedido',
-                        allowBlank: true,
+                        fieldLabel: 'Proceso y Orden',
+                        allowBlank: false,
                         emptyText: 'Elija una opción...',
                         store: new Ext.data.JsonStore({
                             url: '../../sis_segproyecto/control/DefProyectoActividadPedido/listarPedidos',
@@ -103,12 +103,12 @@ header("content-type: text/javascript; charset=UTF-8");
                                 direction: 'ASC'
                             },
                             totalProperty: 'total',
-                            fields: ['id_pedido', 'pedido', 'nrosap'],
+                            fields: ['id_pedido', 'pedido', 'nrosap', 'nrocontrato', 'codinvitacion', 'suministro','falta_valor'],
                             remoteSort: true,
-                            baseParams: {par_filtro: 'pedido#nrosap'}
+                            baseParams: {par_filtro: 'codinvitacion#pedido#nrosap'}
                         }),
-                        //tpl:'<tpl for="."><div class="x-combo-list-item"><p>Nro. Sap:{nrosap}</p><p>Pedido:{pedido}</p> </div></tpl>',
-                        tpl: '<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{nrosap}</div><p style="padding-left: 20px;">{pedido}</p> </div></tpl>',
+                        tpl:'<tpl for="."><div class="x-combo-list-item"><div class="awesomecombo-item {checked}"><p style="color: green"><b >{codinvitacion} </b> - {suministro}</p></div><p>{falta_valor} <b>{nrosap} </b> - {pedido}</p> </div></tpl>',
+                        //tpl: '<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}"><b>nrosap: </b>{nrosap}<p style="padding-left: 20px;">{pedido}</p></div></tpl>',
                         valueField: 'id_pedido',
                         displayField: 'pedido',
                         gdisplayField: 'pedido',
@@ -121,11 +121,11 @@ header("content-type: text/javascript; charset=UTF-8");
                         pageSize: 15,
                         queryDelay: 1000,
                         anchor: '100%',
-                        gwidth: 150,
+                        gwidth: 350,
                         minChars: 2,
                         enableMultiSelect: true,
                         renderer: function (value, p, record) {
-                            return String.format('( {0} ) {1}', record.data['nrosap'], record.data['pedido']);
+                            return String.format('<p style="color: green">( {0} ) {1}</p><p> ( {2} ) {3}</p>', record.data['codinvitacion'], record.data['suministro'], record.data['nrosap'], record.data['pedido']);
                         }
                     },
                     type: 'AwesomeCombo',
@@ -149,6 +149,25 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'DateField',
                     filters: {pfiltro: 'vped.fechaordenproceder', type: 'date'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: false
+                },
+                {
+                    config: {
+                        name: 'nrocontrato',
+                        fieldLabel: 'Nro. de contrato',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 100,
+
+                        renderer: function (value, p, record) {
+                            //return value?new Date(value).dateFormat('d/m/Y') :''
+                            return value ? value : ''
+                        }
+                    },
+                    type: 'DateField',
+                    filters: {pfiltro: 'nrocontrato', type: 'string'},
                     id_grupo: 1,
                     grid: true,
                     form: false
@@ -348,6 +367,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 'monto',
                 'plazo',
                 'monto_total',
+                'nrocontrato',
+                'codinvitacion',
+                'suministro',
             ],
             sortInfo: {
                 field: 'id_def_proyecto_actividad_pedido',
@@ -356,10 +378,18 @@ header("content-type: text/javascript; charset=UTF-8");
             bdel: true,
             bsave: true,
             bedit: false,
+            bsave: false,
             bexcel: false,
             loadValoresIniciales: function () {
                 Phx.vista.DefProyectoActividadPedido.superclass.loadValoresIniciales.call(this);
                 this.Cmp.id_def_proyecto_actividad.setValue(this.maestro.id_def_proyecto_actividad);
+                this.id_def_proyecto = this.maestro.id_def_proyecto;
+
+                //carga un valor en los parametros del combobox
+                this.Cmp.id_pedidos.store.baseParams.id_def_proyecto = this.maestro.id_def_proyecto;
+                // funcion para recargar el combobox
+                this.Cmp.id_pedidos.modificado = true;
+
             },
 
             onReloadPage: function (m) {

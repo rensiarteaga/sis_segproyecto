@@ -151,13 +151,13 @@ class MODDefProyecto extends MODbase{
 
 
         //Definicion de la lista del resultado del query
-        $this->captura('id_def_proyecto_actividad','int4');
-        $this->captura('id_def_proyecto','int4');
         $this->captura('id_actividad','int4');
-        $this->captura('descripcion','varchar');
         $this->captura('actividad','varchar');
-        $this->captura('plazo','int4');
-        $this->captura('monto_suma','double precision');
+        $this->captura('presupuesto','numeric');
+        $this->captura('duracion','int4');
+        $this->captura('multiplicacion','numeric');
+        $this->captura('valor_ponderado','numeric');
+        $this->captura('valor_ponderado_porcentaje','numeric');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

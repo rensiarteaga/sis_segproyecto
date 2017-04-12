@@ -59,12 +59,15 @@ BEGIN
 						usu2.cuenta as usr_mod,
             vped.pedido,
             vped.nrosap,
+            vped.nrocontrato,
             vped.fechaordenproceder,
             vped.fecha_entrega_contrato_prev,
             vped.monto,
             vped.monedamonto,
             vped.plazo,
-            vped.monto_total
+            vped.monto_total,
+            vped.codinvitacion,
+            vped.suministro
 						from sp.tdef_proyecto_actividad_pedido depracpe
 						inner join segu.tusuario usu1 on usu1.id_usuario = depracpe.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = depracpe.id_usuario_mod
@@ -72,11 +75,14 @@ BEGIN
             p.id_pedido,
             p.pedido,
             p.nrosap,
+            p.nrocontrato,
             p.fechaordenproceder,
             p.fecha_entrega_contrato_prev,
             p.monto,
             p.monedamonto,
             p.plazo,
+            p.codinvitacion,
+            p.suministro,
             p.monto_total from sp.vcsa_proyecto_pedido p) as vped on vped.id_pedido=depracpe.id_pedido
 				    where  ';
 

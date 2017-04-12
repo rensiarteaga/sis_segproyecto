@@ -2,9 +2,9 @@
 /**
  * @package pxP
  * @file    BuscarActividad.php
- * @author  Gonzalo Sarmiento Sejas
- * @date    16-07-2013
- * @description Archivo con la interfaz de usuario que permite la ejecucion de las funcionales del sistema
+ * @author  yac
+ * @date    05-04-2017
+ * @description la interfaz que permite dibujar el arbol de actividdes que se asociaran a una def_proyecto
  */
 header("content-type:text/javascript; charset=UTF-8");
 ?>
@@ -12,7 +12,7 @@ header("content-type:text/javascript; charset=UTF-8");
     Phx.vista.BuscarActividad = Ext.extend(Phx.arbInterfaz, {
         constructor: function (config) {
 
-			
+
             this.maestro = config.data.objPadre.maestro;
             Phx.vista.BuscarActividad.superclass.constructor.call(this, config);
             this.init();
@@ -60,6 +60,9 @@ header("content-type:text/javascript; charset=UTF-8");
         }, {
             name: 'id_actividad',
             type: 'numeric'
+        }, {
+            name: 'tipo_nodo',
+            type: 'numeric'
         }],
         sortInfo: {
             field: 'id_actividad',
@@ -70,38 +73,59 @@ header("content-type:text/javascript; charset=UTF-8");
         },
 
         iniciarEventos: function () {
-            //muestra el evento cuando checkea
+            //Evento cuando checkea
             var me = this; //Cargamos temporalmente la variable
             me.treePanel.on('checkchange', function (node, valor) {
-                this.treePanel.suspendEvents()
-                if (!node.isLeaf()) {
-                    node.expand(true, true, function () {
-                        me.recorrerMetodos(node, valor)
-                    }, me)
-                } else {
-                    var nodoPadre = node.parentNode;
-                    if (valor) {
-                        if (!nodoPadre.attributes.checked) {
+                this.treePanel.suspendEvents();
+                console.log('imprimiendo al node', node)
+                //tickeamos todos los hijos y nietos, donde primero los expandimos
+                node.expand(true, true, function () {
+                    //recorre los nodos y los va tickeando
+                    console.log('mostrando el valor de los nodos', node, valor)
+                    me.recorrerNodos(node, valor)
+                }, me);
 
-                            nodoPadre.getUI().toggleCheck(valor);
-                            console.log('nodo padre',nodoPadre);
+                var nodoPadre = node.parentNode;
+                //revisando cuando se destickeee los datos
+
+                if (!valor) {
+
+                    if (nodoPadre && nodoPadre.attributes) {
+                        if (nodoPadre.findChild('checked', true)) {
+
+                            console.log('Mostrando los checkeeeds')
+                        } else {
+                            console.log('Mostrando los nonooooooo')
+
+                            me.recorreNodePadres(me, nodoPadre, valor);
                         }
-                        //nodoPadre.getUI().toggleCheck(true);
                     }
+                } else {
+                    console.log('entre, soy un valor falso')
+                    me.recorreNodePadres(me, nodoPadre, valor);
+
                 }
+
                 this.treePanel.resumeEvents()
             }, me);
-
         },
-        recorrerMetodos: function (node, valor) {
-
+        recorrerNodos: function (node, valor) {
             node.cascade(function (Mynode) {
+                console.log('tickeee estos valores', Mynode, valor)
                 Mynode.getUI().toggleCheck(valor);
             }, this);
 
-            //console.log(node)
-            //this.treePanel	.syncSize( )
-            ///alert('llega' + valor)
+        },
+
+        recorreNodePadres: function (me, node, valor) {
+            if (node.attributes) {
+                node.getUI().toggleCheck(valor);
+
+                var nodoPadre = node.parentNode;
+                if (nodoPadre) {
+                    me.recorreNodePadres(me,nodoPadre, valor);
+                }
+            }
         },
         getAllChildNodes: function (node) {
             var allNodes = new Array();
@@ -134,31 +158,28 @@ header("content-type:text/javascript; charset=UTF-8");
         nodosCheckeados: function () {
             //var nodoRoot = this.treePanel.getRootNode();
             //var allNodos = this.getAllChildNodes(nodoRoot);
-            var arregloActividades= [];
+            var arregloActividades = [];
             var id_actividades = '';
             this.treePanel.getChecked().forEach(function (node) {
-            	
-            	if(id_actividades ==''){
-            		id_actividades = node.attributes.id_actividad;
-            	}
-            	else
-            	{
-            		id_actividades = id_actividades +','+node.attributes.id_actividad;
-            	}
-               
+
+                if (id_actividades == '') {
+                    id_actividades = node.attributes.id_actividad;
+                }
+                else {
+                    id_actividades = id_actividades + ',' + node.attributes.id_actividad;
+                }
+
             });
             return id_actividades;
-
         },
-
         id_clasificacion: '',
         desc_clasificacion: '',
         btriguerreturn: true,
 
         onButtonTriguerreturn: function () {
-        	
-           this.fireEvent('selectactividades', this, this.nodosCheckeados(), this.maestro.id_def_proyecto);
-			
+
+            this.fireEvent('selectactividades', this, this.nodosCheckeados(), this.maestro.id_def_proyecto);
+
         }
 
     });

@@ -119,28 +119,17 @@ BEGIN
       BEGIN
         --Sentencia de la consulta
         v_consulta:='select
-						acti.id_actividad,
-						acti.id_actividad_padre,
-						acti.actividad,
-						acti.estado_reg,
-						acti.fecha_reg,
-						acti.usuario_ai,
-						acti.id_usuario_reg,
-						acti.id_usuario_ai,
-						acti.fecha_mod,
-						acti.id_usuario_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        case
-                          when acti.id_actividad_padre is null then
-                             ''raiz''::varchar
-                          else
-                             ''rama''::varchar
-                        end as  tipo_nodo,
-                        ''false''::varchar as checked
-						from sp.tactividad acti
-						inner join segu.tusuario usu1 on usu1.id_usuario = acti.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = acti.id_usuario_mod
+                      acti.id_actividad,
+                      acti.id_actividad_padre,
+                      acti.actividad,
+                      case
+                         when acti.id_actividad_padre is null then ''raiz''::varchar
+                         else ''rama''::varchar
+                      end as tipo_nodo,
+                       ''false''::varchar as checked,
+                      acti.id_tipo,
+                      t.tipo
+                from sp.tactividad acti join sp.ttipo t on acti.id_tipo=t.id_tipo
 				        where  ';
 
         --Definicion de la respuesta

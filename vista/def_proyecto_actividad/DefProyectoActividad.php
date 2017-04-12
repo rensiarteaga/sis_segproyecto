@@ -17,6 +17,14 @@ header("content-type: text/javascript; charset=UTF-8");
             //llama al constructor de la clase padre
             Phx.vista.DefProyectoActividad.superclass.constructor.call(this, config);
             this.init();
+            //Botón para asignar suministros
+            this.addButton('btnAsignar', {
+                text: 'Asignar',
+                iconCls: 'bchecklist',
+                disabled: false,
+                handler: this.AsignarActividades,
+                tooltip: '<b>Asignar actividades</b><br/>Asigna actividades a la respectiva definición de proyecto'
+            });
             //this.load({params: {start: 0, limit: this.tam_pag}})
         },
         loadValoresIniciales: function () {
@@ -90,8 +98,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         //calculando el tamaño del nivel del arbol
                         //var tamanio = record.data['ancestors'].replace(/[^>]/g, "").length + 1;
                         var flechas = '';
-
-                        for (i = 0; i < record.data['nivel']; i++) {
+                        //calculando la cantidad de flechas de acuerdo a los hijos(1 flecha) y nietos(2 flecha)
+                        for (i = 1; i < record.data['nivel']; i++) {
                             flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                         }
                         if (record.data['nivel'] == 1) {
@@ -124,7 +132,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 egrid: true,
                 form: true
             },
-
 
             {
                 config: {
@@ -227,9 +234,10 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         bdel: true,
         bsave: true,
+        bnew: false,
         bedit: false,
         bexcel: false,
-        onButtonNew: function () {
+        AsignarActividades: function () {
             //abrir formulario de solicitud
             var me = this;
             me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/actividad/BuscarActividad.php',
@@ -266,15 +274,12 @@ header("content-type: text/javascript; charset=UTF-8");
 
                 success: me.successSaveArb,
                 //argument: me.argumentSave,
-
                 failure: me.conexionFailure,
                 timeout: me.timeout,
                 scope: me
             });
 
             interface.panel.close();
-
-
         },
 
         successSaveArb: function (resp) {
@@ -285,13 +290,13 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         south: {
             url: '../../../sis_segproyecto/vista/def_proyecto_actividad_pedido/DefProyectoActividadPedido.php',
-            title: 'definicion proyecto actividad pedido',
+            title: 'Asignación de proceso orden',
 
-            height: 200,
+            height: 300,
             cls: 'DefProyectoActividadPedido',
             collapsed: true
-        }
-        ,
+        },
+
 
 
     })

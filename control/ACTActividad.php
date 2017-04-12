@@ -75,9 +75,10 @@ function listarActividadArb() {
 
         array_push($arreglo, array('nombre' => 'id', 'valor' => 'id_actividad'));
         array_push($arreglo, array('nombre' => 'id_p', 'valor' => 'id_actividad_padre'));
-        array_push($arreglo, array('nombre' => 'text', 'valores' => '[#id_actividad#]-#actividad#'));
+        //array_push($arreglo, array('nombre' => 'text', 'valores' => '[#id_actividad#]-#actividad#'));
+        array_push($arreglo, array('nombre' => 'text', 'valores' => '#actividad#'));
         array_push($arreglo, array('nombre' => 'cls', 'valor' => 'descripcion'));
-        array_push($arreglo, array('nombre' => 'qtip', 'valores' => '<b>#id_actividad#</b><br/>#actividad#'));
+        array_push($arreglo, array('nombre' => 'qtip', 'valores' => '<b>#id_actividad# </b><br><b>#actividad#</b><br/>#tipo#'));
 		
         /*Estas funciones definen reglas para los nodos en funcion a los tipo de nodos que contenga cada uno*/
         $this->res->addNivelArbol('tipo_nodo', 'raiz', array('leaf' => false, 'draggable' => false, 'allowDelete' => true, 'allowEdit' => false, 'cls' => 'folder', 'tipo_nodo' => 'raiz', 'icon' => '../../../lib/imagenes/a_form_edit.png'), $arreglo,$arreglo_valores);

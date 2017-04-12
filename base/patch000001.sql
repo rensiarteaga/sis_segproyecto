@@ -2,7 +2,7 @@
 
 /***********************************I-SCP-YAC-SP-0-13/02/2017****************************************/
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tactividad (
   id_actividad SERIAL NOT NULL,
@@ -37,13 +37,11 @@ CREATE USER MAPPING FOR dbetr_capacitacion_admin
 SERVER mssql_csa_prod
 OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 
-
-
--- diseñado la tabla foranea del csa proyecto pedido
--- usamos el bytea para poder recicir los nvchar de sql server
+-- diseñado la tabla foranea del csa proyecto pedido invitacion
+-- usamos el bytea para poder recibir los nvchar de sql server
 -- En la consulta de sql server es necesario poner un alias(as)cuando se recupera de una nvchar
-drop VIEW IF EXISTS sp.vcsa_proyecto_pedido;
-drop FOREIGN TABLE IF EXISTS sp.csa_proyecto_pedido;
+DROP VIEW IF EXISTS sp.vcsa_proyecto_pedido;
+DROP FOREIGN TABLE IF EXISTS sp.csa_proyecto_pedido;
 CREATE FOREIGN TABLE sp.csa_proyecto_pedido (
   idproyecto                    INTEGER NULL,
   codproyecto                   BYTEA NULL,
@@ -60,7 +58,10 @@ CREATE FOREIGN TABLE sp.csa_proyecto_pedido (
   monto                         FLOAT NULL,
   monedamonto                   INTEGER NULL,
   plazo                         INTEGER NULL,
-  monto_total                   FLOAT NULL
+  monto_total                   FLOAT NULL,
+  idinvitacion                  INTEGER NULL,
+  codinvitacion                 BYTEA NULL,
+  suministro                    BYTEA NULL
 )
 SERVER mssql_csa_prod
 OPTIONS (QUERY 'SELECT
@@ -79,7 +80,10 @@ OPTIONS (QUERY 'SELECT
   monto,
   monedamonto,
   plazo,
-  monto_total
+  monto_total,
+  idinvitacion,
+  cast(CodInvitacion as NVARCHAR(20)) as codinvitacion,
+  cast(Suministro as NVARCHAR(255)) as suministro
 FROM csa_prod.dbo.proyecto_pedido'
 );
 
@@ -103,14 +107,17 @@ CREATE OR REPLACE VIEW sp.vcsa_proyecto_pedido AS
     monto,
     monedamonto,
     plazo,
-    monto_total
+    monto_total,
+    idinvitacion,
+    convert_from(codinvitacion, 'LATIN1'):: VARCHAR as codinvitacion,
+    convert_from(suministro, 'LATIN1')::VARCHAR as suministro
   FROM sp.csa_proyecto_pedido;
 
 /***********************************F-SCP-YAC-SP-0-14/02/2017****************************************/
 
 /***********************************I-SCP-YAC-SP-0-01/03/2017****************************************/
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tdef_proyecto (
   id_def_proyecto SERIAL NOT NULL,
@@ -124,7 +131,7 @@ CREATE TABLE sp.tdef_proyecto (
 WITH (oids = false);
 
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tdef_proyecto_actividad (
   id_def_proyecto_actividad SERIAL NOT NULL,
@@ -137,7 +144,8 @@ CREATE TABLE sp.tdef_proyecto_actividad (
 WITH (oids = false);
 /***********************************F-SCP-YAC-SP-0-01/03/2017****************************************/
 
-/***********************************I-SCP-JUAN-SP-0-03/03/2017****************************************/ --------------- SQL ---------------
+/***********************************I-SCP-JUAN-SP-0-03/03/2017****************************************/
+
 
 CREATE TABLE sp.tdef_proyecto_actividad_pedido (
   id_def_proyecto_actividad_pedido SERIAL NOT NULL,
@@ -151,7 +159,7 @@ WITH (oids = false);
 
 
 /***********************************I-SCP-JUAN-SP-0-08/03/2017****************************************/
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tdef_proyecto_seguimiento (
   id_def_proyecto_seguimiento SERIAL,
@@ -169,7 +177,7 @@ CREATE TABLE sp.tdef_proyecto_seguimiento (
 
 WITH (oids = false);
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tdef_proyecto_seguimiento_actividad (
   id_def_proyecto_seguimiento_actividad SERIAL NOT NULL,
@@ -192,7 +200,7 @@ ALTER TABLE sp.tactividad
 ALTER TABLE sp.tactividad
   ADD COLUMN id_tipo INTEGER;
 
---------------- SQL ---------------
+
 
 ALTER TABLE sp.tactividad
   ADD CONSTRAINT tactividad_fk FOREIGN KEY (id_tipo)
@@ -203,7 +211,7 @@ NOT DEFERRABLE;
 
 /***********************************F-SCP-YAC-SP-0-27/03/2017****************************************/
 /***********************************I-SCP-YAC-SP-0-30/03/2017****************************************/
---------------- SQL ---------------
+
 CREATE TABLE sp.tsuministro (
   id_seguimiento_suministro SERIAL NOT NULL,
   id_def_proyecto INTEGER,
@@ -220,7 +228,7 @@ WITH (oids = false);
 
 
 /***********************************I-SCP-JUAN-SP-0-31/03/2017****************************************/
---------------- SQL ---------------
+
 
 CREATE TABLE sp.ttipo (
   id_tipo SERIAL NOT NULL,
@@ -230,7 +238,7 @@ CREATE TABLE sp.ttipo (
 
 WITH (oids = false);
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.testado_seguimiento (
   id_estado_seguimiento SERIAL NOT NULL,
@@ -241,7 +249,7 @@ CREATE TABLE sp.testado_seguimiento (
 
 WITH (oids = false);
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tdef_proyecto_seguimiento_total (
   id_def_proyecto_seguimiento_total SERIAL NOT NULL,
@@ -253,7 +261,7 @@ CREATE TABLE sp.tdef_proyecto_seguimiento_total (
 
 WITH (oids = false);
 
---------------- SQL ---------------
+
 
 CREATE TABLE sp.tproy_seguimiento_actividad_estado (
   id_proy_seguimiento_actividad_estado SERIAL,

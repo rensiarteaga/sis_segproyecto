@@ -146,6 +146,7 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
         $this->captura('nivel', 'int4');
         $this->captura('interno', 'numeric');
+        $this->captura('tipo', 'int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -173,6 +174,7 @@ class MODDefProyectoActividad extends MODbase
         $this->captura('id_def_proyecto_seguimiento_actividad', 'int4');
         $this->captura('nivel', 'int4');
         $this->captura('interno', 'numeric');
+        $this->captura('tipo', 'int4');
 
 
         //Ejecuta la instruccion

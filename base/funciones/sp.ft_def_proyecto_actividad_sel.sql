@@ -142,7 +142,8 @@ BEGIN
         end  as porcentaje,
         coalesce(id_def_proyecto_seguimiento_actividad,0)::integer as id_def_proyecto_seguimiento_actividad,
           nivel,
-          round(interno,2) as interno
+          round(interno,2) as interno,
+        tad.id_tipo as tipo
         from sp.tdef_proyecto_seguimiento_actividad tpsa
           join sp.tdef_proyecto_seguimiento tps on tpsa.id_def_proyecto_seguimiento = tps.id_def_proyecto_seguimiento and tps.id_def_proyecto_seguimiento=(select id_def_proyecto_seguimiento from sp.tdef_proyecto_seguimiento ORDER BY fecha DESC LIMIT 1)
           RIGHT JOIN temp_actividad_datos tad ON tpsa.id_def_proyecto_actividad=tad.id_def_proyecto_actividad
@@ -194,7 +195,8 @@ BEGIN
         end  as porcentaje,
         coalesce(tpsa.id_def_proyecto_seguimiento_actividad,0)::integer as id_def_proyecto_seguimiento_actividad,
           nivel,
-          round(interno,2) as interno
+          round(interno,2) as interno,
+        tad.id_tipo as tipo
         from sp.tdef_proyecto_seguimiento_actividad tpsa
           join sp.tdef_proyecto_seguimiento tps on tpsa.id_def_proyecto_seguimiento = tps.id_def_proyecto_seguimiento
           RIGHT JOIN temp_actividad_datos tad ON tpsa.id_def_proyecto_actividad=tad.id_def_proyecto_actividad
@@ -202,10 +204,11 @@ BEGIN
 
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
+        v_consulta:=v_consulta || ' ORDER BY tpsa.id_def_proyecto_seguimiento_actividad';
 
 
-        RAISE NOTICE '%', v_consulta;
-        --RAISE EXCEPTION ' prueba de guardado';
+        RAISE NOTICE '% ', v_parametros.id_def_proyecto;
+        --RAISE EXCEPTION ' prueba de datos';
         --Devuelve la respuesta
         RETURN v_consulta;
 

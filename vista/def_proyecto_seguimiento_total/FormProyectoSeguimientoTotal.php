@@ -483,8 +483,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     return value;
                 })  
             };
-
-            if (i > 0 && !this.editorDetail.isVisible()) {
+            
+            if (i > 0 && !this.editorDetail.isVisible() ) {
                 Phx.vista.FormProyectoSeguimientoTotal.superclass.onSubmit.call(this, o, undefined, true);
             }
             else {

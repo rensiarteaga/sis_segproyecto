@@ -227,19 +227,14 @@ BEGIN
             )
             RETURNING id_def_proyecto_seguimiento_actividad
               INTO v_id_def_proyecto_seguimiento_actividad;
-            IF ((j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC >= 0)
-            THEN
-              v_promedio_pro_seg:=v_promedio_pro_seg +
-                                  (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC;
-              contador := contador + 1;
-            END IF;
 
           END LOOP;
-
           UPDATE sp.tdef_proyecto_seguimiento
           SET
-            porcentaje = (v_promedio_pro_seg / contador)
+            porcentaje = (SELECT sp.f_calcular_porcentaje_total_seguimiento(v_parametros.id_def_proyecto,
+                                                                            v_id_def_proyecto_seguimiento))
           WHERE id_def_proyecto_seguimiento = v_id_def_proyecto_seguimiento;
+
         ELSE
           --Sentencia de la modificacion
           UPDATE sp.tdef_proyecto_seguimiento
@@ -271,19 +266,16 @@ BEGIN
             WHERE id_def_proyecto_seguimiento_actividad =
                   (j_def_proyecto_seguimiento_actividad ->> 'id_def_proyecto_seguimiento_actividad') :: INTEGER;
 
-            IF ((j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC >= 0)
-            THEN
-              v_promedio_pro_seg:=v_promedio_pro_seg +
-                                  (j_def_proyecto_seguimiento_actividad ->> 'porcentaje') :: NUMERIC;
-              contador := contador + 1;
-            END IF;
-
           END LOOP;
+
           UPDATE sp.tdef_proyecto_seguimiento
           SET
-            porcentaje = (v_promedio_pro_seg / contador)
+            porcentaje = (SELECT sp.f_calcular_porcentaje_total_seguimiento(v_parametros.id_def_proyecto,
+                                                                            v_parametros.id_def_proyecto_seguimiento))
           WHERE id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento;
         END IF;
+
+
         --Definicion de la respuesta
         v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
                                     'Seguimiento de proyectos almacenado(a) con exito (id_def_proyecto_seguimiento' ||

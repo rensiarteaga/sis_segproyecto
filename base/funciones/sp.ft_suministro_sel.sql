@@ -45,6 +45,27 @@ BEGIN
   if(p_transaccion='SP_SUM_SEL')then
 
     begin
+
+      insert into sp.tsuministro(
+        documento_emarque,
+        invitacion,
+        adjudicacion,
+        llegada_sitio,
+        id_def_proyecto,
+        id_def_proyecto_actividad,
+        estado_reg)
+        select case when tact.id_actividad_padre is not null then 0::bit else 1::bit end ,
+          case when tact.id_actividad_padre is not null then 0::bit else 1::bit end ,
+          case when tact.id_actividad_padre is not null then 0::bit else 1::bit end ,
+          case when tact.id_actividad_padre is not null then 0::bit else 1::bit end ,
+          p.id_def_proyecto ,deprac.id_def_proyecto_actividad,'activo'
+        from sp.tdef_proyecto_actividad deprac
+          join sp.tdef_proyecto p on p.id_def_proyecto=deprac.id_def_proyecto
+          join sp.tactividad tact on tact.id_actividad = deprac.id_actividad
+          left join sp.tsuministro s on s.id_def_proyecto_actividad=deprac.id_def_proyecto_actividad
+          join sp.tactividad a on a.id_actividad=deprac.id_actividad and a.id_tipo=2
+        where  s.id_seguimiento_suministro is null;
+
       --Sentencia de la consulta
       v_consulta:=' select
 CASE WHEN s.id_seguimiento_suministro ISNULL THEN 0::INTEGER ELSE s.id_seguimiento_suministro END as id_seguimiento_suministro,
@@ -67,8 +88,8 @@ CASE WHEN tact.id_actividad_padre ISNULL THEN TRUE::bool ELSE FALSE::bool END as
 
       --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
-      v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-RAISE NOTICE '%',v_consulta;
+      v_consulta:=v_consulta||' order by  a.actividad,' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
       --Devuelve la respuesta
       -- RAISE NOTICE '%',v_consulta;
       -- raise exception 'error juan';

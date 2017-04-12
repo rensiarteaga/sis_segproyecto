@@ -129,16 +129,16 @@ header("content-type: text/javascript; charset=UTF-8");
                     type: 'TextField',
                     filters: {pfiltro: 'sepr.estado_reg', type: 'string'},
                     id_grupo: 1,
-                    grid: true,
+                    grid: false,
                     form: false
                 },
                 {
                     config: {
                         name: 'fecha',
-                        fieldLabel: 'fecha seguimiento',
+                        fieldLabel: 'Fecha seguimiento',
                         allowBlank: true,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 150,
                         format: 'd/m/Y',
                         renderer: function (value, p, record) {
                             return value ? value.dateFormat('d/m/Y') : ''
@@ -153,10 +153,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 {
                     config: {
                         name: 'descripcion',
-                        fieldLabel: 'descripcion',
+                        fieldLabel: 'Descripción',
                         allowBlank: true,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 200,
                         maxLength: 255
                     },
                     type: 'TextField',
@@ -168,10 +168,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 {
                     config: {
                         name: 'porcentaje',
-                        fieldLabel: 'porcentaje',
+                        fieldLabel: 'Porcentaje avance',
                         allowBlank: true,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 150,
                         maxLength: 393219
                     },
                     type: 'NumberField',
@@ -328,11 +328,11 @@ header("content-type: text/javascript; charset=UTF-8");
             openForm: function (tipo, record) {
                 var me = this;
                 me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/FormProyectoSeguimiento.php',
-                    'Formulario de seguimiento de proyecto',
+                    'Formulario de seguimiento operativo del proyecto',
                     {
                         modal: true,
-                        width: '50%',
-                        height: '60%'
+                        width: '70%',
+                        height: '80%'
                     }, {
                         data: {
                             objPadre: me.maestro,
@@ -353,7 +353,6 @@ header("content-type: text/javascript; charset=UTF-8");
             onSaveForm: function (frmproseg) {
                 var me = this;
                 me.reload();
-                console.log('entre a cerrar el paneeellll', frmproseg)
                 frmproseg.panel.close();
                 //alert("paso");
             },
@@ -375,7 +374,7 @@ header("content-type: text/javascript; charset=UTF-8");
             },
 
             bdel: true,
-            bsave: true,
+            bsave: false,
             bexcel: false
         }
     )

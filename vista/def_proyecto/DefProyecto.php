@@ -45,7 +45,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'id_proyecto',
                         fieldLabel: 'Proyecto',
-                        allowBlank: true,
+                        allowBlank: false,
                         emptyText: 'Elija una opción...',
                         store: new Ext.data.JsonStore({
                             url: '../../sis_segproyecto/control/DefProyecto/listarProyectos',
@@ -89,7 +89,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'descripcion',
                         fieldLabel: 'Descripción',
-                        allowBlank: true,
+                        allowBlank: false,
                         anchor: '80%',
                         gwidth: 100,
                         maxLength: 200
@@ -104,7 +104,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'fecha_inicio_teorico',
                         fieldLabel: 'Fecha inicio teorico',
-                        allowBlank: true,
+                        allowBlank: false,
                         anchor: '80%',
                         gwidth: 100,
                         format: 'd/m/Y',

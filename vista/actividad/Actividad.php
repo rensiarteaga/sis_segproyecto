@@ -43,7 +43,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config: {
                     name: 'actividad',
                     fieldLabel: 'Actividad',
-                    allowBlank: true,
+                    allowBlank: false,
                     anchor: '80%',
                     gwidth: 100,
                     maxLength: 150

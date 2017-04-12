@@ -20,40 +20,39 @@
         $sumPresupuesto = 0;
         $sumMultiplicacion = 0;
         $sumPonderacion = 0;
+        $sumPonderacionPorcentaje = 0;
 
-        foreach ($this->datos_detalle as $objDato_detalle){
-            $sumPresupuesto += $objDato_detalle['monto_suma'];
-            $sumMultiplicacion += ($objDato_detalle['plazo'] * $objDato_detalle['monto_suma']);
-        }
         foreach ($this->datos_detalle as $objDato_detalle) { ?>
             <tr>
                 <td>
                     <?php echo $objDato_detalle['actividad']; ?>
                 </td>
                 <td>
-                    <?php echo $objDato_detalle['monto_suma']; ?>
+                    <?php echo $objDato_detalle['presupuesto']; ?>
                 </td>
                 <td>
 
-                    <?php echo $objDato_detalle['plazo']; ?>
+                    <?php echo $objDato_detalle['duracion']; ?>
 
                 </td>
                 <td>
 
-                    <?php echo $objDato_detalle['plazo'] * $objDato_detalle['monto_suma']; ?>
+                    <?php echo $objDato_detalle['multiplicacion']; ?>
 
                 </td>
 
                 <td>
-                    <?php
-                    echo round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4); ?>
+                    <?php echo $objDato_detalle['valor_ponderado']; ?>
                 </td>
                 <td>
-                    <?php echo round((($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion)*100,2)?>%
+                    <?php echo $objDato_detalle['valor_ponderado_porcentaje']; ?>%
                 </td>
             </tr>
-        <?php
-            $sumPonderacion += round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4);
+            <?php
+            $sumPonderacion += $objDato_detalle['valor_ponderado'];
+            $sumPonderacionPorcentaje += $objDato_detalle['valor_ponderado_porcentaje'];
+            $sumMultiplicacion += $objDato_detalle['multiplicacion'];
+            $sumPresupuesto += $objDato_detalle['presupuesto'];
 
         } ?>
         <tr>
@@ -71,10 +70,9 @@
                     <?php echo $sumMultiplicacion ?>
                 </b>
             </td>
-            <td><?php echo $sumPonderacion?></td>
-            <td><?php echo ($sumPonderacion*100)?>%</td>
+            <td><?php echo $sumPonderacion ?></td>
+            <td><?php echo $sumPonderacionPorcentaje ?>%</td>
         </tr>
-
         </tbody>
     </table>
 </font>

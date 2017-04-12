@@ -13,8 +13,7 @@ header("content-type: text/javascript; charset=UTF-8");
         bsave: false,
         require: '../../../sis_segproyecto/vista/def_proyecto/DefProyecto.php',
         requireclase: 'Phx.vista.DefProyecto',
-        title: 'Actividad hijo',
-        nombreVista: 'ActividadHijo',
+        title: 'Seguimiento Operativo',
 
         constructor: function (config) {
             this.maestro = config.maestro;
@@ -22,28 +21,26 @@ header("content-type: text/javascript; charset=UTF-8");
             this.init();
             //Botón para Imprimir el resumen
             this.addButton('btnImprimir', {
-                text: 'Imprimir',
+                text: 'Tabla de ponderación',
                 iconCls: 'bprint',
                 disabled: true,
                 handler: this.imprimirCbte,
-                tooltip: '<b>Imprimir Resumen</b><br/>Imprime el Resumen del proyecto'
+                tooltip: '<b>Imprimir Reporte tabla de ponderación</b><br/>Imprimr la tabla de ponderación del proyecto'
             });
             //Botón para Cargar Suministro
             this.addButton('btnSeguimientoSuministro', {
                 text: 'Suministro',
-                iconCls: ' x-btn-text bgood',
+                iconCls: 'bchecklist',
                 disabled: true,
                 handler: this.CargarSuministro,
-                tooltip: '<b>Suministro</b><br/>Muestra los seguimientos al suministro'
+                tooltip: '<b>Registro de Suministro</b><br/>Formulario para el registro de los seguimientos del proyecto'
             });
             this.bloquearMenus();
 
         },
         imprimirCbte: function () {
-            console.log('entreeeeeeeeeeeeee')
             var rec = this.sm.getSelected();
             var data = rec.data;
-            console.log('valor seleccionado', this.sm.getSelected);
             if (data) {
                 Phx.CP.loadingShow();
                 Ext.Ajax.request({

@@ -81,7 +81,7 @@ class ACTDefProyecto extends ACTbase
 
         //parametros basicos
         $tamano = 'LETTER';
-        $orientacion = 'L';
+        $orientacion = 'P';
         $titulo = 'Consolidado';
 
         $this->objParam->addParametro('orientacion', $orientacion);

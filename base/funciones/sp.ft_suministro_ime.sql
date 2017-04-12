@@ -14,13 +14,13 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'sp.tsuministro'
  AUTOR: 		 (admin)
  FECHA:	        12-11-2016 14:03:32
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
@@ -38,50 +38,17 @@ BEGIN
 	v_nombre_funcion = 'sp.ft_suministro_ime';
 	v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'SP_SUM_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		12-11-2016 14:03:32
 	***********************************/
 
 	if(p_transaccion='SP_SUM_INS')then
 		begin
-			if (v_parametros.tipo_guardar=false) THEN
 
-				--Sentencia de la insercion
-				insert into sp.tsuministro(
-					id_def_proyecto,
-					id_def_proyecto_actividad,
-					documento_emarque,
-					estado_reg,
-					invitacion,
-					adjudicacion,
-					llegada_sitio,
-					fecha_reg,
-					usuario_ai,
-					id_usuario_reg,
-					id_usuario_ai,
-					id_usuario_mod,
-					fecha_mod
-				) values(
-					v_parametros.id_def_proyecto,
-					v_parametros.id_def_proyecto_actividad,
-					v_parametros.documento_emarque,
-					'activo',
-					v_parametros.invitacion,
-					v_parametros.adjudicacion,
-					v_parametros.llegada_sitio,
-					now(),
-					v_parametros._nombre_usuario_ai,
-					p_id_usuario,
-					v_parametros._id_usuario_ai,
-					null,
-					null
-
-				)RETURNING id_seguimiento_suministro into v_id_seguimiento_suministro;
-
-			else
+			if (v_parametros.tipo_guardar=TRUE) THEN
 
 				update sp.tsuministro set
 					id_def_proyecto = v_parametros.id_def_proyecto,
@@ -96,24 +63,43 @@ BEGIN
 					usuario_ai = v_parametros._nombre_usuario_ai
 				where id_seguimiento_suministro=v_parametros.id_seguimiento_suministro;
 
+				/*else
+
+            --Sentencia de la insercion
+              insert into sp.tsuministro(
+          id_def_proyecto,
+          id_def_proyecto_actividad,
+          documento_emarque,
+          estado_reg,
+          invitacion,
+          adjudicacion,
+          llegada_sitio,
+          fecha_reg,
+          usuario_ai,
+          id_usuario_reg,
+          id_usuario_ai,
+          id_usuario_mod,
+          fecha_mod
+                ) values(
+          v_parametros.id_def_proyecto,
+          v_parametros.id_def_proyecto_actividad,
+          v_parametros.documento_emarque,
+          'activo',
+          v_parametros.invitacion,
+          v_parametros.adjudicacion,
+          v_parametros.llegada_sitio,
+          now(),
+          v_parametros._nombre_usuario_ai,
+          p_id_usuario,
+          v_parametros._id_usuario_ai,
+          null,
+          null
+
+          )RETURNING id_seguimiento_suministro into v_id_seguimiento_suministro;*/
+
 			end if;
 
-			insert into sp.tsuministro(
-				documento_emarque,
-				invitacion,
-				adjudicacion,
-				llegada_sitio,
-				id_def_proyecto,
-				id_def_proyecto_actividad,
-				estado_reg
-			) select 1::bit,1::bit,1::bit,1::bit,p.id_def_proyecto ,deprac.id_def_proyecto_actividad,'activo'
-				from sp.tdef_proyecto_actividad deprac
-					join sp.tdef_proyecto p on p.id_def_proyecto=deprac.id_def_proyecto
-					join sp.tactividad tact on tact.id_actividad = deprac.id_actividad
-					left join sp.tsuministro s on s.id_def_proyecto_actividad=deprac.id_def_proyecto_actividad
-					join sp.tactividad a on a.id_actividad=deprac.id_actividad and a.tipo_actividad='suministro'
-				where tact.id_actividad_padre is null and s.id_seguimiento_suministro is null
-			RETURNING id_seguimiento_suministro into v_id_seguimiento_suministro;
+
 
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Seguimiento al suministro almacenado(a) con exito (id_seguimiento_suministro'||v_id_seguimiento_suministro||')');
@@ -124,10 +110,10 @@ BEGIN
 
 		end;
 
-		/*********************************    
+		/*********************************
      #TRANSACCION:  'SP_SUM_MOD'
      #DESCRIPCION:	Modificacion de registros
-     #AUTOR:		admin	
+     #AUTOR:		admin
      #FECHA:		12-11-2016 14:03:32
     ***********************************/
 
@@ -157,10 +143,10 @@ BEGIN
 
 		end;
 
-		/*********************************    
+		/*********************************
      #TRANSACCION:  'SP_SUM_ELI'
      #DESCRIPCION:	Eliminacion de registros
-     #AUTOR:		admin	
+     #AUTOR:		admin
      #FECHA:		12-11-2016 14:03:32
     ***********************************/
 

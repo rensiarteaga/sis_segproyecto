@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION sp.ft_pedido_sel(p_administrador INTEGER, p_id_usuario INTEGER, p_tabla CHARACTER VARYING,
-                                         p_transaccion   CHARACTER VARYING)
+                                            p_transaccion   CHARACTER VARYING)
   RETURNS CHARACTER VARYING
 LANGUAGE plpgsql
 AS $$
@@ -55,9 +55,12 @@ BEGIN
                         vpd.fecha_entrega_contrato_prev::varchar,
                         vpd.monto,
                         vpd.monedamonto,
-                        plazo
-                        FROM  sp.vcsa_proyecto_pedido vpd
-				        where  ';
+                        plazo,
+                        codinvitacion,
+                        suministro,
+                        case WHEN plazo is NULL then ''<i style="color: red">( Faltan valores ) </i>''::varchar else ''<i style="color: green">( Completo ) </i>''::varchar END as falta_valor
+                        FROM  sp.vcsa_proyecto_pedido vpd join sp.tdef_proyecto dp on dp.id_proyecto= vpd.id_proyecto
+				        where ';
 
       --Definicion de la respuesta
       v_consulta:=v_consulta || v_parametros.filtro;
@@ -83,13 +86,14 @@ BEGIN
 
       BEGIN
         --Sentencia de la consulta de conteo de registros
-        v_consulta:='Select DISTINCT
-                        count(vpd.id_pedido)
-                        FROM  sp.vcsa_proyecto_pedido vpd
+        v_consulta:='Select
+                        count( DISTINCT vpd.id_pedido)
+                        FROM  sp.vcsa_proyecto_pedido vpd join sp.tdef_proyecto dp on dp.id_proyecto= vpd.id_proyecto
 					    where ';
 
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
+         raise NOTICE  'consulta: %',v_consulta;
 
         --Devuelve la respuesta
         RETURN v_consulta;

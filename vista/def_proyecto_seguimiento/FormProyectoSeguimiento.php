@@ -32,7 +32,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.init();
             if (this.data.tipo_form == 'new') {
                 this.mestore.baseParams = {id_def_proyecto: config.data.objPadre.id_def_proyecto};
-                console.log('imprimiendo el mestore->',this.mestore.baseParams);
+                console.log('imprimiendo el mestore->', this.mestore.baseParams);
             } else {
 
                 this.mestore.baseParams = {
@@ -95,7 +95,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config: {
                     name: 'fecha',
                     fieldLabel: 'Fecha seguimiento',
-                    allowBlank: true,
+                    allowBlank: false,
                     width: 100,
                     format: 'd/m/Y'
                 },
@@ -109,7 +109,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config: {
                     name: 'descripcion',
                     fieldLabel: 'Descripción',
-                    allowBlank: true,
+                    allowBlank: false,
                     width: 300,
 
                     maxLength: 255
@@ -193,15 +193,24 @@ header("content-type: text/javascript; charset=UTF-8");
 
             var arra = [], i, me = this;
             record = me.megrid.store.getAt(i);
-            console.log('datos de prueba yac', record)
+            // console.log('datos de prueba yac', record)
             //los padres no puden colocar valores en la evaluacion
             //record.data.nivel == 1 --> padre
             if (record.data.nivel == 1) {
+                return false;
+            } else if (record.data.nivel == 2 && record.data.tipo == "3") {
                 return false;
             }
             else {
                 return true;
             }
+
+        },
+        onUpdateRegister: function (r, i, a, b) {
+            console.log('todos los paremtros se imprime', r, i, a, b)
+            var arra = [], i, me = this;
+            record = me.megrid.store.getAt(i);
+            console.log('datos de prueba yac', record)
 
         },
         buildDetailGrid: function () {
@@ -213,7 +222,7 @@ header("content-type: text/javascript; charset=UTF-8");
             }, {
                 name: 'porcentaje',
                 type: 'numeric'
-            },{
+            }, {
                 name: 'ponderado',
                 type: 'numeric'
             }
@@ -226,7 +235,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 id: 'id_def_proyecto_actividad',
                 root: 'datos',
                 totalProperty: 'total',
-                fields: ['id_def_proyecto_actividad', 'id_def_proyecto_seguimiento_actividad', 'actividad', 'porcentaje', 'nivel','interno'],
+                fields: ['id_def_proyecto_actividad', 'id_def_proyecto_seguimiento_actividad', 'actividad', 'porcentaje', 'nivel', 'interno', 'tipo'],
                 remoteSort: true,
                 baseParams: {dir: 'ASC', sort: 'id_def_proyecto_actividad', limit: '50', start: '0'}
             });
@@ -244,8 +253,8 @@ header("content-type: text/javascript; charset=UTF-8");
             //al cancelar la edicion
             //this.editorDetail.on('canceledit', this.onCancelAdd , this);
 
-            //al cancelar la edicion
-            //this.editorDetail.on('validateedit', this.onUpdateRegister, this);
+            //al terminar la edicion
+            this.editorDetail.on('validateedit', this.onUpdateRegister, this);
 
             // this.editorDetail.on('afteredit', this.onAfterEdit, this);
 
@@ -270,13 +279,18 @@ header("content-type: text/javascript; charset=UTF-8");
                         sortable: false,
                         renderer: function (value, p, record) {
                             var flechas = '';
-                            for (i = 0; i < record.data['nivel']; i++) {
+                            for (i = 1; i < record.data['nivel']; i++) {
                                 flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                             }
-                            return String.format(flechas + ' {0}', record.data['actividad']);
+                            if (record.data['nivel'] == 1) {
+                                return String.format('<h4> {0}</h4>', record.data['actividad']);
+                            } else {
+                                return String.format(flechas + ' {0}', record.data['actividad']);
+
+                            }
                         },
 
-                    },{
+                    }, {
                         header: 'Interno',
                         dataIndex: 'interno',
                         align: 'center',
@@ -304,18 +318,6 @@ header("content-type: text/javascript; charset=UTF-8");
         buildComponentesDetalle: function () {
             this.detCmp = {
 
-                /*'porcentaje': new Ext.form.NumberField({
-                 name: 'porcentaje',
-                 msgTarget: 'title',
-                 currencyChar: ' ',
-                 fieldLabel: 'Porcentaje',
-                 minValue: 0.0001,
-                 maxValue: 100,
-                 allowBlank: false,
-                 allowDecimals: true,
-                 allowNegative: false,
-                 decimalPrecision: 2
-                 })*/
                 'porcentaje': new Ext.form.ComboBox({
                     allowBlank: false,
                     typeAhead: true,
@@ -344,18 +346,43 @@ header("content-type: text/javascript; charset=UTF-8");
         onSubmit: function (o) {
             //  validar formularios
             var arra = [], i, me = this;
+            var auxSuma = 0;
+            var auxCont = 0;
+            var auxPromedio = 0;
+            var promediar = false;
+            for (i = me.megrid.store.getCount() - 1; i >= 0; i--) {
+                record = me.megrid.store.getAt(i);
 
-       /*     for (i = me.megrid.store.getCount()-1; i >= 0; i--) {
-                record = me.megrid.store.getAt(i);
-                console.log('impriimedo los Valores records '+i,record)
-                arra.push(record.data);
-            }*/
-            for (i = 0; i < me.megrid.store.getCount(); i++) {
-                record = me.megrid.store.getAt(i);
-                console.log('imprimedo los Valores records',record)
+                //obteniendo el valor  para el promedio del hijo de la construccion
+                if (record.data.nivel == "3") {
+                    auxSuma += parseFloat(record.data.porcentaje);
+                    auxCont += 1;
+                    promediar = true;
+                    //console.log('entre en el nivel 33333333333', parseFloat(record.data.porcentaje),auxSuma,auxCont)
+                }
+                //falta agregar el tipo de actividad
+                else if (record.data.nivel == "2" && promediar && auxSuma > 0 && auxCont > 0) {
+                    auxPromedio = auxSuma / auxCont;
+                    record.data.porcentaje = auxPromedio;
+                    promediar = false;
+                    var auxSuma = 0;
+                    var auxCont = 0;
+                    var auxPromedio = 0;
+                    //console.log('entre eb el nivel 2222222')
+                }
+                //console.log('imprimiendo los Valores records ' + i, record.data)
                 arra.push(record.data);
             }
-            console.log('arreglo de los datos quse cargaran',arra)
+            arra.reverse();
+            /*
+             //funcion que usada para el registro de las actividades seguimiento
+             for (i = 0; i < me.megrid.store.getCount(); i++) {
+             record = me.megrid.store.getAt(i);
+             console.log('imprimedo los Valores records',record)
+             arra.push(record.data);
+             }
+             */
+            console.log('arreglo de los datos quse cargaran', arra)
 
             me.argumentExtraSubmit = {
                 'json_new_records': JSON.stringify(arra, function replacer(key, value) {
@@ -365,14 +392,31 @@ header("content-type: text/javascript; charset=UTF-8");
                     return value;
                 })
             };
-            if (i > 0 && !this.editorDetail.isVisible()) {
+            //console.log('bendito iiiiii', i)
+            // se lo pone un valor de -1 para  que pueda guardar
+
+            //console.log('componenten estandar',this.Cmp)
+            //console.log('componenten fecha',this.Cmp.fecha)
+            //console.log('componenten descripcion',this.Cmp.descripcion)
+            //console.log('componenten descripcion activeError',this.Cmp.descripcion.activeError)
+
+/*
+            if(this.Cmp.fecha.activeError != undefined){
+                console.log('entre a fecha')
+            }
+            if(this.Cmp.descripcion.activeError != undefined){
+                console.log('entre a descripcion')
+            }
+            */
+
+            //verficacmos si todos lo valores fueron cargados para proceder a su guardado
+            if (i == -1 && !this.editorDetail.isVisible()) {
                 Phx.vista.FormProyectoSeguimiento.superclass.onSubmit.call(this, o, undefined, true);
             }
             else {
                 alert('no tiene ningun concepto')
             }
         },
-
         successSave: function (resp) {
 
             Phx.CP.loadingHide();

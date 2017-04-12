@@ -63,7 +63,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         maxLength: 10,
                         renderer: function (value, p, record) {
                             var flechas = '';
-                            for (i = 0; i < record.data['nivel']; i++) {
+                            for (i = 1; i < record.data['nivel']; i++) {
                                 flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                             }
                             if (record.data['nivel'] == 1) {

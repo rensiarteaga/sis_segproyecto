@@ -49,7 +49,7 @@ BEGIN
 						sepr.id_def_proyecto_seguimiento,
 						sepr.id_def_proyecto,
 						sepr.estado_reg,
-						sepr.porcentaje,
+						round(sepr.porcentaje,2) as porcentaje,
 						sepr.fecha,
 						sepr.descripcion,
 						sepr.id_usuario_reg,
@@ -197,10 +197,11 @@ BEGIN
           t1.ancestors,t1.nivel
         ORDER BY t1.id_tipo, t1.ancestors';
 
-
         --Definicion de la respuesta
        -- v_consulta:=v_consulta || v_parametros.filtro;
 
+        RAISE  NOTICE '%',v_parametros.id_def_proyecto;
+        --RAISE EXCEPTION 'error yac ';
         --Devuelve la respuesta
         RETURN v_consulta;
 
