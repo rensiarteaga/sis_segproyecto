@@ -69,6 +69,7 @@ BEGIN
 
 
       RAISE NOTICE '%', v_consulta;
+      
       --Devuelve la respuesta
       RETURN v_consulta;
 
@@ -191,19 +192,19 @@ BEGIN
           id_def_proyecto,
           id_actividad,
           actividad,
-            CASE WHEN id_actividad_padre is not NULL and tad.nivel>2 THEN
-          tpsa.porcentaje_avance::numeric
-        when id_actividad_padre is not NULL and tad.nivel>1 and (tad.id_tipo = 4 or tad.id_tipo = 1 or tad.id_tipo = 3 ) then --AGREGANDO A LA CONSTRUCCION MAS
-         tpsa.porcentaje_avance::numeric
-        end  as porcentaje,
-        coalesce(tpsa.id_def_proyecto_seguimiento_actividad,0)::integer as id_def_proyecto_seguimiento_actividad,
+          CASE WHEN id_actividad_padre is not NULL and tad.nivel>2 THEN
+            tpsa.porcentaje_avance::numeric
+          when id_actividad_padre is not NULL and tad.nivel>1 and (tad.id_tipo = 4 ) then --or tad.id_tipo = 1 or tad.id_tipo = 3 ) then --AGREGANDO A LA CONSTRUCCION MAS
+             tpsa.porcentaje_avance::numeric
+          end  as porcentaje,
+          coalesce(tpsa.id_def_proyecto_seguimiento_actividad,0)::integer as id_def_proyecto_seguimiento_actividad,
           nivel,
           round(interno,2) as interno,
-        tad.id_tipo as tipo
-        from sp.tdef_proyecto_seguimiento_actividad tpsa
-          join sp.tdef_proyecto_seguimiento tps on tpsa.id_def_proyecto_seguimiento = tps.id_def_proyecto_seguimiento
-          RIGHT JOIN temp_actividad_datos tad ON tpsa.id_def_proyecto_actividad=tad.id_def_proyecto_actividad
-        WHERE ';
+          tad.id_tipo as tipo
+          from sp.tdef_proyecto_seguimiento_actividad tpsa
+            join sp.tdef_proyecto_seguimiento tps on tpsa.id_def_proyecto_seguimiento = tps.id_def_proyecto_seguimiento
+            RIGHT JOIN temp_actividad_datos tad ON tpsa.id_def_proyecto_actividad=tad.id_def_proyecto_actividad
+          WHERE ';
 
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
@@ -211,6 +212,7 @@ BEGIN
 
 
         RAISE NOTICE '% ', v_parametros.id_def_proyecto;
+        RAISE NOTICE '% ', v_consulta;
         --RAISE EXCEPTION ' prueba de datos';
         --Devuelve la respuesta
         RETURN v_consulta;

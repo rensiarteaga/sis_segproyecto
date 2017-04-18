@@ -200,8 +200,8 @@ BEGIN
         --Definicion de la respuesta
        -- v_consulta:=v_consulta || v_parametros.filtro;
 
-        RAISE  NOTICE '%',v_parametros.id_def_proyecto;
-        --RAISE EXCEPTION 'error yac ';
+        RAISE  NOTICE '%',v_consulta;
+       -- RAISE EXCEPTION '%',v_parametros.id_def_proyecto;
         --Devuelve la respuesta
         RETURN v_consulta;
 

@@ -18,6 +18,15 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.DefProyectoSeguimiento.superclass.constructor.call(this, config);
                 this.init();
                 this.iniciarEventos();
+                //Botón para Cargar Suministro
+                this.addButton('btnSeguimientoSuministro', {
+                    text: 'Suministro',
+                    iconCls: 'bchecklist',
+                    disabled: true,
+                    handler: this.CargarSuministro,
+                    tooltip: '<b>Registro de Suministro</b><br/>Formulario para el registro de los seguimientos del proyecto'
+                });
+
                 //this.load({params:{start:0, limit:this.tam_pag}})
                 this.addButton('btnPonderacionD', {
                     text: 'Ponderación detallada',
@@ -36,6 +45,35 @@ header("content-type: text/javascript; charset=UTF-8");
                 });
             },
 
+            openFormSuministro: function (tipo, record) {
+                var me = this;
+                me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/suministro/Suministro.php',
+                    'Formulario de seguimiento al suministro',
+                    {
+                        modal: true,
+                        width: '60%',
+                        height: '60%'
+                    }, {
+                        data: {
+                            objPadre: me.maestro,
+                            tipo_form: tipo,
+                            datos_originales: record
+                        }
+                    },
+                    this.idContenedor,
+                    'Suministro',
+                    {
+                        config: [{
+                            event: 'successsaveformulario',
+                            delegate: this.onSaveForm,
+                        }],
+                        scope: me
+                    });
+            },
+            CargarSuministro: function () {
+
+                this.openFormSuministro('new', this.sm.getSelected());
+            },
             ponderacionDetallada: function () {
                 console.log('entreeeeeeeeeeeeee')
                 var rec = this.sm.getSelected();
@@ -361,7 +399,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 var rec = this.sm.getSelected();
                 this.getBoton('btnPonderacionD').enable();
                 this.getBoton('btnImprimirSeguimiento').enable();
-
+                this.getBoton('btnSeguimientoSuministro').enable();
                 return tb;
             },
             liberaMenu: function () {
@@ -369,7 +407,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
                 this.getBoton('btnPonderacionD').disable();
                 this.getBoton('btnImprimirSeguimiento').disable();
-
+                this.getBoton('btnSeguimientoSuministro').disable();
 
             },
 

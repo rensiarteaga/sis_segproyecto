@@ -18,18 +18,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.DefProyecto.superclass.constructor.call(this, config);
                 this.init();
                 this.load({params: {start: 0, limit: this.tam_pag}})
-
-
-
-
-
             },
-
-
-
-
-
-
             Atributos: [
                 {
                     //configuracion del componente
@@ -60,7 +49,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             remoteSort: true,
                             baseParams: {par_filtro: 'nombre#codproyecto'} //para busquedas en el combo
                         }),
-                        tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{codproyecto}</div><p style="padding-left: 20px;">{nombre}</p> </div></tpl>',
+                        tpl: '<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}">{codproyecto}</div><p style="padding-left: 20px;">{nombre}</p> </div></tpl>',
                         valueField: 'id_proyecto',
                         displayField: 'nombre',
                         gdisplayField: 'desc_proyecto',//vista en la grilla
@@ -104,7 +93,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'fecha_inicio_teorico',
                         fieldLabel: 'Fecha inicio teorico',
-                        allowBlank: false,
+                        allowBlank: true,
                         anchor: '80%',
                         gwidth: 100,
                         format: 'd/m/Y',
@@ -282,27 +271,27 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             bdel: true,
             bsave: true,
-            bexcel:false
-            /*
-            ,
+            bexcel: false
+                /*
+                 ,
 
-            south: {
-                url: '../../../sis_segproyecto/vista/def_proyecto_seguimiento/DefProyectoSeguimiento.php',
-                title: 'Seguimiento de proyectos',
-                width: '10%',
-                height: '50%',
-                cls: 'DefProyectoSeguimiento',
-                collapsed: true
-            }
-            ,
-            east: {
-                url: '../../../sis_segproyecto/vista/def_proyecto_actividad/DefProyectoActividad.php',
-                title: 'Asignacion actividades',
-                width: '50%',
-                cls: 'DefProyectoActividad',
-                collapsed: true
-            }
-            */
+                 south: {
+                 url: '../../../sis_segproyecto/vista/def_proyecto_seguimiento/DefProyectoSeguimiento.php',
+                 title: 'Seguimiento de proyectos',
+                 width: '10%',
+                 height: '50%',
+                 cls: 'DefProyectoSeguimiento',
+                 collapsed: true
+                 }
+                 ,
+                 east: {
+                 url: '../../../sis_segproyecto/vista/def_proyecto_actividad/DefProyectoActividad.php',
+                 title: 'Asignacion actividades',
+                 width: '50%',
+                 cls: 'DefProyectoActividad',
+                 collapsed: true
+                 }
+                 */
         }
     )
 </script>

@@ -297,6 +297,15 @@ header("content-type: text/javascript; charset=UTF-8");
             collapsed: true
         },
 
+        //trabajo en la eliminacion----
+       /* onButtonDel: function () {
+
+            Phx.vista.DefProyectoActividad.superclass.onButtonDel.call(this);
+
+            alert('estas queriendo eliminar');
+        }*/
+
+
 
 
     })

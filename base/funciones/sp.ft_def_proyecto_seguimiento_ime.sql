@@ -189,11 +189,41 @@ BEGIN
             v_parametros._id_usuario_ai,
             NULL,
             NULL
-
-
           )
           RETURNING id_def_proyecto_seguimiento
             INTO v_id_def_proyecto_seguimiento;
+
+
+            -- realizando la insercion de los suminsitros cuando se realiza la insercion de un nuevo proyecto seguimiento
+            INSERT INTO sp.tsuministro (
+            documento_emarque,
+            invitacion,
+            adjudicacion,
+            llegada_sitio,
+            id_def_proyecto,
+            id_def_proyecto_actividad,
+            id_def_proyecto_seguimiento,
+            estado_reg)
+            SELECT
+              CASE WHEN a.id_actividad_padre IS NOT NULL
+                THEN 0 :: BIT
+              ELSE 1 :: BIT END,
+              CASE WHEN a.id_actividad_padre IS NOT NULL
+                THEN 0 :: BIT
+              ELSE 1 :: BIT END,
+              CASE WHEN a.id_actividad_padre IS NOT NULL
+                THEN 0 :: BIT
+              ELSE 1 :: BIT END,
+              CASE WHEN a.id_actividad_padre IS NOT NULL
+                THEN 0 :: BIT
+              ELSE 1 :: BIT END,
+              pa.id_def_proyecto,
+              pa.id_def_proyecto_actividad,
+              v_id_def_proyecto_seguimiento::INTEGER as id_def_proyecto_seguimiento,
+              'activo' AS estado
+            FROM sp.tdef_proyecto_actividad pa
+              JOIN sp.tactividad a
+                ON a.id_actividad = pa.id_actividad AND a.id_tipo = 2;
 
           j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
 

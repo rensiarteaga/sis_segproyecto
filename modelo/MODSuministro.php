@@ -18,11 +18,13 @@ class MODSuministro extends MODbase{
 		$this->procedimiento='sp.ft_suministro_sel';
 		$this->transaccion='SP_SUM_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-				
-		//Definicion de la lista del resultado del query
+
+        $this->setParametro('id_def_proyecto_seguimiento','id_def_proyecto_seguimiento','int4');
+
+        //Definicion de la lista del resultado del query
 		$this->captura('id_seguimiento_suministro','int4');
         $this->captura('tipo_guardar','bool');
-		$this->captura('id_def_proyecto','int4');
+		$this->captura('id_def_proyecto_seguimiento','int4');
 		$this->captura('id_def_proyecto_actividad','int4');
 		$this->captura('actividad','varchar');
 

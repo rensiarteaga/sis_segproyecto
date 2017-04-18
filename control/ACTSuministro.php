@@ -18,10 +18,10 @@ class ACTSuministro extends ACTbase{
 		//	$this->res = $this->objReporte->generarReporteListado('MODSuministro','listarSuministro');
 		//} else{
 
-        if ($this->objParam->getParametro('id_def_proyecto')) {
-            $this->objParam->addFiltro("p.id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
+        if ($this->objParam->getParametro('id_def_proyecto_seguimiento')) {
+            $this->objParam->addFiltro("s.id_def_proyecto_seguimiento = " . $this->objParam->getParametro('id_def_proyecto_seguimiento'));
         } else {
-            $this->objParam->addFiltro("id_def_proyecto = 0");
+            $this->objParam->addFiltro("s.id_def_proyecto_seguimiento = 0");
         }
 			$this->objFunc=$this->create('MODSuministro');
 			$this->res=$this->objFunc->listarSuministro($this->objParam);

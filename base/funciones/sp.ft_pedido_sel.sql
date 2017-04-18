@@ -69,6 +69,7 @@ BEGIN
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       RAISE NOTICE '%', v_consulta;
+      --RAISE EXCEPTION 'error yac procovado';
       --Devuelve la respuesta
       RETURN v_consulta;
 

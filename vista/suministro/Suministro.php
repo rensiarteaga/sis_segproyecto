@@ -18,12 +18,12 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.vista.Suministro.superclass.constructor.call(this, config);
                 this.init();
                 this.grid.addListener('cellclick', this.oncellclick, this);
-                console.log('datos', config.data.datos_originales.data.id_def_proyecto);
+                console.log('datos', config.data.datos_originales.data.id_def_proyecto_seguimiento);
                 this.load({
                     params: {
                         start: 0,
                         limit: this.tam_pag,
-                        id_def_proyecto: config.data.datos_originales.data.id_def_proyecto
+                        id_def_proyecto_seguimiento: config.data.datos_originales.data.id_def_proyecto_seguimiento
                     }
                 })
             },
@@ -134,43 +134,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     //egrid:true,
                     form: true
                 },
-
-                {
-                    config: {
-                        name: 'documento_emarque',
-                        fieldLabel: 'documento_emarque',
-                        allowBlank: true,
-                        anchor: '80%',
-                        gwidth: 130,
-                        maxLength: 1,
-                        renderer: function (value, p, record, rowIndex, colIndex) {
-
-                            //check or un check row
-                            var checked = '',
-                                state = '',
-                                momento = '0';
-                            if (value == '1') {
-                                checked = 'checked';
-                            }
-                            /*if(record.data.id_int_comprobante){
-                             state = 'disabled';
-                             }*/
-                            if (record.data.padre == 'f') {
-                                return String.format('<div style="vertical-align:middle;text-align:center;"><input style="height:37px;width:37px;" type="checkbox"  {0} {1}></div>', checked, state);
-                            }
-                            else {
-                                //record.data.invitacion=1;
-                                return String.format('');
-                            }
-                        }
-                    },
-                    type: 'TextField',
-                    filters: {pfiltro: 'sum.documento_emarque', type: 'string'},
-                    id_grupo: 1,
-                    grid: true,
-                    //egrid:true,
-                    form: true
-                },
                 {
                     config: {
                         name: 'invitacion',
@@ -208,6 +171,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     //egrid:true,
                     form: true
                 },
+
+
                 {
                     config: {
                         name: 'adjudicacion',
@@ -238,6 +203,42 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type: 'TextField',
                     filters: {pfiltro: 'sum.adjudicacion', type: 'string'},
+                    id_grupo: 1,
+                    grid: true,
+                    //egrid:true,
+                    form: true
+                },
+                {
+                    config: {
+                        name: 'documento_emarque',
+                        fieldLabel: 'documento_emarque',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 130,
+                        maxLength: 1,
+                        renderer: function (value, p, record, rowIndex, colIndex) {
+
+                            //check or un check row
+                            var checked = '',
+                                state = '',
+                                momento = '0';
+                            if (value == '1') {
+                                checked = 'checked';
+                            }
+                            /*if(record.data.id_int_comprobante){
+                             state = 'disabled';
+                             }*/
+                            if (record.data.padre == 'f') {
+                                return String.format('<div style="vertical-align:middle;text-align:center;"><input style="height:37px;width:37px;" type="checkbox"  {0} {1}></div>', checked, state);
+                            }
+                            else {
+                                //record.data.invitacion=1;
+                                return String.format('');
+                            }
+                        }
+                    },
+                    type: 'TextField',
+                    filters: {pfiltro: 'sum.documento_emarque', type: 'string'},
                     id_grupo: 1,
                     grid: true,
                     //egrid:true,
