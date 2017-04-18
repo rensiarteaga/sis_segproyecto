@@ -18,6 +18,7 @@ WITH (oids = false);
 /***********************************F-SCP-YAC-SP-0-13/02/2017****************************************/
 /***********************************I-SCP-YAC-SP-0-14/02/2017****************************************/
 
+/*
 CREATE EXTENSION IF NOT EXISTS tds_fdw;
 
 CREATE SERVER mssql_csa_prod
@@ -36,7 +37,7 @@ OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 CREATE USER MAPPING FOR dbetr_capacitacion_admin
 SERVER mssql_csa_prod
 OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
-
+*/
 -- diseñado la tabla foranea del csa proyecto pedido invitacion
 -- usamos el bytea para poder recibir los nvchar de sql server
 -- En la consulta de sql server es necesario poner un alias(as)cuando se recupera de una nvchar
