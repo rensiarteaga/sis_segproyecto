@@ -414,14 +414,14 @@ header("content-type: text/javascript; charset=UTF-8");
              */
 
             //verficacmos si todos lo valores fueron cargados para proceder a su guardado
-            console.log('EDITADO',me.data.datos_originales.data.editado)
-            if (i == -1 && !this.editorDetail.isVisible() && me.data.datos_originales.data.editado=='t') {
+            console.log('EDITADO',me.data.editado)
+            if (i == -1 && !this.editorDetail.isVisible() && me.data.editado=='t') {
                 Phx.vista.FormProyectoSeguimiento.superclass.onSubmit.call(this, o, undefined, true);
             }
             else {
                 alert('Usted NO puede editar los datos!!!')
             }
-        },
+        },  
         successSave: function (resp) {
 
             Phx.CP.loadingHide();

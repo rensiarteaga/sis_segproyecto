@@ -160,5 +160,3 @@ BEGIN
 END;
 $$
 LANGUAGE 'plpgsql';
-
-SELECT * from sp.ft_obtener_ponderacion(3);

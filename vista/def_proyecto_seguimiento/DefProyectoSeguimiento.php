@@ -365,6 +365,12 @@ header("content-type: text/javascript; charset=UTF-8");
 
             openForm: function (tipo, record) {
                 var me = this;
+                var editado;
+                if(tipo == 'new'){
+                    editado = 't';
+                }else{
+                    editado = record.data.editado;
+                }
                 me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/FormProyectoSeguimiento.php',
                     'Formulario de seguimiento operativo del proye' +
                     'cto',
@@ -376,7 +382,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         data: {
                             objPadre: me.maestro,
                             tipo_form: tipo,
-                            datos_originales: record
+                            datos_originales: record,
+                            editado:editado
                         }
                     },
                     this.idContenedor,
