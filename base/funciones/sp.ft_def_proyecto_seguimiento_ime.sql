@@ -30,6 +30,7 @@ DECLARE
   j_def_proyecto_seguimiento_actividad    JSON;
   j_proyecto_seguimiento_actividad        JSON;
   v_id_def_proyecto_seguimiento_actividad INTEGER;
+  v_id_def_proyecto_seguimiento_ultimo    INTEGER;
   v_promedio_pro_seg                      NUMERIC :=0;
   contador                                INTEGER :=0;
   v_id_def_proyecto_seguimiento_temp      VARCHAR;
@@ -166,6 +167,15 @@ BEGIN
 
         IF (v_parametros.tipo_form = 'new')
         THEN
+          -- cargando el ultimo id_proyecto_seguimiento para el recargo del historial
+          v_id_def_proyecto_seguimiento_ultimo :=0;
+
+          v_id_def_proyecto_seguimiento_ultimo = (SELECT id_def_proyecto_seguimiento
+                                                  FROM sp.tdef_proyecto_seguimiento
+                                                  ORDER BY fecha DESC,
+                                                    id_def_proyecto_seguimiento DESC
+                                                  LIMIT 1);
+
           --Sentencia de la insercion
           INSERT INTO sp.tdef_proyecto_seguimiento (
             id_def_proyecto,
@@ -193,12 +203,11 @@ BEGIN
           RETURNING id_def_proyecto_seguimiento
             INTO v_id_def_proyecto_seguimiento;
 
-
-            -- realizando la insercion de los suminsitros cuando se realiza la insercion de un nuevo proyecto seguimiento
-            INSERT INTO sp.tsuministro (
-            documento_emarque,
+          -- realizando la insercion de los suminsitros cuando se realiza la insercion de un nuevo proyecto seguimiento
+          INSERT INTO sp.tsuministro (
             invitacion,
             adjudicacion,
+            documento_emarque,
             llegada_sitio,
             id_def_proyecto,
             id_def_proyecto_actividad,
@@ -206,24 +215,26 @@ BEGIN
             estado_reg)
             SELECT
               CASE WHEN a.id_actividad_padre IS NOT NULL
-                THEN 0 :: BIT
+                THEN s.invitacion  :: BIT
               ELSE 1 :: BIT END,
               CASE WHEN a.id_actividad_padre IS NOT NULL
-                THEN 0 :: BIT
+                THEN s.adjudicacion :: BIT
               ELSE 1 :: BIT END,
               CASE WHEN a.id_actividad_padre IS NOT NULL
-                THEN 0 :: BIT
+                THEN s.documento_emarque :: BIT
               ELSE 1 :: BIT END,
               CASE WHEN a.id_actividad_padre IS NOT NULL
-                THEN 0 :: BIT
+                THEN s.llegada_sitio:: BIT
               ELSE 1 :: BIT END,
               pa.id_def_proyecto,
               pa.id_def_proyecto_actividad,
-              v_id_def_proyecto_seguimiento::INTEGER as id_def_proyecto_seguimiento,
-              'activo' AS estado
+              v_id_def_proyecto_seguimiento :: INTEGER AS id_def_proyecto_seguimiento,
+              'activo'                                 AS estado
             FROM sp.tdef_proyecto_actividad pa
               JOIN sp.tactividad a
-                ON a.id_actividad = pa.id_actividad AND a.id_tipo = 2;
+                ON a.id_actividad = pa.id_actividad AND a.id_tipo = 2
+              JOIN sp.tsuministro s ON pa.id_def_proyecto_actividad = s.id_def_proyecto_actividad AND
+                                       s.id_def_proyecto_seguimiento = (v_id_def_proyecto_seguimiento_ultimo);
 
           j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
 
@@ -304,7 +315,6 @@ BEGIN
                                                                             v_parametros.id_def_proyecto_seguimiento))
           WHERE id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento;
         END IF;
-
 
         --Definicion de la respuesta
         v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',

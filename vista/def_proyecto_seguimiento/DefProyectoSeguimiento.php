@@ -75,11 +75,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.openFormSuministro('new', this.sm.getSelected());
             },
             ponderacionDetallada: function () {
-                console.log('entreeeeeeeeeeeeee')
                 var rec = this.sm.getSelected();
                 var data = rec.data;
                 var me = this;
-                console.log('valor seleccionado', this);
                 me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/PonderacionDetallada.php',
                     'Tabla de ponderación detallada',
                     {
@@ -335,7 +333,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'id_usuario_mod', type: 'numeric'},
                 {name: 'fecha_mod', type: 'date', dateFormat: 'Y-m-d H:i:s.u'},
                 {name: 'usr_reg', type: 'string'},
-                {name: 'usr_mod', type: 'string'},
+                {name: 'usr_mod', type: 'string'}, 'editado'
 
             ],
             sortInfo: {
@@ -360,13 +358,16 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.openForm('new');
             },
             onButtonEdit: function () {
-                this.openForm('edit', this.sm.getSelected());
+
+                    this.openForm('edit', this.sm.getSelected());
+
             },
 
             openForm: function (tipo, record) {
                 var me = this;
                 me.objSolForm = Phx.CP.loadWindows('../../../sis_segproyecto/vista/def_proyecto_seguimiento/FormProyectoSeguimiento.php',
-                    'Formulario de seguimiento operativo del proyecto',
+                    'Formulario de seguimiento operativo del proye' +
+                    'cto',
                     {
                         modal: true,
                         width: '70%',
@@ -418,4 +419,3 @@ header("content-type: text/javascript; charset=UTF-8");
     )
 </script>
 
-		

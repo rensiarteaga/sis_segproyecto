@@ -67,6 +67,15 @@ header("content-type: text/javascript; charset=UTF-8");
                 Phx.CP.loadingShow();
                 var d = record.data
             },
+            onButtonSave: function () {
+                if (this.data.datos_originales.data.editado == 't') {
+                    Phx.vista.Suministro.superclass.onButtonSave.call(this);
+
+                } else {
+
+                    alert('Usted NO puede editar los datos!!!')
+                }
+            },
 
             Atributos: [
 

@@ -275,18 +275,22 @@ header("content-type: text/javascript; charset=UTF-8");
                     {
                         header: 'Actividad',
                         dataIndex: 'actividad',
-                        width: 200,
+                        width: 300,
                         sortable: false,
                         renderer: function (value, p, record) {
                             var flechas = '';
                             for (i = 1; i < record.data['nivel']; i++) {
                                 flechas += '<i class="fa fa-long-arrow-right"></i>  ';
                             }
-                            if (record.data['nivel'] == 1) {
-                                return String.format('<h4> {0}</h4>', record.data['actividad']);
-                            } else {
-                                return String.format(flechas + ' {0}', record.data['actividad']);
 
+                            if (record.data['nivel'] == 1) {
+
+                                return String.format('<h4 style="text-transform: uppercase;"><u>{0}</u></h4>', record.data['actividad']);
+                            } else if (record.data['nivel'] == 2) {
+                                return String.format('<h4 style="text-transform: uppercase;">' + flechas + '<em><b>{0}</b></em></h4>', record.data['actividad']);
+                            }
+                            else {
+                                return String.format(flechas + '<em>{0}</em>', record.data['actividad']);
                             }
                         },
 
@@ -400,21 +404,22 @@ header("content-type: text/javascript; charset=UTF-8");
             //console.log('componenten descripcion',this.Cmp.descripcion)
             //console.log('componenten descripcion activeError',this.Cmp.descripcion.activeError)
 
-/*
-            if(this.Cmp.fecha.activeError != undefined){
-                console.log('entre a fecha')
-            }
-            if(this.Cmp.descripcion.activeError != undefined){
-                console.log('entre a descripcion')
-            }
-            */
+            /*
+             if(this.Cmp.fecha.activeError != undefined){
+             console.log('entre a fecha')
+             }
+             if(this.Cmp.descripcion.activeError != undefined){
+             console.log('entre a descripcion')
+             }
+             */
 
             //verficacmos si todos lo valores fueron cargados para proceder a su guardado
-            if (i == -1 && !this.editorDetail.isVisible()) {
+            console.log('EDITADO',me.data.datos_originales.data.editado)
+            if (i == -1 && !this.editorDetail.isVisible() && me.data.datos_originales.data.editado=='t') {
                 Phx.vista.FormProyectoSeguimiento.superclass.onSubmit.call(this, o, undefined, true);
             }
             else {
-                alert('no tiene ningun concepto')
+                alert('Usted NO puede editar los datos!!!')
             }
         },
         successSave: function (resp) {

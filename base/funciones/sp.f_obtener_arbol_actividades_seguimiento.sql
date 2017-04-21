@@ -172,10 +172,10 @@ BEGIN
     END IF;
     v_nivel = r1.nivel;
 
-    v_interno = r1.interno;
+    v_interno = round(r1.interno,2);
     IF (r1.nivel = 3)
     THEN
-      v_interno = v_porcentaje_actividad_padre_c / v_cantidad;
+      v_interno = round((v_porcentaje_actividad_padre_c / v_cantidad),2);
     END IF;
     v_id_tipo = r1.id_tipo;
 

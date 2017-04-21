@@ -29,6 +29,7 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         loadValoresIniciales: function () {
             Phx.vista.DefProyectoActividad.superclass.loadValoresIniciales.call(this);
+            //actualiza un nuevo valor a la interfaz
             this.Cmp.id_def_proyecto.setValue(this.maestro.id_def_proyecto);
         },
 
@@ -92,7 +93,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     pageSize: 15,
                     queryDelay: 1000,
                     anchor: '100%',
-                    gwidth: 150,
+                    gwidth: 250,
                     minChars: 2,
                     renderer: function (value, p, record) {
                         //calculando el tamaño del nivel del arbol
@@ -104,9 +105,12 @@ header("content-type: text/javascript; charset=UTF-8");
                         }
                         if (record.data['nivel'] == 1) {
 
-                            return String.format('<h4>{0}</h4>', record.data['actividad']);
-                        } else {
-                            return String.format(flechas + '{0}', record.data['actividad']);
+                            return String.format('<h4 style="text-transform: uppercase;"><u>{0}</u></h4>', record.data['actividad']);
+                        } else if (record.data['nivel'] == 2) {
+                            return String.format('<h4 style="text-transform: uppercase;">' + flechas + '<em><b>{0}</b></em></h4>', record.data['actividad']);
+                        }
+                        else {
+                            return String.format(flechas + '<em>{0}</em>', record.data['actividad']);
                         }
                     }
                 },
@@ -298,14 +302,12 @@ header("content-type: text/javascript; charset=UTF-8");
         },
 
         //trabajo en la eliminacion----
-       /* onButtonDel: function () {
+        /* onButtonDel: function () {
 
-            Phx.vista.DefProyectoActividad.superclass.onButtonDel.call(this);
+         Phx.vista.DefProyectoActividad.superclass.onButtonDel.call(this);
 
-            alert('estas queriendo eliminar');
-        }*/
-
-
+         alert('estas queriendo eliminar');
+         }*/
 
 
     })

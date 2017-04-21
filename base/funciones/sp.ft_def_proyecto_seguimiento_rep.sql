@@ -100,15 +100,16 @@ BEGIN
                         FROM sp.tdef_proyecto_seguimiento_actividad
                         WHERE id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento)
                        UNION ALL (SELECT
-                                    v_parametros.id_def_proyecto_seguimiento,
+                                    s.id_def_proyecto_seguimiento,
                                     id_def_proyecto_actividad,
                                     sp.f_calcular_porcentaje_suministro(s.invitacion, s.adjudicacion,
                                                                         s.documento_emarque,
                                                                         s.llegada_sitio) AS porcentaje_avance
-                                  FROM sp.tsuministro s)) tpsa
+                                  FROM sp.tsuministro s   WHERE s.id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento
+                            ORDER BY id_def_proyecto_actividad)) tpsa
               ON tapa.id_def_proyecto_actividad = tpsa.id_def_proyecto_actividad
             JOIN temp_actividad_datos tad ON tapa.id_def_proyecto_actividad = tad.id_def_proyecto_actividad
-            LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad
+            LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad and and ts.id_def_proyecto_seguimiento=v_parametros.id_def_proyecto_seguimiento
 
           WHERE tpsa.id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento
         --ORDER BY tapa.id_tipo, ancestors

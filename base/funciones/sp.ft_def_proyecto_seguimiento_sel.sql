@@ -23,10 +23,11 @@ $body$
 
 DECLARE
 
-  v_consulta       VARCHAR;
-  v_parametros     RECORD;
-  v_nombre_funcion TEXT;
-  v_resp           VARCHAR;
+  v_consulta                    VARCHAR;
+  v_parametros                  RECORD;
+  v_nombre_funcion              TEXT;
+  v_id_def_proyecto_seguimiento INTEGER;
+  v_resp                        VARCHAR;
 
 BEGIN
 
@@ -42,6 +43,8 @@ BEGIN
 
   IF (p_transaccion = 'SP_SEPR_SEL')
   THEN
+    v_id_def_proyecto_seguimiento := 0;
+    v_id_def_proyecto_seguimiento = (SELECT id_def_proyecto_seguimiento FROM sp.tdef_proyecto_seguimiento ORDER BY fecha DESC, id_def_proyecto_seguimiento DESC LIMIT 1);
 
     BEGIN
       --Sentencia de la consulta
@@ -59,7 +62,11 @@ BEGIN
 						sepr.id_usuario_mod,
 						sepr.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod
+						usu2.cuenta as usr_mod,
+            CASE WHEN (' ||v_id_def_proyecto_seguimiento||' = sepr.id_def_proyecto_seguimiento)THEN
+              TRUE ::bool
+            ELSE
+              false::bool end as editado
 						from sp.tdef_proyecto_seguimiento sepr
 						inner join segu.tusuario usu1 on usu1.id_usuario = sepr.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = sepr.id_usuario_mod
@@ -71,6 +78,9 @@ BEGIN
       v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
+
+      --RAISE NOTICE '%', v_consulta;
+      --RAISE EXCEPTION 'eerrrooooorr YAC';
       --Devuelve la respuesta
       RETURN v_consulta;
 
@@ -163,14 +173,17 @@ BEGIN
                             id_def_proyecto_seguimiento,
                             id_def_proyecto_actividad,
                             porcentaje_avance
-                          FROM sp.tdef_proyecto_seguimiento_actividad where id_def_proyecto_seguimiento='||v_parametros.id_def_proyecto_seguimiento||')
-                         UNION ALL (SELECT '||v_parametros.id_def_proyecto_seguimiento||',id_def_proyecto_actividad,sp.f_calcular_porcentaje_suministro(s.invitacion, s.adjudicacion, s.documento_emarque,
+                          FROM sp.tdef_proyecto_seguimiento_actividad where id_def_proyecto_seguimiento=' ||
+                    v_parametros.id_def_proyecto_seguimiento || ')
+                         UNION ALL (SELECT s.id_def_proyecto_seguimiento,id_def_proyecto_actividad,sp.f_calcular_porcentaje_suministro(s.invitacion, s.adjudicacion, s.documento_emarque,
                                                                                                             s.llegada_sitio) AS porcentaje_avance
-                                    FROM sp.tsuministro s)) tpsa ON tapa.id_def_proyecto_actividad = tpsa.id_def_proyecto_actividad
+                                    FROM sp.tsuministro s where s.id_def_proyecto_seguimiento=' ||
+                    v_parametros.id_def_proyecto_seguimiento || ' ORDER BY id_def_proyecto_actividad)) tpsa ON tapa.id_def_proyecto_actividad = tpsa.id_def_proyecto_actividad
               JOIN temp_actividad_datos tad ON tapa.id_def_proyecto_actividad = tad.id_def_proyecto_actividad
-              LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad
+              LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad and ts.id_def_proyecto_seguimiento='
+                    || v_parametros.id_def_proyecto_seguimiento || '
 
-            WHERE tpsa.id_def_proyecto_seguimiento = '||v_parametros.id_def_proyecto_seguimiento||'
+            WHERE tpsa.id_def_proyecto_seguimiento = ' || v_parametros.id_def_proyecto_seguimiento || '
           --ORDER BY tapa.id_tipo, ancestors
         )
         SELECT
@@ -198,10 +211,10 @@ BEGIN
         ORDER BY t1.id_tipo, t1.ancestors';
 
         --Definicion de la respuesta
-       -- v_consulta:=v_consulta || v_parametros.filtro;
+        -- v_consulta:=v_consulta || v_parametros.filtro;
 
-        RAISE  NOTICE '%',v_consulta;
-       -- RAISE EXCEPTION '%',v_parametros.id_def_proyecto;
+        RAISE NOTICE '%', v_consulta;
+        --RAISE EXCEPTION '%',v_parametros.id_def_proyecto;
         --Devuelve la respuesta
         RETURN v_consulta;
 
