@@ -18,7 +18,6 @@ WITH (oids = false);
 /***********************************F-SCP-YAC-SP-0-13/02/2017****************************************/
 /***********************************I-SCP-YAC-SP-0-14/02/2017****************************************/
 
-/*
 CREATE EXTENSION IF NOT EXISTS tds_fdw;
 
 CREATE SERVER mssql_csa_prod
@@ -37,7 +36,10 @@ OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 CREATE USER MAPPING FOR dbetr_capacitacion_admin
 SERVER mssql_csa_prod
 OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
-*/
+
+/***********************************F-SCP-YAC-SP-0-14/02/2017****************************************/
+/***********************************I-SCP-YAC-SP-1-14/02/2017****************************************/
+
 -- diseñado la tabla foranea del csa proyecto pedido invitacion
 -- usamos el bytea para poder recibir los nvchar de sql server
 -- En la consulta de sql server es necesario poner un alias(as)cuando se recupera de una nvchar
@@ -114,11 +116,9 @@ CREATE OR REPLACE VIEW sp.vcsa_proyecto_pedido AS
     convert_from(suministro, 'LATIN1')::VARCHAR as suministro
   FROM sp.csa_proyecto_pedido;
 
-/***********************************F-SCP-YAC-SP-0-14/02/2017****************************************/
+/***********************************F-SCP-YAC-SP-1-14/02/2017****************************************/
 
 /***********************************I-SCP-YAC-SP-0-01/03/2017****************************************/
-
-
 
 CREATE TABLE sp.tdef_proyecto (
   id_def_proyecto SERIAL NOT NULL,
@@ -130,8 +130,6 @@ CREATE TABLE sp.tdef_proyecto (
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
-
-
 
 
 CREATE TABLE sp.tdef_proyecto_actividad (

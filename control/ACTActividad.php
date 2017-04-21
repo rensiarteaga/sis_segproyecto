@@ -10,7 +10,7 @@
 class ACTActividad extends ACTbase{    
 			
 	function listarActividad(){
-		$this->objParam->defecto('ordenacion','id_actividad');
+		$this->objParam->defecto('ordenacion','acti.tipo_actividad');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
