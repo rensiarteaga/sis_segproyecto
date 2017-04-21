@@ -109,7 +109,7 @@ BEGIN
                             ORDER BY id_def_proyecto_actividad)) tpsa
               ON tapa.id_def_proyecto_actividad = tpsa.id_def_proyecto_actividad
             JOIN temp_actividad_datos tad ON tapa.id_def_proyecto_actividad = tad.id_def_proyecto_actividad
-            LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad and and ts.id_def_proyecto_seguimiento=v_parametros.id_def_proyecto_seguimiento
+            LEFT JOIN sp.tsuministro ts ON ts.id_def_proyecto_actividad = tad.id_def_proyecto_actividad  and ts.id_def_proyecto_seguimiento=v_parametros.id_def_proyecto_seguimiento
 
           WHERE tpsa.id_def_proyecto_seguimiento = v_parametros.id_def_proyecto_seguimiento
         --ORDER BY tapa.id_tipo, ancestors
