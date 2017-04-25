@@ -34,7 +34,7 @@ DECLARE
 
 BEGIN
 
-  v_nombre_funcion = 'sp.ft_def_proyecto_sel';
+  v_nombre_funcion = 'sp.ft_def_proyecto_rep';
   v_parametros = pxp.f_get_record(p_tabla);
   /*********************************
  #TRANSACCION:  'SP_DEFPROREP_SEL'
@@ -44,7 +44,7 @@ BEGIN
  #FECHA:		16-03-2017 08:56:10
 ***********************************/
 
-  IF (p_transaccion = 'SP_DEFPROREP_SEL')
+  IF (p_transaccion = 'SP_DEFPROREP_SELR')
   THEN
 
     BEGIN

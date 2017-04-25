@@ -140,7 +140,7 @@ class MODDefProyecto extends MODbase{
 
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='sp.ft_def_proyecto_rep';
-        $this->transaccion='SP_DEFPROREP_SEL';
+        $this->transaccion='SP_DEFPROREP_SELR';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
         $this->setCount(false);
         $this->setTipoRetorno('record');
