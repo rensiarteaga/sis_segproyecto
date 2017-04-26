@@ -2,8 +2,6 @@
 
 /***********************************I-SCP-YAC-SP-0-13/02/2017****************************************/
 
-
-
 CREATE TABLE sp.tactividad (
   id_actividad SERIAL NOT NULL,
   actividad VARCHAR(150),
@@ -13,11 +11,10 @@ CREATE TABLE sp.tactividad (
 
 WITH (oids = false);
 
-
-
 /***********************************F-SCP-YAC-SP-0-13/02/2017****************************************/
 /***********************************I-SCP-YAC-SP-0-14/02/2017****************************************/
 
+-- confgiuracion para el acceso a base de datos sql server 172.18.79.22
 CREATE EXTENSION IF NOT EXISTS tds_fdw;
 
 CREATE SERVER mssql_csa_prod
@@ -33,7 +30,13 @@ OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 CREATE USER MAPPING FOR dbkerp_admin
 SERVER mssql_csa_prod
 OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
+
 CREATE USER MAPPING FOR dbetr_capacitacion_admin
+SERVER mssql_csa_prod
+OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
+
+
+CREATE USER MAPPING FOR "dbetr_capacitacion_jorge.heredia"
 SERVER mssql_csa_prod
 OPTIONS (username 'usrPXP', password 'usrPXP2kk7prod');
 

@@ -21,6 +21,8 @@ class MODDefProyectoActividad extends MODbase
         $this->procedimiento = 'sp.ft_def_proyecto_actividad_sel';
         $this->transaccion = 'SP_DEPRAC_SEL';
         $this->tipo_procedimiento = 'SEL';//tipo de transaccion
+        $this->setCount(false);
+
 
         $this->setParametro('id_def_proyecto', 'id_def_proyecto', 'int4');
 

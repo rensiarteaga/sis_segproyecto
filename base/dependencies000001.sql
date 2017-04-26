@@ -1,7 +1,10 @@
 /***********************************I-DEP-RAC-SP-0-01/02/2017*****************************************/
-
-select pxp.f_insert_testructura_gui ('SEP', 'SISTEMA');
-
+select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('PRAC', 'SP');
+select pxp.f_insert_testructura_gui ('SEPROPONd', 'SP');
+select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
+select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
+select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
 
 ALTER TABLE sp.tactividad
   ADD CONSTRAINT tactividad__id_actividad_fk FOREIGN KEY (id_actividad_padre)
@@ -31,9 +34,6 @@ ALTER TABLE sp.tdef_proyecto_actividad
 
 /***********************************I-DEP-YAC-SP-0-01/03/2017*****************************************/
 
-select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
-select pxp.f_insert_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('PRAC', 'SP');
 
 ALTER TABLE sp.tdef_proyecto_actividad_pedido
   ADD CONSTRAINT tdef_proyecto_actividad_pedido_fk FOREIGN KEY (id_def_proyecto_actividad)
@@ -105,45 +105,6 @@ ALTER TABLE sp.tproy_seguimiento_actividad_estado
     NOT DEFERRABLE;
 
 /***********************************F-DEP-JUAN-SP-0-31/03/2017*****************************************/
-/***********************************I-DEP-YAC-SP-0-02/04/2017*****************************************/
-
-select pxp.f_delete_testructura_gui ('SEP', 'SISTEMA');
-select pxp.f_delete_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
-select pxp.f_insert_testructura_gui ('PRAC', 'SP');
-select pxp.f_delete_testructura_gui ('PRSECO', 'SP');
-select pxp.f_delete_testructura_gui ('PRSECO', 'SP');
-select pxp.f_delete_testructura_gui ('PRSETO', 'PRSECO');
-select pxp.f_delete_testructura_gui ('PRSETO', 'SP');
-select pxp.f_delete_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('SEPROPONd', 'SP');
-select pxp.f_insert_testructura_gui ('PRSECO', 'SEPROPONd');
-select pxp.f_insert_testructura_gui ('PRSETO', 'SEPROPONd');
-
-
-select pxp.f_insert_testructura_gui ('SP', 'SISTEMA');
-select pxp.f_delete_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('PRAC', 'SP');
-select pxp.f_delete_testructura_gui ('ACTI', 'SP');
-select pxp.f_insert_testructura_gui ('SEPROPONd', 'SP');
-select pxp.f_delete_testructura_gui ('PRSECO', 'SEPROPONd');
-select pxp.f_delete_testructura_gui ('PRSETO', 'SEPROPONd');
-select pxp.f_delete_testructura_gui ('PRSETO', 'SP');
-select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
-select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
-select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
-
-/***********************************F-DEP-YAC-SP-0-02/04/2017*****************************************/
-/***********************************I-DEP-YAC-SP-0-05/04/2017*****************************************/
-select pxp.f_delete_testructura_gui ('ACTI', 'SP');
-select pxp.f_delete_testructura_gui ('PRSECO', 'SEPROPONd');
-select pxp.f_delete_testructura_gui ('PRSETO', 'SEPROPONd');
-select pxp.f_delete_testructura_gui ('PRSETO', 'SP');
-select pxp.f_insert_testructura_gui ('PRSETO', 'SP');
-select pxp.f_insert_testructura_gui ('PRSECO', 'SP');
-select pxp.f_insert_testructura_gui ('ACTI', 'SEPROPONd');
-/***********************************F-DEP-YAC-SP-0-05/04/2017*****************************************/
 /***********************************I-DEP-YAC-SP-0-12/04/2017*****************************************/
 -- agregando la propiedad de eliminacion en cascada.
 
