@@ -11,13 +11,13 @@ AS $$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'sp.tdef_proyecto_actividad_pedido'
  AUTOR: 		 (admin)
  FECHA:	        12-11-2016 12:56:05
- COMENTARIOS:
+ COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:
- AUTOR:
- FECHA:
+ DESCRIPCION:	
+ AUTOR:			
+ FECHA:		
 ***************************************************************************/
 
 DECLARE
@@ -67,12 +67,7 @@ BEGIN
             vped.plazo,
             vped.monto_total,
             vped.codinvitacion,
-            vped.suministro,
-            depracpe.monto as monto_asignado,
-            depracpe.porcentaje as porcentaje_asignado,
-            coalesce( (select sum(ap.porcentaje) from sp.tdef_proyecto_actividad_pedido ap where ap.id_pedido=depracpe.id_pedido),0) as suma_porcentaje_acu,
-            coalesce((select sum(ap.monto) from sp.tdef_proyecto_actividad_pedido ap where ap.id_pedido=depracpe.id_pedido),0) as suma_monto_acu
-
+            vped.suministro
 						from sp.tdef_proyecto_actividad_pedido depracpe
 						inner join segu.tusuario usu1 on usu1.id_usuario = depracpe.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = depracpe.id_usuario_mod
@@ -97,8 +92,6 @@ BEGIN
       v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-      -- RAISE NOTICE '%',v_consulta;
-      -- RAISE EXCEPTION 'erroro yac';
       --Devuelve la respuesta
       RETURN v_consulta;
 

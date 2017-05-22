@@ -69,8 +69,7 @@ BEGIN
 
 
       RAISE NOTICE '%', v_consulta;
-     -- RAISE EXCEPTION 'error de prueba';
-
+      
       --Devuelve la respuesta
       RETURN v_consulta;
 

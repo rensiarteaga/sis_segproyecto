@@ -44,7 +44,7 @@ BEGIN
   IF (p_transaccion = 'SP_SEPR_SEL')
   THEN
     v_id_def_proyecto_seguimiento := 0;
-    v_id_def_proyecto_seguimiento = coalesce ((SELECT id_def_proyecto_seguimiento FROM sp.tdef_proyecto_seguimiento ORDER BY fecha DESC, id_def_proyecto_seguimiento DESC LIMIT 1),0);
+    v_id_def_proyecto_seguimiento = (SELECT id_def_proyecto_seguimiento FROM sp.tdef_proyecto_seguimiento ORDER BY fecha DESC, id_def_proyecto_seguimiento DESC LIMIT 1);
 
     BEGIN
       --Sentencia de la consulta
@@ -79,7 +79,7 @@ BEGIN
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 
-      RAISE NOTICE '%', v_consulta;
+      --RAISE NOTICE '%', v_consulta;
       --RAISE EXCEPTION 'eerrrooooorr YAC';
       --Devuelve la respuesta
       RETURN v_consulta;

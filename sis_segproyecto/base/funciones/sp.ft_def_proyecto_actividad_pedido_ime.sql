@@ -48,19 +48,15 @@ BEGIN
     BEGIN
       --Sentencia de la insercion
 
-      /*va_id_pedidos := string_to_array(v_parametros.id_pedidos, ',');*/
+      va_id_pedidos := string_to_array(v_parametros.id_pedidos, ',');
 
 
-/*
       FOREACH v_id_pedido IN ARRAY va_id_pedidos
       LOOP
-*/
 
         INSERT INTO sp.tdef_proyecto_actividad_pedido (
           id_def_proyecto_actividad,
           id_pedido,
-          monto,
-          porcentaje,
           estado_reg,
           id_usuario_ai,
           id_usuario_reg,
@@ -70,9 +66,7 @@ BEGIN
           fecha_mod
         ) VALUES (
           v_parametros.id_def_proyecto_actividad,
-          v_parametros.id_pedido,
-          v_parametros.monto_asignado::numeric,
-          v_parametros.porcentaje_asignado::NUMERIC,
+          v_id_pedido::INTEGER,
           'activo',
           v_parametros._id_usuario_ai,
           p_id_usuario,
@@ -80,10 +74,13 @@ BEGIN
           now(),
           NULL,
           NULL
-        ) RETURNING id_def_proyecto_actividad_pedido
+
+
+        )
+        RETURNING id_def_proyecto_actividad_pedido
           INTO v_id_def_proyecto_actividad_pedido;
 
-  /*    END LOOP;*/
+      END LOOP;
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
                                   'Definición proyecto actividad pedido almacenado(a) con exito (id_def_proyecto_actividad_pedido'
@@ -92,9 +89,6 @@ BEGIN
                                   v_id_def_proyecto_actividad_pedido :: VARCHAR);
 
       --Devuelve la respuesta
-
-
-      RAISE NOTICE 'id pedido %',v_parametros.id_pedido;
       RETURN v_resp;
 
     END;
@@ -115,8 +109,6 @@ BEGIN
         SET
           id_def_proyecto_actividad = v_parametros.id_def_proyecto_actividad,
           id_pedido                 = v_parametros.id_pedido,
-          monto                 = v_parametros.monto_asignado,
-          porcentaje                 = v_parametros.porcentaje_asignado,
           id_usuario_mod            = p_id_usuario,
           fecha_mod                 = now(),
           id_usuario_ai             = v_parametros._id_usuario_ai,

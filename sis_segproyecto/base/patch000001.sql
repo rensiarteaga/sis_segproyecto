@@ -274,10 +274,3 @@ CREATE TABLE sp.tproy_seguimiento_actividad_estado (
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 /***********************************F-SCP-JUAN-SP-0-31/03/2017****************************************/
-/***********************************I-SCP-YAC-SP-0-18/05/2017****************************************/
-ALTER TABLE sp.tdef_proyecto_actividad_pedido
-  ADD COLUMN monto NUMERIC;
-
-ALTER TABLE sp.tdef_proyecto_actividad_pedido
-  ADD COLUMN porcentaje NUMERIC;
-/***********************************F-SCP-YAC-SP-0-18/05/2017****************************************/

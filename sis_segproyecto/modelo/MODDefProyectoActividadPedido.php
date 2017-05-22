@@ -46,11 +46,6 @@ class MODDefProyectoActividadPedido extends MODbase
         $this->captura('monto_total', 'double precision');
         $this->captura('codinvitacion', 'varchar');
         $this->captura('suministro', 'varchar');
-        $this->captura('monto_asignado', 'numeric');
-        $this->captura('porcentaje_asignado', 'numeric');
-        $this->captura('suma_porcentaje_acu', 'numeric');
-        $this->captura('suma_monto_acu', 'numeric');
-
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -69,9 +64,8 @@ class MODDefProyectoActividadPedido extends MODbase
 
         //Define los parametros para la funcion
         $this->setParametro('id_def_proyecto_actividad', 'id_def_proyecto_actividad', 'int4');
-        $this->setParametro('id_pedido', 'id_pedido', 'int4');
-        $this->setParametro('monto_asignado', 'monto_asignado', 'numeric');
-        $this->setParametro('porcentaje_asignado', 'porcentaje_asignado', 'numeric');
+        $this->setParametro('id_pedidos', 'id_pedidos', 'varchar');
+        $this->setParametro('estado_reg', 'estado_reg', 'varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -92,8 +86,6 @@ class MODDefProyectoActividadPedido extends MODbase
         $this->setParametro('id_def_proyecto_actividad_pedido', 'id_def_proyecto_actividad_pedido', 'int4');
         $this->setParametro('id_def_proyecto_actividad', 'id_def_proyecto_actividad', 'int4');
         $this->setParametro('id_pedido', 'id_pedido', 'int4');
-        $this->setParametro('monto_asignado', 'monto_asignado', 'numeric');
-        $this->setParametro('porcentaje_asignado', 'porcentaje_asignado', 'numeric');
         $this->setParametro('estado_reg', 'estado_reg', 'varchar');
 
         //Ejecuta la instruccion
@@ -148,8 +140,6 @@ class MODDefProyectoActividadPedido extends MODbase
         $this->captura('codinvitacion', 'varchar');
         $this->captura('suministro', 'varchar');
         $this->captura('falta_valor', 'varchar');
-        $this->captura('suma_porcentaje_acu', 'numeric');
-        $this->captura('suma_monto_acu', 'numeric');
 
 
         //Ejecuta la instruccion

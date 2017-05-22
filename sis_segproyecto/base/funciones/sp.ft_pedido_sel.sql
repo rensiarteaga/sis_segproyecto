@@ -58,9 +58,7 @@ BEGIN
                         plazo,
                         codinvitacion,
                         suministro,
-                        case WHEN plazo is NULL then ''<i style="color: red">( Faltan valores ) </i>''::varchar else ''<i style="color: green">( Completo ) </i>''::varchar END as falta_valor,
-                        coalesce( (select sum(ap.porcentaje) from sp.tdef_proyecto_actividad_pedido ap where ap.id_pedido=vpd.id_pedido),0) as suma_porcentaje_acu,
-                        coalesce((select sum(ap.monto) from sp.tdef_proyecto_actividad_pedido ap where ap.id_pedido=vpd.id_pedido),0) as suma_monto_acu
+                        case WHEN plazo is NULL then ''<i style="color: red">( Faltan valores ) </i>''::varchar else ''<i style="color: green">( Completo ) </i>''::varchar END as falta_valor
                         FROM  sp.vcsa_proyecto_pedido vpd join sp.tdef_proyecto dp on dp.id_proyecto= vpd.id_proyecto
 				        where ';
 
@@ -70,8 +68,8 @@ BEGIN
       v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' ||
       v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-     -- RAISE NOTICE '%', v_consulta;
-     -- RAISE EXCEPTION 'error yac procovado';
+      RAISE NOTICE '%', v_consulta;
+      --RAISE EXCEPTION 'error yac procovado';
       --Devuelve la respuesta
       RETURN v_consulta;
 
@@ -96,7 +94,7 @@ BEGIN
 
         --Definicion de la respuesta
         v_consulta:=v_consulta || v_parametros.filtro;
-        RAISE NOTICE 'consulta: %', v_consulta;
+         raise NOTICE  'consulta: %',v_consulta;
 
         --Devuelve la respuesta
         RETURN v_consulta;
