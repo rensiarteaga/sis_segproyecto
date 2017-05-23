@@ -61,7 +61,8 @@ BEGIN
           FROM sp.tdef_proyecto_actividad pa
             JOIN sp.tactividad tact ON tact.id_actividad = pa.id_actividad and tact.id_actividad_padre is not null
             JOIN sp.tsuministro s
-              ON s.id_def_proyecto_actividad = pa.id_def_proyecto_actividad and s.id_def_proyecto_seguimiento = ' ||v_parametros.id_def_proyecto_seguimiento||'
+              ON s.id_def_proyecto_actividad = pa.id_def_proyecto_actividad and s.id_def_proyecto_seguimiento = ' ||
+                  v_parametros.id_def_proyecto_seguimiento || '
             JOIN sp.tactividad a ON a.id_actividad = pa.id_actividad AND a.id_tipo = 2
 
            where  ';

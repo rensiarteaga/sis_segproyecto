@@ -52,7 +52,7 @@ class ReporteTablaResumenSeguimiento extends ReportePDF
 
         //adiciona reporte
         ob_start();
-        include(dirname(__FILE__) . '/tpl/reporteSeguimiento.php');
+        include(dirname(__FILE__) . '/tpl/reporteSeguimientoOperativo.php');
         $content = ob_get_clean();
 
         $this->writeHTML($content, false, false, true, false, '');

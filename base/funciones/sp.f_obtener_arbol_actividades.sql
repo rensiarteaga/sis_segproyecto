@@ -43,7 +43,7 @@ BEGIN
         a.id_actividad,
         a.id_actividad_padre,
         a.actividad,
-        SUM(vpp.monto)                             AS monto,
+        SUM(pap.monto)                             AS monto,
         MIN(date(vpp.fechaordenproceder))          AS fechaordenproceder,
         MAX(DATE(vpp.fecha_entrega_contrato_prev)) AS fecha_entrega_contrato_prev,
         pa.id_def_proyecto_actividad,

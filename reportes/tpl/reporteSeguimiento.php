@@ -21,40 +21,47 @@
         $sumMultiplicacion = 0;
         $sumPonderacion = 0;
 
-        foreach ($this->datos_detalle as $objDato_detalle){
-            $sumPresupuesto += $objDato_detalle['monto_suma'];
-            $sumMultiplicacion += ($objDato_detalle['plazo'] * $objDato_detalle['monto_suma']);
-        }
-        foreach ($this->datos_detalle as $objDato_detalle) { ?>
-            <tr>
-                <td>
-                    <?php echo $objDato_detalle['actividad']; ?>
-                </td>
-                <td>
-                    <?php echo $objDato_detalle['monto_suma']; ?>
-                </td>
-                <td>
 
-                    <?php echo $objDato_detalle['plazo']; ?>
+        if (!empty($this->datos_detalle)) {
+            foreach ($this->datos_detalle as $objDato_detalle) {
 
-                </td>
-                <td>
+                $sumPresupuesto += $objDato_detalle['monto_suma'];
+                $sumMultiplicacion += ($objDato_detalle['plazo'] * $objDato_detalle['monto_suma']);
 
-                    <?php echo $objDato_detalle['plazo'] * $objDato_detalle['monto_suma']; ?>
+            }
 
-                </td>
+            foreach ($this->datos_detalle as $objDato_detalle) { ?>
+                <tr>
+                    <td>
+                        <?php echo $objDato_detalle['actividad']; ?>
+                    </td>
+                    <td>
+                        <?php echo $objDato_detalle['ancestors']; ?>
+                    </td>
+                    <td>
 
-                <td>
-                    <?php
-                    echo round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4); ?>
-                </td>
-                <td>
-                    <?php echo round((($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion)*100,2)?>%
-                </td>
-            </tr>
-        <?php
-            $sumPonderacion += round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4);
+                        <?php echo $objDato_detalle['plazo']; ?>
 
+                    </td>
+                    <td>
+
+                        <?php echo $objDato_detalle['plazo'] * $objDato_detalle['monto_suma']; ?>
+
+                    </td>
+
+                    <td>
+                        <?php
+                        //echo round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4); ?>
+                    </td>
+                    <td>
+                        <?php //echo round((($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion)*100,2)?>
+                        %
+                    </td>
+                </tr>
+                <?php
+                //$sumPonderacion += round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4);
+
+            }
         } ?>
         <tr>
             <td>
@@ -71,8 +78,8 @@
                     <?php echo $sumMultiplicacion ?>
                 </b>
             </td>
-            <td><?php echo $sumPonderacion?></td>
-            <td><?php echo ($sumPonderacion*100)?>%</td>
+            <td><?php echo $sumPonderacion ?></td>
+            <td><?php echo($sumPonderacion * 100) ?>%</td>
         </tr>
 
         </tbody>

@@ -59,7 +59,10 @@ class ACTDefProyectoActividadPedido extends ACTbase
 
             $this->objParam->addFiltro(" dp.id_def_proyecto = " . $this->objParam->getParametro('id_def_proyecto'));
             //TODO: Queda pendiente el calculo para la descriminacion de los pedidos con ya un 100 porciento de conclusion
-            //$this->objParam->addFiltro(" vpd.id_pedido not IN (SELECT id_pedido from sp.tdef_proyecto_actividad_pedido pad JOIN sp.tdef_proyecto_actividad pa ON pa.id_def_proyecto_actividad=pad.id_def_proyecto_actividad WHERE pa.id_def_proyecto=".$this->objParam->getParametro('id_def_proyecto') ." )" );
+            $this->objParam->addFiltro(" vpd.id_pedido not IN (SELECT CASE WHEN sum(pad.porcentaje)<100 THEN 0 ELSE pad.id_pedido END as id_pedido
+FROM sp.tdef_proyecto_actividad_pedido pad
+  JOIN sp.tdef_proyecto_actividad pa ON pa.id_def_proyecto_actividad = pad.id_def_proyecto_actividad
+WHERE  pa.id_def_proyecto = ".$this->objParam->getParametro('id_def_proyecto') ." GROUP BY pad.id_pedido)" );
         }
         $this->objParam->defecto('dir_ordenacion', 'asc');
         $this->objFunc = $this->create('MODDefProyectoActividadPedido');

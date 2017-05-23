@@ -65,12 +65,23 @@ header("content-type: text/javascript; charset=UTF-8");
 
             onButtonEdit: function () {
                 var record = this.sm.getSelected();
-                console.log('entre del record suma_porcentaje_acu',record.data);
+                console.log('entre del record suma_porcentaje_acu', record.data);
 
                 Phx.vista.DefProyectoActividadPedido.superclass.onButtonEdit.call(this);
 
-                this.Cmp.porcentaje_acumulado.setValue(parseFloat(record.data.suma_porcentaje_acu));
-                this.Cmp.monto_acumulado.setValue(parseFloat(record.data.suma_monto_acu));
+                this.Cmp.porcentaje_acumulado.setValue(parseFloat(record.data.suma_porcentaje_acu)-parseFloat(this.Cmp.porcentaje_asignado.getValue()));
+                this.Cmp.monto_acumulado.setValue(parseFloat(record.data.suma_monto_acu)-parseFloat(this.Cmp.monto_asignado.getValue()));
+            },
+            onButtonNew: function () {
+                //se agrega esta opcion para verificar si es una actividad validad para que pueda agregar uno nuevo
+                var record_maestro = this.maestro;
+                if(record_maestro.nivel == 2 && record_maestro.tipo_actividad != 4){
+                    Phx.vista.DefProyectoActividadPedido.superclass.onButtonNew.call(this);
+                }else{
+                    alert('No puedes agregar un pedido nuevo a la actividad seleccionada')
+                }
+
+
             },
 
             Atributos: [
@@ -469,7 +480,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 'suma_porcentaje_acu',
                 'suma_monto_acu',
 
-    ],
+            ],
             sortInfo: {
                 field: 'id_def_proyecto_actividad_pedido',
                 direction: 'ASC'

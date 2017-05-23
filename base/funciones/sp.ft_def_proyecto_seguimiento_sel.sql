@@ -200,7 +200,7 @@ BEGIN
                     CASE WHEN t1.nivel=2 AND t1.id_tipo<>3 THEN t1.avance ELSE 0 END ), 2) end AS total_avance
         FROM tt_actividades_seguimiento_actividad t1
           left JOIN tt_actividades_seguimiento_actividad t2
-            ON t2.id_actividad <> t1.id_actividad AND t1.id_actividad = t2.id_actividad_padre
+            ON t1.id_actividad = t2.id_actividad_padre
         where t1.nivel<=2
         GROUP BY t1.id_tipo,
           t1.id_actividad,

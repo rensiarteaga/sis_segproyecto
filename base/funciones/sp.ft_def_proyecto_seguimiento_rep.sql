@@ -47,6 +47,7 @@ BEGIN
   THEN
 
     BEGIN
+
       DROP TABLE IF EXISTS temp_actividad_datos;
       CREATE TEMPORARY TABLE temp_actividad_datos (
         id_actividad              INTEGER,
@@ -128,7 +129,7 @@ BEGIN
           round(sum(coalesce(t2.avance, 0) + CASE WHEN t1.nivel=2 AND t1.id_tipo<>3 THEN t1.avance ELSE 0 END ), 2) END AS total_avance
       FROM tt_actividades_seguimiento_actividad t1
         LEFT JOIN tt_actividades_seguimiento_actividad t2
-          ON t2.id_actividad <> t1.id_actividad AND t1.id_actividad = t2.id_actividad_padre
+          ON t1.id_actividad = t2.id_actividad_padre
       WHERE t1.nivel <= 2
       GROUP BY t1.id_tipo,
         t1.id_actividad,

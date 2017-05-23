@@ -51,7 +51,7 @@ BEGIN
   );
 
   INSERT INTO temp_arb_proyectos_actividades (SELECT *
-                                              FROM sp.f_obtener_arbol_actividades(v_id_def_proyecto));
+                                              FROM sp.f_obtener_arbol_actividades(v_id_def_proyecto) ORDER BY v_ancestors);
 
 
   FOR r IN (
@@ -84,7 +84,7 @@ BEGIN
         ELSE MIN(t2.fechaordenproceder) END))              AS multiplicacion
     FROM temp_arb_proyectos_actividades t1
       JOIN temp_arb_proyectos_actividades t2
-        ON t2.ancestors <> t1.ancestors AND t1.ancestors = "left"(t2.ancestors, length(t1.ancestors))
+        on t1.id_actividad = t2.id_actividad_padre
     WHERE t1.id_actividad_padre IS NULL
     GROUP BY t1.id_actividad, t1.id_actividad_padre, t1.actividad, t1.monto, t1.fechaordenproceder,
       t1.fecha_entrega_contrato_prev)
@@ -131,7 +131,7 @@ BEGIN
       t1.id_tipo
     FROM temp_arb_proyectos_actividades t1
       JOIN temp_arb_proyectos_actividades t2
-        ON t2.ancestors <> t1.ancestors AND t1.ancestors = "left"(t2.ancestors, length(t1.ancestors))
+        on t1.id_actividad = t2.id_actividad_padre
     WHERE t1.id_actividad_padre IS NULL
     GROUP BY t1.id_actividad, t1.id_actividad_padre, t1.actividad, t1.monto, t1.fechaordenproceder,
       t1.fecha_entrega_contrato_prev, t1.nivel, t1.id_tipo)

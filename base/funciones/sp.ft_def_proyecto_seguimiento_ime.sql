@@ -233,7 +233,7 @@ BEGIN
             FROM sp.tdef_proyecto_actividad pa
               JOIN sp.tactividad a
                 ON a.id_actividad = pa.id_actividad AND a.id_tipo = 2
-              JOIN sp.tsuministro s ON pa.id_def_proyecto_actividad = s.id_def_proyecto_actividad AND
+              left JOIN sp.tsuministro s ON pa.id_def_proyecto_actividad = s.id_def_proyecto_actividad AND
                                        s.id_def_proyecto_seguimiento = (v_id_def_proyecto_seguimiento_ultimo);
 
           j_proyecto_seguimiento_actividad := v_parametros.json_new_records;
