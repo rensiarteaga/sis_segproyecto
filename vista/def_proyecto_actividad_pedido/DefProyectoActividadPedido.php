@@ -42,6 +42,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.monto_acumulado.setValue(dato.json.suma_monto_acu);
                 this.Cmp.porcentaje_acumulado.setValue(dato.json.suma_porcentaje_acu);
                 this.Cmp.monto_total.setValue(dato.json.monto);
+                this.Cmp.porcentaje_asignado.setMaxValue( ((100 - parseFloat(dato.json.suma_porcentaje_acu)).toFixed(2)));
+                this.Cmp.monto_asignado.setMaxValue ((parseFloat(dato.json.monto) - parseFloat(dato.json.suma_monto_acu)).toFixed(2));
                 this.Cmp.porcentaje_asignado.setValue(100 - parseFloat(dato.json.suma_porcentaje_acu));
                 this.Cmp.monto_asignado.setValue(parseFloat(dato.json.monto) - parseFloat(dato.json.suma_monto_acu));
             },
@@ -68,20 +70,25 @@ header("content-type: text/javascript; charset=UTF-8");
                 console.log('entre del record suma_porcentaje_acu', record.data);
 
                 Phx.vista.DefProyectoActividadPedido.superclass.onButtonEdit.call(this);
+                this.Cmp.porcentaje_acumulado.setValue(parseFloat(record.data.suma_porcentaje_acu) - parseFloat(this.Cmp.porcentaje_asignado.getValue()));
+                this.Cmp.monto_acumulado.setValue(parseFloat(record.data.suma_monto_acu) - parseFloat(this.Cmp.monto_asignado.getValue()));
+                // Cambiando el valor de los validadores
+                this.Cmp.porcentaje_asignado.setMaxValue( ((100 - (parseFloat(record.data.suma_porcentaje_acu) - parseFloat(this.Cmp.porcentaje_asignado.getValue()))).toFixed(2)));
+                this.Cmp.monto_asignado.setMaxValue ((parseFloat(record.data.monto) - (parseFloat(record.data.suma_monto_acu) - parseFloat(this.Cmp.monto_asignado.getValue()))).toFixed(2));
 
-                this.Cmp.porcentaje_acumulado.setValue(parseFloat(record.data.suma_porcentaje_acu)-parseFloat(this.Cmp.porcentaje_asignado.getValue()));
-                this.Cmp.monto_acumulado.setValue(parseFloat(record.data.suma_monto_acu)-parseFloat(this.Cmp.monto_asignado.getValue()));
+
+                console.log('valores de los datos',                this.Cmp.monto_asignado.setMaxValue ((parseFloat(record.data.monto) - (parseFloat(record.data.suma_monto_acu) - parseFloat(this.Cmp.monto_asignado.getValue()))).toFixed(2)))
+
             },
             onButtonNew: function () {
                 //se agrega esta opcion para verificar si es una actividad validad para que pueda agregar uno nuevo
                 var record_maestro = this.maestro;
-                if(record_maestro.nivel == 2 && record_maestro.tipo_actividad != 4){
+
+                if (record_maestro.nivel == 2 && record_maestro.tipo_actividad != 4) {
                     Phx.vista.DefProyectoActividadPedido.superclass.onButtonNew.call(this);
-                }else{
+                } else {
                     alert('No puedes agregar un pedido nuevo a la actividad seleccionada')
                 }
-
-
             },
 
             Atributos: [
@@ -295,10 +302,11 @@ header("content-type: text/javascript; charset=UTF-8");
                     config: {
                         name: 'porcentaje_asignado',
                         fieldLabel: 'Porcentaje asignado',
-                        allowBlank: true,
+                        allowBlank: false,
                         anchor: '80%',
                         gwidth: 100,
                         format: '',
+                        minValue: 0,
                         renderer: function (value, p, record) {
                             //observando que valor tiene el record
                             //console.log(record)
