@@ -214,7 +214,7 @@ BEGIN
         -- v_consulta:=v_consulta || v_parametros.filtro;
 
         RAISE NOTICE '%', v_consulta;
-        --RAISE EXCEPTION '%',v_parametros.id_def_proyecto;
+        --RAISE EXCEPTION '%';
         --Devuelve la respuesta
         RETURN v_consulta;
 

@@ -362,10 +362,10 @@ header("content-type: text/javascript; charset=UTF-8");
                     auxSuma += parseFloat(record.data.porcentaje);
                     auxCont += 1;
                     promediar = true;
-                    //console.log('entre en el nivel 33333333333', parseFloat(record.data.porcentaje),auxSuma,auxCont)
+                    console.log('entre en el nivel 2 ->'+i , parseFloat(record.data.porcentaje),auxSuma,auxCont)
                 }
                 //falta agregar el tipo de actividad
-                else if (record.data.nivel == "2" && promediar && auxSuma > 0 && auxCont > 0) {
+                else if (record.data.nivel == "2" && promediar && auxSuma >= 0 && auxCont > 0) {
                     auxPromedio = auxSuma / auxCont;
                     record.data.porcentaje = auxPromedio;
                     promediar = false;
@@ -386,7 +386,7 @@ header("content-type: text/javascript; charset=UTF-8");
              arra.push(record.data);
              }
              */
-            console.log('arreglo de los datos quse cargaran', arra)
+            console.log('arreglo de los datos quse cargaran yac', arra)
 
             me.argumentExtraSubmit = {
                 'json_new_records': JSON.stringify(arra, function replacer(key, value) {

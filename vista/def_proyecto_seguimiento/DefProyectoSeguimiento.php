@@ -358,9 +358,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.openForm('new');
             },
             onButtonEdit: function () {
-
                     this.openForm('edit', this.sm.getSelected());
-
             },
 
             openForm: function (tipo, record) {

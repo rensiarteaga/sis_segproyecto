@@ -94,7 +94,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             if (record.data['nivel'] == 1) {
                                 return String.format(' <h4>{0}</h4>', record.data['total_avance']);
                             } else {
-                                return String.format(' {0}', record.data['total_avance']);
+                                return String.format(' {0}', record.data['avance']);
 
                             }
                         }

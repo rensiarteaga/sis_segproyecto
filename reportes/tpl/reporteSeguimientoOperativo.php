@@ -5,12 +5,9 @@
             <td colspan="2" style="text-align: center"><b>Tabla de ponderación</b></td>
         </tr>
         <tr>
-            <td width="70%"><b>actividad</b></td>
-            <td width="15%">
-                <b>Avance(%)</b>
-            </td>
-            <td width="15%">
-                <b>Total Avance(%)</b>
+            <td width="70%"><b>ACTIVIDAD</b></td>
+            <td width="30%">
+                <b>AVANCE(%)</b>
             </td>
         </tr>
         <?php
@@ -18,26 +15,32 @@
 
         if (!empty($this->datos_detalle)) {
 
-
+            $total = 0;
             foreach ($this->datos_detalle as $objDato_detalle) { ?>
-                <tr >
+                <tr <?php echo($objDato_detalle['nivel'] == 1 ? 'STYLE="background-color:darkgrey"' : '') ?> >
                     <td>
-                        <?php echo ($objDato_detalle['nivel']==1?('<b>'.$objDato_detalle['actividad'].'</b>'):$objDato_detalle['actividad']); ?>
+                        <?php echo($objDato_detalle['nivel'] == 1 ? ('<b>' . $objDato_detalle['actividad'] . '</b>') : $objDato_detalle['actividad']); ?>
                     </td>
                     <td>
-                        <?php echo $objDato_detalle['avance']; ?>
+                        <?php if ($objDato_detalle['nivel'] == 1) {
+                            $total += $objDato_detalle['total_avance'];
+                            echo '<b>' . $objDato_detalle['total_avance'] . '%</b>';
+                        } else {
+                            echo $objDato_detalle['avance'].'%';
+                        } ?>
                     </td>
-                    <td>
 
-                        <?php echo $objDato_detalle['total_avance']; ?>
-
-                    </td>
                 </tr>
+
                 <?php
                 //$sumPonderacion += round(($objDato_detalle['plazo'] * $objDato_detalle['monto_suma'])/$sumMultiplicacion,4);
 
-            }
-        } ?>
+            } ?>
+            <tr>
+                <td>TOTAL:</td>
+                <td><?php echo $total.'%' ?></td>
+            </tr>
+        <?php } ?>
 
 
         </tbody>
