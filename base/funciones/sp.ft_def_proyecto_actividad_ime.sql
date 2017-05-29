@@ -180,35 +180,41 @@ BEGIN
         FOREACH v_id_actividad IN ARRAY va_id_actividades
         LOOP
 
+          IF exists(SELECT 1
+                    FROM sp.tdef_proyecto_actividad
+                    WHERE id_actividad = v_id_actividad::INTEGER AND id_def_proyecto = v_parametros.id_def_proyecto)
+          THEN
+            RAISE NOTICE 'tiene actividades repetidas, que quiere insertar';
 
-          --Sentencia de la insercion
-          INSERT INTO sp.tdef_proyecto_actividad (
-            id_def_proyecto,
-            id_actividad,
-            estado_reg,
-            descripcion,
-            usuario_ai,
-            fecha_reg,
-            id_usuario_reg,
-            id_usuario_ai,
-            fecha_mod,
-            id_usuario_mod
-          ) VALUES (
-            v_parametros.id_def_proyecto,
-            v_id_actividad :: INTEGER,
-            'activo',
-            '',
-            v_parametros._nombre_usuario_ai,
-            now(),
-            p_id_usuario,
-            v_parametros._id_usuario_ai,
-            NULL,
-            NULL
-          )
-          RETURNING id_def_proyecto_actividad
-            INTO v_id_def_proyecto_actividad;
+          ELSE
+            --Sentencia de la insercion
+            INSERT INTO sp.tdef_proyecto_actividad (
+              id_def_proyecto,
+              id_actividad,
+              estado_reg,
+              descripcion,
+              usuario_ai,
+              fecha_reg,
+              id_usuario_reg,
+              id_usuario_ai,
+              fecha_mod,
+              id_usuario_mod
+            ) VALUES (
+              v_parametros.id_def_proyecto,
+              v_id_actividad :: INTEGER,
+              'activo',
+              '',
+              v_parametros._nombre_usuario_ai,
+              now(),
+              p_id_usuario,
+              v_parametros._id_usuario_ai,
+              NULL,
+              NULL
+            )
+            RETURNING id_def_proyecto_actividad
+              INTO v_id_def_proyecto_actividad;
 
-
+          END IF;
         END LOOP;
 
 
